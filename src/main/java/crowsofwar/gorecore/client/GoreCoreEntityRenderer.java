@@ -3,15 +3,11 @@ package crowsofwar.gorecore.client;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.plaf.basic.BasicScrollPaneUI.ViewportChangeHandler;
-
-import cpw.mods.fml.common.FMLCommonHandler;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.EntityRenderer;
-import net.minecraft.client.resources.IResource;
 import net.minecraft.client.resources.IResourceManager;
 import net.minecraft.entity.player.EntityPlayer;
+import cpw.mods.fml.common.FMLCommonHandler;
 
 /**
  * The entity renderer, with a few adjustments. Thanks CoolAlias!

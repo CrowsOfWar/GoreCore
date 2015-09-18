@@ -11,11 +11,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import scala.reflect.internal.tpe.TypeMaps.ContainsCollector;
-
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
-
 import cpw.mods.fml.common.FMLLog;
 import crowsofwar.gorecore.GoreCore;
 import crowsofwar.gorecore.util.GoreCoreParsingResult;

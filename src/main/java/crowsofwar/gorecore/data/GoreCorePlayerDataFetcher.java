@@ -10,8 +10,6 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crowsofwar.gorecore.util.GoreCorePlayerUUIDs;
 import crowsofwar.gorecore.util.GoreCorePlayerUUIDs.ResultOutcome;
-import crowsofwar.physicaltraits.PhysicalTraits;
-import crowsofwar.physicaltraits.common.network.PhysicalTraitsPacketSRequestData;
 
 public class GoreCorePlayerDataFetcher {
 	
