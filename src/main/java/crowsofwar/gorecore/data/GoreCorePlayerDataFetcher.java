@@ -230,10 +230,12 @@ public class GoreCorePlayerDataFetcher {
 		 * @param player The player to get data for
 		 * @param errorMessage The message to be logged if an error occurs to tell the user
 		 * what caused the error,  e.g. "Error trying to get player data for tick handler"
+		 * @param handler Handles if player data is created. Null for no handling
 		 * @return Player data for the player, null if an error occured
 		 */
-		public static GoreCorePlayerData getDataQuick(Class<? extends GoreCorePlayerData> dataClass, String modID, EntityPlayer player, String errorMessage) {
-			return getDataQuick(dataClass, modID, player.getCommandSenderName(), errorMessage);
+		public static GoreCorePlayerData getDataQuick(Class<? extends GoreCorePlayerData> dataClass, String modID, EntityPlayer player, String errorMessage,
+				GoreCorePlayerDataCreationHandler handler) {
+			return getDataQuick(dataClass, modID, player.getCommandSenderName(), errorMessage, handler);
 		}
 		
 		/**
@@ -244,10 +246,12 @@ public class GoreCorePlayerDataFetcher {
 		 * @param playerName The username of the player
 		 * @param errorMessage The message to be logged if an error occurs to tell the user
 		 * what caused the error,  e.g. "Error trying to get player data for tick handler"
+		 * @param handler Handles if player data is created. Null for no handling
 		 * @return Player data for the player, null if an error occured
 		 */
-		public static GoreCorePlayerData getDataQuick(Class<? extends GoreCorePlayerData> dataClass, String modID, String playerName, String errorMessage) {
-			FetchDataResult result = getClientData(dataClass, modID, playerName);
+		public static GoreCorePlayerData getDataQuick(Class<? extends GoreCorePlayerData> dataClass, String modID, String playerName, String errorMessage,
+				GoreCorePlayerDataCreationHandler handler) {
+			FetchDataResult result = getClientData(dataClass, modID, playerName, handler);
 			if (result.hadError()) {
 				if (errorMessage != null) FMLLog.warning("GoreCore> " + errorMessage);
 				result.logError();
@@ -266,10 +270,12 @@ public class GoreCorePlayerDataFetcher {
 		 * @param dataClass The class of your client-type data: <code>MyModsPlayerDataClient.class</code>
 		 * @param modID The ID of your mod
 		 * @param player The player to get data for
+		 * @param handler Handles if player data is created. Null for no handling
 		 * @return Player data for that player, creating it if necessary. Null if an error occured
 		 */
-		public static GoreCorePlayerData getDataPerformance(Class<? extends GoreCorePlayerData> dataClass, String modID, EntityPlayer player) {
-			return getDataPerformance(dataClass, modID, player.getCommandSenderName());
+		public static GoreCorePlayerData getDataPerformance(Class<? extends GoreCorePlayerData> dataClass, String modID, EntityPlayer player,
+				GoreCorePlayerDataCreationHandler handler) {
+			return getDataPerformance(dataClass, modID, player.getCommandSenderName(), handler);
 		}
 		
 		/**
@@ -279,9 +285,11 @@ public class GoreCorePlayerDataFetcher {
 		 * @param dataClass The class of your client-type data: <code>MyModsPlayerDataClient.class</code>
 		 * @param modID The ID of your mod
 		 * @param playerName The name of the player to get data for
+		 * @param handler Handles if player data is created. Null for no handling
 		 * @return Player data for that player, creating it if necessary. Null if an error occured
 		 */
-		public static GoreCorePlayerData getDataPerformance(Class<? extends GoreCorePlayerData> dataClass, String modID, String playerName) {
+		public static GoreCorePlayerData getDataPerformance(Class<? extends GoreCorePlayerData> dataClass, String modID, String playerName,
+				GoreCorePlayerDataCreationHandler handler) {
 			GoreCorePlayerData data;
 			
 			GoreCorePlayerUUIDs.GetUUIDResult getUUID = GoreCorePlayerUUIDs.getUUID(playerName);
@@ -293,7 +301,7 @@ public class GoreCorePlayerDataFetcher {
 				if (data == null) {
 					data = createPlayerData(dataClass, playerID);
 					inner.put(playerID, data);
-					PhysicalTraits.network.sendToServer(new PhysicalTraitsPacketSRequestData(playerID));
+					if (handler != null) handler.onClientPlayerDataCreated(data);
 				}
 				
 			} else {
@@ -310,11 +318,13 @@ public class GoreCorePlayerDataFetcher {
 		 * 
 		 * @param dataClass The class of your client-type data: <code>MyModsPlayerDataClient.class</code>
 		 * @param modID The ID of your mod
-		 * @param player The player to get data for
+		 * @param player The player to get data forPhysicalTraits.network.sendToServer(new PhysicalTraitsPacketSRequestData(playerID));
+		 * @param handler Handles if player data is created. Null for no handling
 		 * @return Client-type data for the player
 		 */
-		public static FetchDataResult getClientData(Class<? extends GoreCorePlayerData> dataClass, String modID, EntityPlayer player) {
-			return getClientData(dataClass, modID, player.getCommandSenderName());
+		public static FetchDataResult getClientData(Class<? extends GoreCorePlayerData> dataClass, String modID, EntityPlayer player,
+				GoreCorePlayerDataCreationHandler handler) {
+			return getClientData(dataClass, modID, player.getCommandSenderName(), handler);
 		}
 		
 		/**
@@ -323,9 +333,11 @@ public class GoreCorePlayerDataFetcher {
 		 * @param dataClass The class of your client-type data: <code>MyModsPlayerDataClient.class</code>
 		 * @param modID The ID of your mod
 		 * @param playerName The name of the player to get the data for
+		 * @param handler Handles if player data is created. Null for no handling
 		 * @return Client-type data for the player
 		 */
-		public static FetchDataResult getClientData(Class<? extends GoreCorePlayerData> dataClass, String modID, String playerName) {
+		public static FetchDataResult getClientData(Class<? extends GoreCorePlayerData> dataClass, String modID, String playerName,
+				GoreCorePlayerDataCreationHandler handler) {
 			GoreCorePlayerData data;
 			
 			GoreCorePlayerUUIDs.GetUUIDResult getUUID = GoreCorePlayerUUIDs.getUUID(playerName);
@@ -339,7 +351,7 @@ public class GoreCorePlayerDataFetcher {
 				if (data == null) {
 					data = createPlayerData(dataClass, playerID);
 					inner.put(playerID, data);
-					PhysicalTraits.network.sendToServer(new PhysicalTraitsPacketSRequestData(playerID));
+					if (handler != null) handler.onClientPlayerDataCreated(data);
 				}
 				
 			} else {
