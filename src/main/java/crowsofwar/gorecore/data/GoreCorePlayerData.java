@@ -82,4 +82,8 @@ public abstract class GoreCorePlayerData implements GoreCoreNBTInterfaces.Readab
 	
 	protected abstract void writePlayerDataToNBT(NBTTagCompound nbt);
 	
+	public UUID getPlayerID() {
+		return playerID;
+	}
+	
 }
