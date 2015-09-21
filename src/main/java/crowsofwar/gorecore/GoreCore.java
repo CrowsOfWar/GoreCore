@@ -18,7 +18,7 @@ public class GoreCore {
 	
 	public static final String MOD_ID = "GoreCore";
 	public static final String MOD_NAME = "GoreCore";
-	public static final String MOD_VERSION = "1.7.10-0.8.1";
+	public static final String MOD_VERSION = "1.7.10-0.8.2";
 	
 	@SidedProxy(clientSide="crowsofwar.gorecore.proxy.GoreCoreClientProxy", serverSide="crowsofwar.gorecore.proxy.GoreCoreCommonProxy")
 	public static GoreCoreCommonProxy proxy;
