@@ -51,6 +51,7 @@ public abstract class GoreCoreWorldDataPlayers extends GoreCoreWorldData {
 		} else {
 			GoreCorePlayerData data = createNewPlayerData(player);
 			players.put(player, data);
+			saveChanges();
 			return data;
 		}
 	}
