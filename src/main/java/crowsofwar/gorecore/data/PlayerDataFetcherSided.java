@@ -3,6 +3,7 @@ package crowsofwar.gorecore.data;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.world.World;
 
 /**
  * Player data fetcher class which hands off
@@ -25,25 +26,23 @@ public class PlayerDataFetcherSided<T extends GoreCorePlayerData> implements Pla
 	}
 	
 	@Override
-	public T fetch(GoreCoreWorldDataPlayers<T> data, EntityPlayer player, String errorMessage) {
-		return getDelegate().fetch(data, player, errorMessage);
+	public T fetch(EntityPlayer player, String errorMessage) {
+		return getDelegate().fetch(player, errorMessage);
 	}
 
 	@Override
-	public T fetch(GoreCoreWorldDataPlayers<T> data, String playerName, String errorMessage) {
-		return getDelegate().fetch(data, playerName, errorMessage);
+	public T fetch(World world, String playerName, String errorMessage) {
+		return getDelegate().fetch(world, playerName, errorMessage);
 	}
 
 	@Override
-	public T fetchPerformance(GoreCoreWorldDataPlayers<T> data, EntityPlayer player) {
-		return getDelegate().fetchPerformance(data, player);
+	public T fetchPerformance(EntityPlayer player) {
+		return getDelegate().fetchPerformance(player);
 	}
 
 	@Override
-	public T fetchPerformance(GoreCoreWorldDataPlayers<T> data, String playerName) {
-		return getDelegate().fetchPerformance(data, playerName);
+	public T fetchPerformance(World world, String playerName) {
+		return getDelegate().fetchPerformance(world, playerName);
 	}
-	
-	
 	
 }

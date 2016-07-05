@@ -5,9 +5,11 @@ import java.util.Map;
 import java.util.UUID;
 
 import cpw.mods.fml.common.FMLLog;
+import cpw.mods.fml.common.gameevent.PlayerEvent.PlayerRespawnEvent;
 import crowsofwar.gorecore.data.GoreCorePlayerDataFetcher.FetchDataResult;
 import crowsofwar.gorecore.util.GoreCorePlayerUUIDs;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.world.World;
 
 public class PlayerDataFetcherClient<T extends GoreCorePlayerData> implements PlayerDataFetcher<T> {
 	
@@ -26,7 +28,18 @@ public class PlayerDataFetcherClient<T extends GoreCorePlayerData> implements Pl
 	
 	private String modID;
 	
-	private PlayerDataFetcherClient() {}
+	public PlayerDataFetcherClient(Class<T> dataClass, String modID) {
+		this(dataClass, modID, null);
+	}
+	
+	public PlayerDataFetcherClient(Class<T> dataClass, String modID, GoreCorePlayerDataCreationHandler onCreate) {
+		this.dataClass = dataClass;
+		this.modID = modID;
+		if (onCreate == null) onCreate = new GoreCorePlayerDataCreationHandler() {
+			@Override public void onClientPlayerDataCreated(GoreCorePlayerData data) {}
+		};
+		this.onCreate = onCreate;
+	}
 	
 	/**
 	 * <p>Get the inner-map for the given mod from {@link #playerData}.</p>
@@ -59,12 +72,12 @@ public class PlayerDataFetcherClient<T extends GoreCorePlayerData> implements Pl
 	}
 	
 	@Override
-	public T fetch(GoreCoreWorldDataPlayers<T> data, EntityPlayer player, String errorMessage) {
-		return fetch(data, player.getCommandSenderName(), errorMessage);
+	public T fetch(EntityPlayer player, String errorMessage) {
+		return fetch(player.worldObj, player.getCommandSenderName(), errorMessage);
 	}
 
 	@Override
-	public T fetch(GoreCoreWorldDataPlayers<T> worldData, String playerName, String errorMessage) {
+	public T fetch(World world, String playerName, String errorMessage) {
 		GoreCorePlayerData data;
 		
 		GoreCorePlayerUUIDs.GetUUIDResult getUUID = GoreCorePlayerUUIDs.getUUID(playerName);
@@ -99,12 +112,12 @@ public class PlayerDataFetcherClient<T extends GoreCorePlayerData> implements Pl
 	}
 
 	@Override
-	public T fetchPerformance(GoreCoreWorldDataPlayers<T> data, EntityPlayer player) {
-		return fetchPerformance(data, player.getCommandSenderName());
+	public T fetchPerformance(EntityPlayer player) {
+		return fetchPerformance(player.worldObj, player.getCommandSenderName());
 	}
 
 	@Override
-	public T fetchPerformance(GoreCoreWorldDataPlayers<T> worldData, String playerName) {
+	public T fetchPerformance(World world, String playerName) {
 		GoreCorePlayerData data;
 		
 		GoreCorePlayerUUIDs.GetUUIDResult getUUID = GoreCorePlayerUUIDs.getUUID(playerName);
