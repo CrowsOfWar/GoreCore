@@ -11,6 +11,12 @@ import cpw.mods.fml.relauncher.SideOnly;
 import crowsofwar.gorecore.util.GoreCorePlayerUUIDs;
 import crowsofwar.gorecore.util.GoreCorePlayerUUIDs.ResultOutcome;
 
+/**
+ * Use PlayerDataFetcher instead.
+ * 
+ * @author CrowsOfWar
+ */
+@Deprecated
 public class GoreCorePlayerDataFetcher {
 	
 	/**
