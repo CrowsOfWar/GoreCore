@@ -13,9 +13,11 @@ import crowsofwar.gorecore.util.GoreCoreNBTUtil;
  * A world data class which comes equipped with the ability to save
  * and load player data.
  * 
+ * @param T The type of your player data
+ * 
  * @author CrowsOfWar
  */
-public abstract class GoreCoreWorldDataPlayers extends GoreCoreWorldData {
+public abstract class GoreCoreWorldDataPlayers<T extends GoreCorePlayerData> extends GoreCoreWorldData {
 	
 	private Map<UUID, GoreCorePlayerData> players;
 	
@@ -45,11 +47,11 @@ public abstract class GoreCoreWorldDataPlayers extends GoreCoreWorldData {
 	 * @param player The UUID of the player to get data for
 	 * @return Player data for that player
 	 */
-	public GoreCorePlayerData getPlayerData(UUID player) {
+	public T getPlayerData(UUID player) {
 		if (players.containsKey(player)) {
-			return players.get(player);
+			return (T) players.get(player);
 		} else {
-			GoreCorePlayerData data = createNewPlayerData(player);
+			T data = createNewPlayerData(player);
 			players.put(player, data);
 			saveChanges();
 			return data;
@@ -69,13 +71,13 @@ public abstract class GoreCoreWorldDataPlayers extends GoreCoreWorldData {
 	
 	public abstract Class<? extends GoreCorePlayerData> playerDataClass();
 	
-	private GoreCorePlayerData createNewPlayerData(UUID player) {
+	private T createNewPlayerData(UUID player) {
 		try {
 			
 			GoreCorePlayerData data = playerDataClass()
 					.getConstructor(GoreCoreDataSaver.class, UUID.class)
 					.newInstance(this, player);
-			return data;
+			return (T) data;
 			
 		} catch (Exception e) {
 			FMLLog.warning("GoreCore> Found an error when trying to make new player data!");
