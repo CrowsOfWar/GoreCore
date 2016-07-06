@@ -1,5 +1,9 @@
 package crowsofwar.gorecore;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.SidedProxy;
@@ -24,6 +28,8 @@ public class GoreCore {
 	public static GoreCoreCommonProxy proxy;
 	
 	public static GoreCoreModConfig config;
+	
+	public static Logger LOGGER = LogManager.getLogger("GoreCore");
 	
 	/**
 	 * The "is player walking" detector for the client-side.

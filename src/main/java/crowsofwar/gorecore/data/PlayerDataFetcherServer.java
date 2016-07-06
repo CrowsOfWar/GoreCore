@@ -2,9 +2,9 @@ package crowsofwar.gorecore.data;
 
 import java.util.UUID;
 
-import cpw.mods.fml.common.FMLLog;
-import crowsofwar.gorecore.data.GoreCorePlayerDataFetcher.FetchDataResult;
+import crowsofwar.gorecore.GoreCore;
 import crowsofwar.gorecore.util.GoreCorePlayerUUIDs;
+import crowsofwar.gorecore.util.GoreCorePlayerUUIDs.ResultOutcome;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
 
@@ -23,13 +23,13 @@ public class PlayerDataFetcherServer<T extends GoreCorePlayerData> implements Pl
 
 	@Override
 	public T fetch(World world, String playerName, String errorMessage) {
-		GoreCorePlayerData pd;
+		T pd;
 		GoreCorePlayerUUIDs.ResultOutcome error;
 		
 		GoreCorePlayerUUIDs.GetUUIDResult getUUID = GoreCorePlayerUUIDs.getUUID(playerName);
 		if (getUUID.isResultSuccessful()) {
 			
-			pd = (GoreCorePlayerData) worldDataFetcher.fetch(world).getPlayerData(getUUID.getUUID());
+			pd = worldDataFetcher.fetch(world).getPlayerData(getUUID.getUUID());
 			error = getUUID.getResult();
 			
 		} else {
@@ -40,14 +40,31 @@ public class PlayerDataFetcherServer<T extends GoreCorePlayerData> implements Pl
 			
 		}
 		
-		FetchDataResult result = new FetchDataResult(pd, error);
-		if (result.hadError()) {
-			if (errorMessage != null) FMLLog.warning("GoreCore> " + errorMessage);
-			result.logError();
-			return null;
+		if (error == ResultOutcome.SUCCESS) {
+			return pd;
 		} else {
-			return (T) result.getData();
+			if (errorMessage != null) GoreCore.LOGGER.error("Error while retrieving player data- " + errorMessage);
+			String log;
+			switch (error) {
+			case BAD_HTTP_CODE:
+				log = "Unexpected HTTP code";
+				break;
+			case EXCEPTION_OCCURED:
+				log = "Unexpected exception occurred";
+				break;
+			case USERNAME_DOES_NOT_EXIST:
+				log = "Account is not registered";
+				break;
+			default:
+				log = "Unexpected error: " + error;
+				break;
+			
+			}
+			
+			return null;
+			
 		}
+		
 	}
 
 	@Override
