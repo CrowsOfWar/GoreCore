@@ -17,6 +17,7 @@ public class NodeBranch implements ICommandNode {
 		ArgumentList args = call.popArguments(argName);
 		String name = args.get(argName);
 		for (int i = 0; i < nodes.length; i++) {
+			System.out.println(nodes[i].getNodeName() + "/" + name);
 			if (nodes[i].getNodeName().equals(name)) return nodes[i];
 		}
 		throw new TreeCommandException("No node found with name", name);

@@ -8,11 +8,13 @@ import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.event.FMLServerStoppingEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crowsofwar.gorecore.proxy.GoreCoreCommonProxy;
 import crowsofwar.gorecore.settings.GoreCoreModConfig;
+import crowsofwar.gorecore.tree.test.TreeTest;
 import crowsofwar.gorecore.util.GoreCoreIsPlayerWalking;
 import crowsofwar.gorecore.util.GoreCorePlayerUUIDs;
 import crowsofwar.gorecore.util.GoreCoreVersionCheckerServerChat;
@@ -55,6 +57,11 @@ public class GoreCore {
 		
 		proxy.sideSpecifics();
 		
+	}
+	
+	@EventHandler
+	public void onServerLoad(FMLServerStartingEvent event) {
+		event.registerServerCommand(new TreeTest()); // TODO remove when testing is over
 	}
 	
 	// Called both on the client and on the dedicated server

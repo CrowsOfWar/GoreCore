@@ -1,13 +1,16 @@
 package crowsofwar.gorecore.tree;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class ArgumentList {
 	
-	private final Object[] argumentValues;
+	private final Map<IArgument<?>, Object> argumentValues;
 	
 	public ArgumentList(String[] userInput, IArgument<?>[] arguments) {
 		
-		argumentValues = new Object[arguments.length];
-		for (int i = 0; i < argumentValues.length; i++) {
+		argumentValues = new HashMap<IArgument<?>, Object>();
+		for (int i = 0; i < arguments.length; i++) {
 			IArgument<?> argument = arguments[i];
 			Object out = null;
 			if (i < userInput.length) { // If possible, prefer user input over default
@@ -19,13 +22,13 @@ public class ArgumentList {
 					throw new TreeCommandException("Non optional argument was not entered", arguments[i].getArgumentName());
 				}
 			}
-			argumentValues[i] = out;
+			argumentValues.put(argument, out);
 		}
 		
 	}
 	
 	public <T> T get(IArgument<T> argument) {
-		return (T) argumentValues;
+		return (T) argumentValues.get(argument);
 	}
 	
 }

@@ -36,7 +36,7 @@ public class TestNode1 implements ICommandNode {
 
 	@Override
 	public String getNodeName() {
-		return "test";
+		return "node1";
 	}
 
 }
