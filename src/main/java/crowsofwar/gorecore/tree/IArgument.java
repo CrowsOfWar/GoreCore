@@ -1,4 +1,4 @@
-package crowsofwar.gorecore.modular;
+package crowsofwar.gorecore.tree;
 
 public interface IArgument<T> {
 	

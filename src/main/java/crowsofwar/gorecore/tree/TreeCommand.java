@@ -1,11 +1,11 @@
-package crowsofwar.gorecore.modular;
+package crowsofwar.gorecore.tree;
 
 import java.util.List;
 
 import net.minecraft.command.ICommand;
 import net.minecraft.command.ICommandSender;
 
-public abstract class ModularCommand implements ICommand, ICommandModule {
+public abstract class TreeCommand implements ICommand, ICommandNode {
 
 	@Override
 	public int compareTo(Object o) {
@@ -56,7 +56,7 @@ public abstract class ModularCommand implements ICommand, ICommandModule {
 	}
 
 	@Override
-	public ICommandModule execute(CommandCall call) {
+	public ICommandNode execute(CommandCall call) {
 		// TODO Auto-generated method stub
 		return null;
 	}

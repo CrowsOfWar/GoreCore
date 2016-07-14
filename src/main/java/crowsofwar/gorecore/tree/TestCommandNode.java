@@ -1,12 +1,12 @@
-package crowsofwar.gorecore.modular;
+package crowsofwar.gorecore.tree;
 
-public class TestCommandModule implements ICommandModule {
+public class TestCommandNode implements ICommandNode {
 
 	private IArgument<String> argA;
 	private IArgument<Integer> argB;
 	
 	@Override
-	public ICommandModule execute(CommandCall call) {
+	public ICommandNode execute(CommandCall call) {
 		
 		ArgumentList args = call.loadArguments(argA, argB);
 		String a = args.get(argA);

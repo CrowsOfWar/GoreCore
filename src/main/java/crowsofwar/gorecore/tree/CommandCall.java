@@ -1,4 +1,4 @@
-package crowsofwar.gorecore.modular;
+package crowsofwar.gorecore.tree;
 
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
