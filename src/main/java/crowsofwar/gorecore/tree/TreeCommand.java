@@ -4,67 +4,67 @@ import java.util.List;
 
 import net.minecraft.command.ICommand;
 import net.minecraft.command.ICommandSender;
+import net.minecraft.util.ChatComponentTranslation;
 
-public abstract class TreeCommand implements ICommand, ICommandNode {
-
+public abstract class TreeCommand implements ICommand {
+	
+	protected ICommandNode branchRoot;
+	
+	public TreeCommand() {
+		addCommands();
+	}
+	
 	@Override
 	public int compareTo(Object o) {
-		// TODO Auto-generated method stub
 		return 0;
 	}
-
+	
 	@Override
-	public String getCommandName() {
-		// TODO Auto-generated method stub
-		return null;
+	public String getCommandUsage(ICommandSender sender) {
+		return "No can do"; // TODO Support help with tree commands
 	}
-
-	@Override
-	public String getCommandUsage(ICommandSender p_71518_1_) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
+	
 	@Override
 	public List getCommandAliases() {
-		// TODO Auto-generated method stub
 		return null;
 	}
-
+	
 	@Override
-	public void processCommand(ICommandSender p_71515_1_, String[] p_71515_2_) {
-		// TODO Auto-generated method stub
+	public void processCommand(ICommandSender sender, String[] arguments) {
+		
+		try {
+			
+			CommandCall call = new CommandCall(sender, arguments);
+			
+			ICommandNode node = branchRoot;
+			while (node != null) {
+				node = node.execute(call);
+			}
+			
+		} catch (TreeCommandException e) {
+			sender.addChatMessage(new ChatComponentTranslation(e.getMessage(), e.getFormattingArgs()));
+		}
 		
 	}
-
+	
 	@Override
-	public boolean canCommandSenderUseCommand(ICommandSender p_71519_1_) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean canCommandSenderUseCommand(ICommandSender sender) {
+		return true;
 	}
-
+	
 	@Override
 	public List addTabCompletionOptions(ICommandSender p_71516_1_, String[] p_71516_2_) {
-		// TODO Auto-generated method stub
 		return null;
 	}
-
+	
 	@Override
 	public boolean isUsernameIndex(String[] p_82358_1_, int p_82358_2_) {
-		// TODO Auto-generated method stub
 		return false;
 	}
-
-	@Override
-	public ICommandNode execute(CommandCall call) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public boolean needsOpPermission() {
-		// TODO Auto-generated method stub
-		return false;
-	}
+	
+	/**
+	 * Called to initialize the root branch
+	 */
+	protected abstract void addCommands();
 
 }
