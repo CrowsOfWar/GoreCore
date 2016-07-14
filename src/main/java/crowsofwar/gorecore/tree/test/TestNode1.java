@@ -6,18 +6,19 @@ import crowsofwar.gorecore.tree.CommandCall;
 import crowsofwar.gorecore.tree.IArgument;
 import crowsofwar.gorecore.tree.ICommandNode;
 import crowsofwar.gorecore.tree.ITypeConverter;
+import crowsofwar.gorecore.tree.NodeFunctional;
 import net.minecraft.util.ChatComponentText;
 
-public class TestNode1 implements ICommandNode {
+public class TestNode1 extends NodeFunctional {
 
-	private final IArgument<?>[] args;
 	private final IArgument<String> argA;
 	private final IArgument<Integer> argB;
 	
 	public TestNode1() {
+		super("node1", false);
 		argA = new ArgumentDirect<String>("item", ITypeConverter.CONVERTER_STRING);
 		argB = new ArgumentDirect<Integer>("amount", ITypeConverter.CONVERTER_INTEGER);
-		args = new IArgument<?>[] { argA, argB };
+		addArguments(argA, argB);
 	}
 	
 	@Override
@@ -29,21 +30,6 @@ public class TestNode1 implements ICommandNode {
 		call.getFrom().addChatMessage(new ChatComponentText(b + " " + a + "s"));
 		
 		return null;
-	}
-
-	@Override
-	public boolean needsOpPermission() {
-		return false;
-	}
-
-	@Override
-	public String getNodeName() {
-		return "node1";
-	}
-
-	@Override
-	public IArgument<?>[] getArgumentList() {
-		return args;
 	}
 
 }

@@ -11,22 +11,22 @@ public abstract class NodeFunctional implements ICommandNode {
 		this.op = op;
 	}
 	
-	private void addArguments(IArgument<?>... args) {
+	protected void addArguments(IArgument<?>... args) {
 		this.args = args;
 	}
 	
 	@Override
-	public boolean needsOpPermission() {
+	public final boolean needsOpPermission() {
 		return op;
 	}
 
 	@Override
-	public String getNodeName() {
+	public final String getNodeName() {
 		return name;
 	}
 
 	@Override
-	public IArgument<?>[] getArgumentList() {
+	public final IArgument<?>[] getArgumentList() {
 		return args;
 	}
 

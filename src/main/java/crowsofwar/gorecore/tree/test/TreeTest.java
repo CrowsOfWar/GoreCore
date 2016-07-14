@@ -15,7 +15,7 @@ public class TreeTest extends TreeCommand {
 	protected void addCommands() {
 		ICommandNode node1 = new TestNode1();
 		ICommandNode node2 = new TestNode2();
-		branchRoot = new NodeBranch(node1, node2);
+		branchRoot = new NodeBranch("root", node1, node2);
 	}
 	
 }
