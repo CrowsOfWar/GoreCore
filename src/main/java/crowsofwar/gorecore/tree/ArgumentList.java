@@ -17,7 +17,7 @@ public class ArgumentList {
 				out = argument.convert(userInput[i]);
 			} else { // Try to use the default value if the argument is optional
 				if (argument.isOptional()) { // Argument has a default value, which can be used
-					out = argument.convert(userInput[i]);
+					out = argument.getDefaultValue();
 				} else { // Argument isn't optional, but user input hasn't been specified. Throw an error.
 					throw new TreeCommandException("Non optional argument was not entered", arguments[i].getArgumentName());
 				}

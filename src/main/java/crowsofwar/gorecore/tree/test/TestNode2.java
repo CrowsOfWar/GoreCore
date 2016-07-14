@@ -13,7 +13,7 @@ public class TestNode2 implements ICommandNode {
 	private final IArgument<Double> argTemp;
 	
 	public TestNode2() {
-		argTemp = new ArgumentDirect("temperature", ITypeConverter.CONVERTER_DOUBLE);
+		argTemp = new ArgumentDirect("temperature", ITypeConverter.CONVERTER_DOUBLE, 3);
 	}
 	
 	@Override
