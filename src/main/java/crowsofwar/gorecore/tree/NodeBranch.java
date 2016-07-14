@@ -2,6 +2,8 @@ package crowsofwar.gorecore.tree;
 
 import java.util.Map;
 
+import crowsofwar.gorecore.tree.TreeCommandException.Reason;
+
 public class NodeBranch implements ICommandNode {
 	
 	private final ICommandNode[] nodes;
@@ -22,7 +24,7 @@ public class NodeBranch implements ICommandNode {
 			System.out.println(nodes[i].getNodeName() + "/" + name);
 			if (nodes[i].getNodeName().equals(name)) return nodes[i];
 		}
-		throw new TreeCommandException("No node found with name", name);
+		throw new TreeCommandException(Reason.NO_BRANCH_NODE, name);
 	}
 
 	@Override

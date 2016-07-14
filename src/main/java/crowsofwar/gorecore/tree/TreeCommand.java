@@ -42,6 +42,7 @@ public abstract class TreeCommand implements ICommand {
 			}
 			
 		} catch (TreeCommandException e) {
+			
 			sender.addChatMessage(new ChatComponentTranslation(e.getMessage(), e.getFormattingArgs()));
 		}
 		

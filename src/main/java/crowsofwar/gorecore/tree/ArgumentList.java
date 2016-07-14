@@ -3,6 +3,8 @@ package crowsofwar.gorecore.tree;
 import java.util.HashMap;
 import java.util.Map;
 
+import crowsofwar.gorecore.tree.TreeCommandException.Reason;
+
 public class ArgumentList {
 	
 	private final Map<IArgument<?>, Object> argumentValues;
@@ -19,7 +21,7 @@ public class ArgumentList {
 				if (argument.isOptional()) { // Argument has a default value, which can be used
 					out = argument.getDefaultValue();
 				} else { // Argument isn't optional, but user input hasn't been specified. Throw an error.
-					throw new TreeCommandException("Non optional argument was not entered", arguments[i].getArgumentName());
+					throw new TreeCommandException(Reason.ARGUMENT_MISSING, arguments[i].getArgumentName());
 				}
 			}
 			argumentValues.put(argument, out);

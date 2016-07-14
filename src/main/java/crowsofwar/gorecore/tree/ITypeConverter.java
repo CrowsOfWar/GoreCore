@@ -1,5 +1,7 @@
 package crowsofwar.gorecore.tree;
 
+import crowsofwar.gorecore.tree.TreeCommandException.Reason;
+
 public interface ITypeConverter<T> {
 	
 	public static final ITypeConverter<Integer> CONVERTER_INTEGER = new ITypeConverter<Integer>() {
@@ -8,7 +10,7 @@ public interface ITypeConverter<T> {
 			try {
 				return Integer.parseInt(str);
 			} catch (Exception e) {
-				throw new TreeCommandException("Could not convert argument to integer", str);
+				throw new TreeCommandException(Reason.CANT_CONVERT, str, "Integer");
 			}
 		}
 	};
@@ -19,7 +21,7 @@ public interface ITypeConverter<T> {
 			try {
 				return Float.parseFloat(str);
 			} catch (Exception e) {
-				throw new TreeCommandException("Could not convert argument to float", str);
+				throw new TreeCommandException(Reason.CANT_CONVERT, str, "Float");
 			}
 		}
 	};
@@ -30,7 +32,7 @@ public interface ITypeConverter<T> {
 			try {
 				return Double.parseDouble(str);
 			} catch (Exception e) {
-				throw new TreeCommandException("Could not convert argument to double", str);
+				throw new TreeCommandException(Reason.CANT_CONVERT, str, "Double");
 			}
 		}
 	};
@@ -41,7 +43,7 @@ public interface ITypeConverter<T> {
 			try {
 				return Long.parseLong(str);
 			} catch (Exception e) {
-				throw new TreeCommandException("Could not convert argument to long", str);
+				throw new TreeCommandException(Reason.CANT_CONVERT, str, "Long");
 			}
 		}
 	};
@@ -52,7 +54,7 @@ public interface ITypeConverter<T> {
 			try {
 				return Short.parseShort(str);
 			} catch (Exception e) {
-				throw new TreeCommandException("Could not convert argument to short", str);
+				throw new TreeCommandException(Reason.CANT_CONVERT, str, "Short");
 			}
 		}
 	};
@@ -70,7 +72,7 @@ public interface ITypeConverter<T> {
 			try {
 				return Byte.parseByte(str);
 			} catch (Exception e) {
-				throw new TreeCommandException("Could not convert argument to byte", str);
+				throw new TreeCommandException(Reason.CANT_CONVERT, str, "Byte");
 			}
 		}
 	};
