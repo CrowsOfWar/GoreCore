@@ -33,7 +33,7 @@ public class ArgumentDirect<T> implements IArgument<T> {
 	
 	@Override
 	public String getArgumentName() {
-		return null;
+		return name;
 	}
 
 	@Override

@@ -1,5 +1,6 @@
 package crowsofwar.gorecore.tree;
 
+import java.util.Arrays;
 import java.util.List;
 
 import net.minecraft.command.ICommand;
@@ -34,11 +35,28 @@ public abstract class TreeCommand implements ICommand {
 		
 		try {
 			
+			String allOptions = arguments.length > 0 ? arguments[arguments.length - 1] : "";
+			boolean hasOptions = allOptions.startsWith("--");
+			String[] options = allOptions.substring(2).split(",");
+			if (hasOptions) {
+				arguments = Arrays.copyOfRange(arguments, 0, arguments.length - 2);
+			}
+			
 			CommandCall call = new CommandCall(sender, arguments);
 			
 			ICommandNode node = branchRoot;
 			while (node != null) {
-				node = node.execute(call);
+				
+				if (hasOptions && options[0].equals("help")) {
+					if (node instanceof NodeBranch) {
+						node = node.execute(call);
+					} else {
+						sender.addChatMessage(new ChatComponentTranslation("gc.tree.help", node.getHelp()));
+					}
+				} else {
+					node = node.execute(call);
+				}
+				
 			}
 			
 		} catch (TreeCommandException e) {
