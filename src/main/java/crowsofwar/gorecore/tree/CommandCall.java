@@ -1,5 +1,7 @@
 package crowsofwar.gorecore.tree;
 
+import java.util.Arrays;
+
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.server.CommandBlockLogic;
@@ -14,10 +16,12 @@ public class CommandCall {
 	private ICommandSender from;
 	private boolean isOp;
 	private String[] passedArgs;
+	private int argumentIndex;
 	
 	public CommandCall(ICommandSender from, String[] passedArgs) {
 		this.from = from;
 		this.passedArgs = passedArgs;
+		this.argumentIndex = 0;
 		
 		if (from instanceof CommandBlockLogic) {
 			isOp = true;
@@ -37,8 +41,10 @@ public class CommandCall {
 		
 	}
 	
-	public ArgumentList loadArguments(IArgument<?>... arguments) {
-		return null;
+	public ArgumentList popArguments(IArgument<?>... arguments) {
+		String[] poppedArray = Arrays.copyOfRange(passedArgs, argumentIndex, passedArgs.length);
+		argumentIndex += arguments.length;
+		return new ArgumentList(poppedArray, arguments);
 	}
 	
 	public boolean isOpped() {
