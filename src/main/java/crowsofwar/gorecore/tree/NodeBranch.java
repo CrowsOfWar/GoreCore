@@ -9,11 +9,13 @@ public class NodeBranch implements ICommandNode {
 	private final ICommandNode[] nodes;
 	private final IArgument<String> argName;
 	private final IArgument<?>[] args;
+	private final String name;
 	
-	public NodeBranch(ICommandNode... nodes) {
+	public NodeBranch(String name, ICommandNode... nodes) {
 		this.nodes = nodes;
 		this.argName = new ArgumentDirect<String>("node-name", ITypeConverter.CONVERTER_STRING);
 		this.args = new IArgument<?>[] { argName };
+		this.name = name;
 	}
 	
 	@Override
@@ -24,7 +26,7 @@ public class NodeBranch implements ICommandNode {
 			System.out.println(nodes[i].getNodeName() + "/" + name);
 			if (nodes[i].getNodeName().equals(name)) return nodes[i];
 		}
-		throw new TreeCommandException(Reason.NO_BRANCH_NODE, name);
+		throw new TreeCommandException(Reason.NO_BRANCH_NODE, getNodeName());
 	}
 
 	@Override
@@ -34,12 +36,23 @@ public class NodeBranch implements ICommandNode {
 
 	@Override
 	public String getNodeName() {
-		return "branch"; // Shouldn't need to be used
+		return name;
 	}
 
 	@Override
 	public IArgument<?>[] getArgumentList() {
 		return args;
+	}
+
+	@Override
+	public String getHelp() {
+		String out = getNodeName() + " <";
+		IArgument<?>[] args = getArgumentList();
+		for (int i = 0; i < args.length; i++) {
+			out += (i == 0 ? "" : "|") + args[i].getHelpString();
+		}
+		out += ">";
+		return out;
 	}
 	
 }

@@ -35,5 +35,19 @@ public class ArgumentDirect<T> implements IArgument<T> {
 	public String getArgumentName() {
 		return null;
 	}
+
+	@Override
+	public String getHelpString() {
+		String before = isOptional() ? "[" : "<";
+		String after = isOptional() ? "]" : ">";
+		return before + "*" + after;
+	}
+
+	@Override
+	public String getSpecificationString() {
+		String before = isOptional() ? "[" : "<";
+		String after = isOptional() ? "]" : ">";
+		return before + getArgumentName() + after;
+	}
 	
 }

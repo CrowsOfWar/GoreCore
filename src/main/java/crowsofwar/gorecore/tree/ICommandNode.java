@@ -10,4 +10,6 @@ public interface ICommandNode {
 	
 	IArgument<?>[] getArgumentList();
 	
+	String getHelp();
+	
 }
