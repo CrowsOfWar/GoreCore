@@ -9,14 +9,17 @@ public class NodeBranch implements ICommandNode {
 	
 	public NodeBranch(ICommandNode... nodes) {
 		this.nodes = nodes;
-		
+		this.argName = new ArgumentDirect<String>("branch-e", ITypeConverter.CONVERTER_STRING);
 	}
 	
 	@Override
 	public ICommandNode execute(CommandCall call) {
-		ArgumentList args = call.popArguments(arguments);
-		
-		return null;
+		ArgumentList args = call.popArguments(argName);
+		String name = args.get(argName);
+		for (int i = 0; i < nodes.length; i++) {
+			if (nodes[i].getNodeName().equals(name)) return nodes[i];
+		}
+		throw new TreeCommandException("No node found with name", name);
 	}
 
 	@Override
