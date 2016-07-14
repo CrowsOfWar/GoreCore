@@ -40,7 +40,7 @@ public abstract class TreeCommand implements ICommand {
 			String[] options = {};
 			if (hasOptions) {
 				options = allOptions.substring(2).split(",");
-				arguments = Arrays.copyOfRange(arguments, 0, arguments.length - 2);
+				arguments = Arrays.copyOfRange(arguments, 0, arguments.length - 1);
 			}
 			
 			CommandCall call = new CommandCall(sender, arguments);
@@ -58,6 +58,7 @@ public abstract class TreeCommand implements ICommand {
 					} else {
 						System.out.println("  Sending help");
 						sender.addChatMessage(new ChatComponentTranslation("gc.tree.help", node.getHelp()));
+						node = null;
 					}
 				} else {
 					node = node.execute(call);
