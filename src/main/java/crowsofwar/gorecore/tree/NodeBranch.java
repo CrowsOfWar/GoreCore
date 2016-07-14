@@ -9,7 +9,7 @@ public class NodeBranch implements ICommandNode {
 	
 	public NodeBranch(ICommandNode... nodes) {
 		this.nodes = nodes;
-		this.argName = new ArgumentDirect<String>("branch-e", ITypeConverter.CONVERTER_STRING);
+		this.argName = new ArgumentDirect<String>("node-name", ITypeConverter.CONVERTER_STRING);
 	}
 	
 	@Override
@@ -31,7 +31,5 @@ public class NodeBranch implements ICommandNode {
 	public String getNodeName() {
 		return "branch"; // Shouldn't need to be used
 	}
-	
-	
 	
 }

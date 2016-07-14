@@ -51,4 +51,8 @@ public class CommandCall {
 		return isOp;
 	}
 	
+	public ICommandSender getFrom() {
+		return from;
+	}
+	
 }
