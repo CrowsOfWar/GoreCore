@@ -10,12 +10,14 @@ import net.minecraft.util.ChatComponentText;
 
 public class TestNode1 implements ICommandNode {
 
+	private final IArgument<?>[] args;
 	private final IArgument<String> argA;
 	private final IArgument<Integer> argB;
 	
 	public TestNode1() {
 		argA = new ArgumentDirect<String>("item", ITypeConverter.CONVERTER_STRING);
 		argB = new ArgumentDirect<Integer>("amount", ITypeConverter.CONVERTER_INTEGER);
+		args = new IArgument<?>[] { argA, argB };
 	}
 	
 	@Override
@@ -37,6 +39,11 @@ public class TestNode1 implements ICommandNode {
 	@Override
 	public String getNodeName() {
 		return "node1";
+	}
+
+	@Override
+	public IArgument<?>[] getArgumentList() {
+		return args;
 	}
 
 }

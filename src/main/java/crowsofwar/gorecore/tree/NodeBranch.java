@@ -6,10 +6,12 @@ public class NodeBranch implements ICommandNode {
 	
 	private final ICommandNode[] nodes;
 	private final IArgument<String> argName;
+	private final IArgument<?>[] args;
 	
 	public NodeBranch(ICommandNode... nodes) {
 		this.nodes = nodes;
 		this.argName = new ArgumentDirect<String>("node-name", ITypeConverter.CONVERTER_STRING);
+		this.args = new IArgument<?>[] { argName };
 	}
 	
 	@Override
@@ -31,6 +33,11 @@ public class NodeBranch implements ICommandNode {
 	@Override
 	public String getNodeName() {
 		return "branch"; // Shouldn't need to be used
+	}
+
+	@Override
+	public IArgument<?>[] getArgumentList() {
+		return args;
 	}
 	
 }

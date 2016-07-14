@@ -67,4 +67,19 @@ public abstract class TreeCommand implements ICommand {
 	 */
 	protected abstract void addCommands();
 
+	private String getNodeHelp(ICommandNode node) {
+		String out = node.getNodeName();
+		IArgument<?>[] args = node.getArgumentList();
+		for (int i = 0; i < args.length; i++) {
+			out += " " + getArgumentText(args[i]);
+		}
+		return out;
+	}
+	
+	private String getArgumentText(IArgument<?> argument) {
+		String before = argument.isOptional() ? "[" : "<";
+		String after = argument.isOptional() ? "]" : ">";
+		return before + argument.getArgumentName() + after;
+	}
+	
 }
