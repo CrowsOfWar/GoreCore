@@ -37,8 +37,9 @@ public abstract class TreeCommand implements ICommand {
 			
 			String allOptions = arguments.length > 0 ? arguments[arguments.length - 1] : "";
 			boolean hasOptions = allOptions.startsWith("--");
-			String[] options = allOptions.substring(2).split(",");
+			String[] options = {};
 			if (hasOptions) {
+				options = allOptions.substring(2).split(",");
 				arguments = Arrays.copyOfRange(arguments, 0, arguments.length - 2);
 			}
 			
@@ -47,10 +48,15 @@ public abstract class TreeCommand implements ICommand {
 			ICommandNode node = branchRoot;
 			while (node != null) {
 				
+				System.out.println("NODE " + node.getNodeName());
+				
 				if (hasOptions && options[0].equals("help")) {
+					System.out.println("  Help option enabled");
 					if (node instanceof NodeBranch) {
+						System.out.println("  Branch " + node.getNodeName());
 						node = node.execute(call);
 					} else {
+						System.out.println("  Sending help");
 						sender.addChatMessage(new ChatComponentTranslation("gc.tree.help", node.getHelp()));
 					}
 				} else {

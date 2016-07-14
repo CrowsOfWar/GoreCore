@@ -26,7 +26,7 @@ public class NodeBranch implements ICommandNode {
 			System.out.println(nodes[i].getNodeName() + "/" + name);
 			if (nodes[i].getNodeName().equals(name)) return nodes[i];
 		}
-		throw new TreeCommandException(Reason.NO_BRANCH_NODE, getNodeName());
+		throw new TreeCommandException(Reason.NO_BRANCH_NODE, name, getHelp());
 	}
 
 	@Override
@@ -46,13 +46,7 @@ public class NodeBranch implements ICommandNode {
 
 	@Override
 	public String getHelp() {
-		String out = getNodeName() + " <";
-		IArgument<?>[] args = getArgumentList();
-		for (int i = 0; i < args.length; i++) {
-			out += (i == 0 ? "" : "|") + args[i].getHelpString();
-		}
-		out += ">";
-		return out;
+		return getNodeName() + " " + argName.getHelpString();
 	}
 	
 }
