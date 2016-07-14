@@ -48,15 +48,15 @@ public abstract class TreeCommand implements ICommand {
 			ICommandNode node = branchRoot;
 			while (node != null) {
 				
-				System.out.println("NODE " + node.getNodeName());
-				
 				if (hasOptions && options[0].equals("help")) {
-					System.out.println("  Help option enabled");
 					if (node instanceof NodeBranch) {
-						System.out.println("  Branch " + node.getNodeName());
-						node = node.execute(call);
+						if (node == branchRoot) {
+							sender.addChatMessage(new ChatComponentTranslation("gc.tree.help", getCommandUsage(sender)));
+							node = null;
+						} else {
+							node = node.execute(call);
+						}
 					} else {
-						System.out.println("  Sending help");
 						sender.addChatMessage(new ChatComponentTranslation("gc.tree.help", node.getHelp()));
 						node = null;
 					}
