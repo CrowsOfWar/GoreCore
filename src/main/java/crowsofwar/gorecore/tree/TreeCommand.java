@@ -49,7 +49,7 @@ public abstract class TreeCommand implements ICommand {
 			ICommandNode node = branchRoot;
 			while (node != null) {
 				
-				if (node == branchRoot && options.contains("help")) {
+				if (arguments.length == 0 && node == branchRoot && options.contains("help")) {
 					sender.addChatMessage(new ChatComponentTranslation("gc.tree.help", getCommandUsage(sender),
 							getCommandName()));
 					node = null;
