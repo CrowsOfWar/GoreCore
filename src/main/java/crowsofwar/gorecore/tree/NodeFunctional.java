@@ -13,6 +13,7 @@ public abstract class NodeFunctional implements ICommandNode {
 	public NodeFunctional(String name, boolean op) {
 		this.name = name;
 		this.op = op;
+		addArguments();
 	}
 	
 	protected void addArguments(IArgument<?>... args) {

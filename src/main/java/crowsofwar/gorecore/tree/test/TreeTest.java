@@ -13,9 +13,16 @@ public class TreeTest extends TreeCommand {
 	
 	@Override
 	protected ICommandNode[] addCommands() {
-		ICommandNode node1 = new TestNode1();
-		ICommandNode node2 = new TestNode2();
-		return new ICommandNode[] { node1, node2 };
+		ICommandNode cakeFrost = new TestCakeFrost();
+		ICommandNode cakeLick = new TestCakeLick();
+		ICommandNode branchCake = new NodeBranch("cake", cakeFrost, cakeLick);
+		
+		ICommandNode videogamesPlay = new TestPlayVideogames();
+		ICommandNode videogamesBuy = new TestBuyVideogames();
+		ICommandNode branchVideogames = new NodeBranch("videogames", videogamesPlay, videogamesBuy);
+		
+		return new ICommandNode[] { branchCake, branchVideogames };
+		
 	}
 	
 }
