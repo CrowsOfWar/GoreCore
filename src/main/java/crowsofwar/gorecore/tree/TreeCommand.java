@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import crowsofwar.gorecore.tree.TreeCommandException.Reason;
 import net.minecraft.command.ICommand;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.util.ChatComponentTranslation;
@@ -48,6 +49,8 @@ public abstract class TreeCommand implements ICommand {
 			
 			ICommandNode node = branchRoot;
 			while (node != null) {
+				
+				if (node.needsOpPermission() && !call.isOpped()) throw new TreeCommandException(Reason.NO_PERMISSION);
 				
 				if (arguments.length == 0 && node == branchRoot && options.contains("help")) {
 					sender.addChatMessage(new ChatComponentTranslation("gc.tree.help", getCommandUsage(sender),

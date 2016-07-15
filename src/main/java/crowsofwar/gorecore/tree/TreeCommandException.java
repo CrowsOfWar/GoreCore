@@ -24,7 +24,8 @@ public class TreeCommandException extends RuntimeException {
 	public static enum Reason {
 		ARGUMENT_MISSING("gc.tree.error.missingArgs"),
 		NO_BRANCH_NODE("gc.tree.error.noBranchNode"),
-		CANT_CONVERT("gc.tree.error.cantConvert");
+		CANT_CONVERT("gc.tree.error.cantConvert"),
+		NO_PERMISSION("gc.tree.error.needsOp");
 		
 		private final String message;
 		
