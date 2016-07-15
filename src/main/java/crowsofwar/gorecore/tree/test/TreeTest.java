@@ -12,10 +12,10 @@ public class TreeTest extends TreeCommand {
 	}
 	
 	@Override
-	protected void addCommands() {
+	protected ICommandNode[] addCommands() {
 		ICommandNode node1 = new TestNode1();
 		ICommandNode node2 = new TestNode2();
-		branchRoot = new NodeBranch("root", node1, node2);
+		return new ICommandNode[] { node1, node2 };
 	}
 	
 }

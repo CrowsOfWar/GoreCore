@@ -10,10 +10,10 @@ import net.minecraft.util.ChatComponentTranslation;
 
 public abstract class TreeCommand implements ICommand {
 	
-	protected ICommandNode branchRoot;
+	private ICommandNode branchRoot;
 	
 	public TreeCommand() {
-		addCommands();
+		branchRoot = new NodeBranch(getCommandName(), addCommands());
 	}
 	
 	@Override
@@ -82,8 +82,9 @@ public abstract class TreeCommand implements ICommand {
 	}
 	
 	/**
-	 * Called to initialize the root branch
+	 * Called to instantiate all subclass Command Nodes. Return
+	 * the ones that should be added to the root branch.
 	 */
-	protected abstract void addCommands();
+	protected abstract ICommandNode[] addCommands();
 
 }
