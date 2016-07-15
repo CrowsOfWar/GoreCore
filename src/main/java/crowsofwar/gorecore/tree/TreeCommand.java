@@ -1,5 +1,6 @@
 package crowsofwar.gorecore.tree;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -37,9 +38,9 @@ public abstract class TreeCommand implements ICommand {
 			
 			String allOptions = arguments.length > 0 ? arguments[arguments.length - 1] : "";
 			boolean hasOptions = allOptions.startsWith("--");
-			String[] options = {};
+			List<String> options = Arrays.asList(new String[0]);
 			if (hasOptions) {
-				options = allOptions.substring(2).split(",");
+				options = Arrays.asList(allOptions.substring(2).split(","));
 				arguments = Arrays.copyOfRange(arguments, 0, arguments.length - 1);
 			}
 			
@@ -48,20 +49,11 @@ public abstract class TreeCommand implements ICommand {
 			ICommandNode node = branchRoot;
 			while (node != null) {
 				
-				if (hasOptions && options[0].equals("help")) {
-					if (node instanceof NodeBranch) {
-						if (node == branchRoot && arguments.length == 0) {
-							sender.addChatMessage(new ChatComponentTranslation("gc.tree.help", getCommandUsage(sender)));
-							node = null;
-						} else {
-							node = node.execute(call);
-						}
-					} else {
-						sender.addChatMessage(new ChatComponentTranslation("gc.tree.help", node.getHelp()));
-						node = null;
-					}
+				if (node == branchRoot && options.contains("help")) {
+					sender.addChatMessage(new ChatComponentTranslation("gc.tree.help", getCommandUsage(sender)));
+					node = null;
 				} else {
-					node = node.execute(call);
+					node = node.execute(call, options);
 				}
 				
 			}

@@ -1,5 +1,9 @@
 package crowsofwar.gorecore.tree;
 
+import java.util.List;
+
+import net.minecraft.util.ChatComponentTranslation;
+
 public abstract class NodeFunctional implements ICommandNode {
 	
 	private final String name;
@@ -39,5 +43,17 @@ public abstract class NodeFunctional implements ICommandNode {
 		}
 		return out;
 	}
+
+	@Override
+	public final ICommandNode execute(CommandCall call, List<String> options) {
+		if (options.contains("help")) {
+			call.getFrom().addChatMessage(new ChatComponentTranslation("gc.tree.nodeHelp", getHelp()));
+			return null;
+		} else {
+			return doFunction(call, options);
+		}
+	}
+	
+	protected abstract ICommandNode doFunction(CommandCall call, List<String> options);
 	
 }

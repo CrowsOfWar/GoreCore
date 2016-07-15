@@ -1,8 +1,10 @@
 package crowsofwar.gorecore.tree;
 
+import java.util.List;
+
 public interface ICommandNode {
 	
-	ICommandNode execute(CommandCall call);
+	ICommandNode execute(CommandCall call, List<String> options);
 	
 	boolean needsOpPermission();
 	
