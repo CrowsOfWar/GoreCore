@@ -47,7 +47,7 @@ public abstract class NodeFunctional implements ICommandNode {
 	@Override
 	public final ICommandNode execute(CommandCall call, List<String> options) {
 		if (options.contains("help")) {
-			call.getFrom().addChatMessage(new ChatComponentTranslation("gc.tree.nodeHelp", getHelp()));
+			call.getFrom().addChatMessage(new ChatComponentTranslation("gc.tree.help", getHelp(), getNodeName()));
 			return null;
 		} else {
 			return doFunction(call, options);

@@ -50,7 +50,8 @@ public abstract class TreeCommand implements ICommand {
 			while (node != null) {
 				
 				if (node == branchRoot && options.contains("help")) {
-					sender.addChatMessage(new ChatComponentTranslation("gc.tree.help", getCommandUsage(sender)));
+					sender.addChatMessage(new ChatComponentTranslation("gc.tree.help", getCommandUsage(sender),
+							getCommandName()));
 					node = null;
 				} else {
 					node = node.execute(call, options);
