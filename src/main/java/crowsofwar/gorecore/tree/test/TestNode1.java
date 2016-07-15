@@ -1,5 +1,7 @@
 package crowsofwar.gorecore.tree.test;
 
+import java.util.List;
+
 import crowsofwar.gorecore.tree.ArgumentDirect;
 import crowsofwar.gorecore.tree.ArgumentList;
 import crowsofwar.gorecore.tree.CommandCall;
@@ -22,8 +24,7 @@ public class TestNode1 extends NodeFunctional {
 	}
 	
 	@Override
-	public ICommandNode execute(CommandCall call) {
-		
+	protected ICommandNode doFunction(CommandCall call, List<String> options) {
 		ArgumentList args = call.popArguments(argA, argB);
 		String a = args.get(argA);
 		Integer b = args.get(argB);

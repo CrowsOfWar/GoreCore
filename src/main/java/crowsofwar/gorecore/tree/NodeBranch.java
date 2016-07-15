@@ -1,5 +1,6 @@
 package crowsofwar.gorecore.tree;
 
+import java.util.List;
 import java.util.Map;
 
 import crowsofwar.gorecore.tree.TreeCommandException.Reason;
@@ -19,7 +20,7 @@ public class NodeBranch implements ICommandNode {
 	}
 	
 	@Override
-	public ICommandNode execute(CommandCall call) {
+	public ICommandNode execute(CommandCall call, List<String> options) {
 		ArgumentList args = call.popArguments(argName);
 		String name = args.get(argName);
 		for (int i = 0; i < nodes.length; i++) {

@@ -1,5 +1,7 @@
 package crowsofwar.gorecore.tree.test;
 
+import java.util.List;
+
 import crowsofwar.gorecore.tree.ArgumentDirect;
 import crowsofwar.gorecore.tree.ArgumentList;
 import crowsofwar.gorecore.tree.CommandCall;
@@ -20,7 +22,7 @@ public class TestNode2 extends NodeFunctional {
 	}
 	
 	@Override
-	public ICommandNode execute(CommandCall call) {
+	protected ICommandNode doFunction(CommandCall call, List<String> options) {
 		ArgumentList args = call.popArguments(argTemp);
 		call.getFrom().addChatMessage(new ChatComponentText("The temperature is " + args.get(argTemp)));
 		return null;
