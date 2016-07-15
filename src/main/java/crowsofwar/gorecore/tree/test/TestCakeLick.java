@@ -17,6 +17,7 @@ public class TestCakeLick extends NodeFunctional {
 	public TestCakeLick() {
 		super("lick", false);
 		argGallons = new ArgumentDirect<Double>("gallons", ITypeConverter.CONVERTER_DOUBLE);
+		addArguments(argGallons);
 	}
 
 	@Override
