@@ -40,12 +40,17 @@ public class ChatSender {
 	@SubscribeEvent
 	public void processClientChat(ClientChatReceivedEvent e) {
 		IChatComponent chat = e.message;
+		System.out.println("Recieved mesage");
 		if (chat instanceof ChatComponentTranslation && chat.getUnformattedText().startsWith("[format-exp]")) {
 			ChatComponentTranslation translate = (ChatComponentTranslation) chat;
 			String key = getChatKey(translate);
 			ChatMessage cm = translateKeyToChatMessage.get(key);
 			
+			System.out.println("Key: " + key);
+			
 			if (cm != null) {
+				
+				System.out.println("Passed tests");
 				
 				String text = translate.getUnformattedText();
 				text = text.substring("[format-exp]".length());

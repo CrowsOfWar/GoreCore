@@ -12,9 +12,12 @@ import net.minecraft.util.ChatComponentTranslation;
 public abstract class TreeCommand implements ICommand {
 	
 	private ICommandNode branchRoot;
+	private final ChatSender chatSender;
 	
 	public TreeCommand() {
 		branchRoot = new NodeBranch(getCommandName(), addCommands());
+		this.chatSender = new ChatSender();
+		registerChatMessages(chatSender);
 	}
 	
 	@Override
@@ -45,7 +48,7 @@ public abstract class TreeCommand implements ICommand {
 				arguments = Arrays.copyOfRange(arguments, 0, arguments.length - 1);
 			}
 			
-			CommandCall call = new CommandCall(sender, arguments);
+			CommandCall call = new CommandCall(sender, arguments, chatSender);
 			
 			ICommandNode node = branchRoot;
 			while (node != null) {
@@ -90,4 +93,6 @@ public abstract class TreeCommand implements ICommand {
 	 */
 	protected abstract ICommandNode[] addCommands();
 
+	protected abstract void registerChatMessages(ChatSender sender);
+	
 }
