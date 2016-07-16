@@ -25,7 +25,8 @@ public class TreeCommandException extends RuntimeException {
 		ARGUMENT_MISSING("gc.tree.error.missingArgs"),
 		NO_BRANCH_NODE("gc.tree.error.noBranchNode"),
 		CANT_CONVERT("gc.tree.error.cantConvert"),
-		NO_PERMISSION("gc.tree.error.needsOp");
+		NO_PERMISSION("gc.tree.error.needsOp"),
+		NOT_OPTION("gc.tree.error.notOption");
 		
 		private final String message;
 		

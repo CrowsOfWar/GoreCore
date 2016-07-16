@@ -1,14 +1,19 @@
 package crowsofwar.gorecore.tree;
 
+import java.util.Arrays;
+import java.util.List;
+
+import crowsofwar.gorecore.tree.TreeCommandException.Reason;
+
 public class ArgumentOptions<T> implements IArgument<T> {
 	
-	private final T[] options;
+	private final List<T> options;
 	private T defaultValue;
 	private final ITypeConverter<T> convert;
 	private final String name;
 	
 	public ArgumentOptions(ITypeConverter<T> convert, String name, T... options) {
-		this.options = options;
+		this.options = Arrays.asList(options);
 		this.defaultValue = null;
 		this.convert = convert;
 		this.name = name;
@@ -31,7 +36,11 @@ public class ArgumentOptions<T> implements IArgument<T> {
 	
 	@Override
 	public T convert(String input) {
-		return convert.convert(input);
+		T converted = convert.convert(input);
+		if (!options.contains(converted)) {
+			throw new TreeCommandException(Reason.NOT_OPTION, input, getArgumentName());
+		}
+		return converted;
 	}
 	
 	@Override
@@ -42,8 +51,8 @@ public class ArgumentOptions<T> implements IArgument<T> {
 	@Override
 	public String getHelpString() {
 		String help = isOptional() ? "[" : "<";
-		for (int i = 0; i < options.length; i++) {
-			help += (i == 0 ? "" : "|") + options[i].toString();
+		for (int i = 0; i < options.size(); i++) {
+			help += (i == 0 ? "" : "|") + options.get(i).toString();
 		}
 		help += isOptional() ? "]" : ">";
 		return help;
