@@ -24,7 +24,7 @@ public abstract class TreeCommand implements ICommand {
 	
 	@Override
 	public String getCommandUsage(ICommandSender sender) {
-		return "No can do"; // TODO Support help with tree commands
+		return branchRoot.getHelp();
 	}
 	
 	@Override
@@ -52,8 +52,8 @@ public abstract class TreeCommand implements ICommand {
 				
 				if (node.needsOpPermission() && !call.isOpped()) throw new TreeCommandException(Reason.NO_PERMISSION);
 				
-				if (arguments.length == 0 && node == branchRoot && options.contains("help")) {
-					sender.addChatMessage(new ChatComponentTranslation("gc.tree.help", getCommandUsage(sender),
+				if (call.getArgumentsLeft() == 0 && node instanceof NodeBranch && options.contains("help")) {
+					sender.addChatMessage(new ChatComponentTranslation("gc.tree.help", node.getHelp(),
 							getCommandName()));
 					node = null;
 				} else {

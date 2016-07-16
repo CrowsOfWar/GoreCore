@@ -47,6 +47,10 @@ public class CommandCall {
 		return new ArgumentList(poppedArray, arguments);
 	}
 	
+	public int getArgumentsLeft() {
+		return passedArgs.length - argumentIndex;
+	}
+	
 	public boolean isOpped() {
 		return isOp;
 	}
