@@ -29,6 +29,7 @@ public class TreeTest extends TreeCommand {
 	@Override
 	protected void registerChatMessages(ChatSender sender) {
 		sender.registerChatMessage("test", "test.chatSender", "fruit");
+		sender.registerChatMessage("commandHelp.info", "test.commandInfo");
 	}
 	
 }

@@ -24,6 +24,7 @@ public abstract class TreeCommand implements ICommand {
 		chatSender.registerChatMessage("commandHelp.nodes.item", "gc.tree.cmdhelp.nodes.item", "node");
 		chatSender.registerChatMessage("commandHelp.nodes.separator", "gc.tree.cmdhelp.nodes.separator");
 		chatSender.registerChatMessage("commandHelp.nodes.separatorLast", "gc.tree.cmdhelp.nodes.separatorLast");
+		chatSender.registerChatMessage("commandHelp.showCmdInfo", "gc.tree.cmdhelp.showCmdInfo");
 		
 	}
 	
@@ -102,6 +103,8 @@ public abstract class TreeCommand implements ICommand {
 	
 	private void sendCommandHelp(ChatSender chat, ICommandSender sender) {
 		chat.send(sender, "commandHelp.top", getCommandName());
+		chat.send(sender, Arrays.asList("commandHelp.showCmdInfo", "commandHelp.info"),
+				Arrays.asList(new Object[0], new Object[0]));
 		
 		List<String> listKeys = new ArrayList<String>();
 		List<Object[]> listArgs = new ArrayList<Object[]>();
