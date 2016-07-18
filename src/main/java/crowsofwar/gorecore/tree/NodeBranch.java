@@ -53,4 +53,8 @@ public class NodeBranch implements ICommandNode {
 		return getNodeName() + " " + argName.getHelpString();
 	}
 	
+	public ICommandNode[] getSubNodes() {
+		return nodes;
+	}
+	
 }

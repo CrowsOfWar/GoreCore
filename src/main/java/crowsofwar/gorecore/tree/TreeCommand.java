@@ -11,13 +11,20 @@ import net.minecraft.util.ChatComponentTranslation;
 
 public abstract class TreeCommand implements ICommand {
 	
-	private ICommandNode branchRoot;
+	private NodeBranch branchRoot;
 	private final ChatSender chatSender;
 	
 	public TreeCommand() {
 		branchRoot = new NodeBranch(getCommandName(), addCommands());
 		this.chatSender = new ChatSender();
 		registerChatMessages(chatSender);
+		
+		chatSender.registerChatMessage("commandHelp.top", "gc.tree.cmdhelp.top", "name");
+		chatSender.registerChatMessage("commandHelp.nodes", "gc.tree.cmdhelp.nodes");
+		chatSender.registerChatMessage("commandHelp.nodes.item", "gc.tree.cmdhelp.nodes.item", "node");
+		chatSender.registerChatMessage("commandHelp.nodes.separator", "gc.tree.cmdhelp.nodes.separator");
+		chatSender.registerChatMessage("commandHelp.nodes.separatorLast", "gc.tree.cmdhelp.nodes.separatorLast");
+		
 	}
 	
 	@Override
@@ -56,8 +63,14 @@ public abstract class TreeCommand implements ICommand {
 				if (node.needsOpPermission() && !call.isOpped()) throw new TreeCommandException(Reason.NO_PERMISSION);
 				
 				if (call.getArgumentsLeft() == 0 && node instanceof NodeBranch && options.contains("help")) {
-					sender.addChatMessage(new ChatComponentTranslation("gc.tree.help", node.getHelp(),
-							getCommandName()));
+					
+					if (node == branchRoot) {
+						sendCommandHelp(chatSender, sender);
+					} else {
+						sender.addChatMessage(new ChatComponentTranslation("gc.tree.help", node.getHelp(),
+								getCommandName()));
+					}
+					
 					node = null;
 				} else {
 					node = node.execute(call, options);
@@ -85,6 +98,27 @@ public abstract class TreeCommand implements ICommand {
 	@Override
 	public boolean isUsernameIndex(String[] p_82358_1_, int p_82358_2_) {
 		return false;
+	}
+	
+	private void sendCommandHelp(ChatSender chat, ICommandSender sender) {
+		chat.send(sender, "commandHelp.top", getCommandName());
+		
+		List<String> listKeys = new ArrayList<String>();
+		List<Object[]> listArgs = new ArrayList<Object[]>();
+		listKeys.add("commandHelp.nodes");
+		listArgs.add(new Object[0]);
+		
+		ICommandNode[] allNodes = branchRoot.getSubNodes();
+		for (int i = 0; i < allNodes.length; i++) {
+			listKeys.add("commandHelp.nodes.item");
+			listArgs.add(new Object[] { allNodes[i].getNodeName() });
+			if (i < allNodes.length - 1) {
+				listKeys.add("commandHelp.nodes.separator" + (i == allNodes.length - 2 ? "Last" : ""));
+				listArgs.add(new Object[0]);
+			}
+		}
+		chat.send(sender, listKeys, listArgs);
+		
 	}
 	
 	/**

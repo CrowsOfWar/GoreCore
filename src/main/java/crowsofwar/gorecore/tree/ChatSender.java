@@ -1,7 +1,10 @@
 package crowsofwar.gorecore.tree;
 
 import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import com.mojang.realmsclient.gui.ChatFormatting;
@@ -39,103 +42,130 @@ public class ChatSender {
 		MinecraftForge.EVENT_BUS.unregister(this);
 	}
 	
+	private Object getField(ChatComponentTranslation obj, String field) {
+		try {
+			
+			Field fieldObj = obj.getClass().getDeclaredField(field);
+			fieldObj.setAccessible(true);
+			return fieldObj.get(obj);
+			
+		} catch (ReflectiveOperationException e) {
+			GoreCore.LOGGER.error("Couldn't get ChatComponentTranslation field '" + field + "' via reflection");
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
 	@SideOnly(Side.CLIENT)
 	@SubscribeEvent
 	public void processClientChat(ClientChatReceivedEvent e) {
-		IChatComponent chat = e.message;
-		if (chat instanceof ChatComponentTranslation && chat.getUnformattedText().startsWith("[format-exp]")) {
-			ChatComponentTranslation translate = (ChatComponentTranslation) chat;
-			String key = getChatKey(translate);
-			ChatMessage cm = translateKeyToChatMessage.get(key);
+		if (e.message instanceof ChatComponentTranslation) {
+			ChatComponentTranslation message = (ChatComponentTranslation) e.message;
 			
-			if (cm != null) {
-				
-				String text = translate.getUnformattedText();
-				text = text.substring("[format-exp]".length());
-				for (int i = 0; i < cm.translateArgs.length; i++) {
-					text = text.replace("${" + cm.translateArgs[i] + "}", translate.getFormatArgs()[i].toString());
-				}
-				
-				ChatFormat format = new ChatFormat();
-				
-				String newText = "";
-				String[] split = text.split("[\\[\\]]");
-				for (int i = 0; i < split.length; i++) {
-					boolean recievedFormatInstruction = false;
-					String item = split[i];
-					if (item.equals("")) continue;
-					if (item.equals("bold")) {
+			String result = "";
+			
+			List<IChatComponent> comps = new ArrayList();
+			
+			Object[] cloneFormatArgs = (Object[]) getField(message, "formatArgs");
+			comps.add(new ChatComponentTranslation((String) getField(message, "key"), cloneFormatArgs));
+			
+			comps.addAll(e.message.getSiblings());
+			boolean changed = false;
+			
+			for (IChatComponent chat : comps) {
+				if (chat instanceof ChatComponentTranslation) {
+					ChatComponentTranslation translate = (ChatComponentTranslation) chat;
+					String key = (String) getField(translate, "key");
+					ChatMessage cm = translateKeyToChatMessage.get(key);
+					
+					if (cm != null) {
+						changed = true;
+						String text = translate.getUnformattedText();
+						for (int i = 0; i < cm.translateArgs.length; i++) {
+							text = text.replace("${" + cm.translateArgs[i] + "}", translate.getFormatArgs()[i].toString());
+						}
 						
-						format.setBold(true);
-						recievedFormatInstruction = true;
+						ChatFormat format = new ChatFormat();
 						
-					} else if (item.equals("/bold")) {
+						String newText = "";
+						String[] split = text.split("[\\[\\]]");
+						for (int i = 0; i < split.length; i++) {
+							boolean recievedFormatInstruction = false;
+							String item = split[i];
+							if (item.equals("")) continue;
+							if (item.equals("bold")) {
+								
+								format.setBold(true);
+								recievedFormatInstruction = true;
+								
+							} else if (item.equals("/bold")) {
+								
+								format.setBold(false);
+								recievedFormatInstruction = true;
+								
+							} else if (item.equals("italic")) {
+								
+								format.setItalic(true);
+								recievedFormatInstruction = true;
+								
+							} else if (item.equals("/italic")) {
+								
+								format.setItalic(false);
+								recievedFormatInstruction = true;
+								
+							} else if (item.equals("/color")){
+								
+								recievedFormatInstruction = format.setColor(item);
+								
+							} else if (item.startsWith("color=")) {
+								
+								recievedFormatInstruction = format.setColor(item.substring("color=".length()));
+								
+							}
+							
+							// If any formats changed, must re add all chat formats
+							if (recievedFormatInstruction) {
+								newText += EnumChatFormatting.RESET;
+								newText += format.getColor(); // For some reason, color must come before bold
+								newText += format.isBold() ? EnumChatFormatting.BOLD : "";
+								newText += format.isItalic() ? EnumChatFormatting.ITALIC : "";
+							} else {
+								newText += item;
+							}
+							
+						}
+						text = newText;
 						
-						format.setBold(false);
-						recievedFormatInstruction = true;
-						
-					} else if (item.equals("italic")) {
-						
-						format.setItalic(true);
-						recievedFormatInstruction = true;
-						
-					} else if (item.equals("/italic")) {
-						
-						format.setItalic(false);
-						recievedFormatInstruction = true;
-						
-					} else if (item.equals("/color")){
-						
-						recievedFormatInstruction = format.setColor(item);
-						
-					} else if (item.startsWith("color=")) {
-						
-						recievedFormatInstruction = format.setColor(item.substring("color=".length()));
+						result += (newText);
 						
 					}
 					
-					// If any formats changed, must re add all chat formats
-					if (recievedFormatInstruction) {
-						newText += EnumChatFormatting.RESET;
-						newText += format.getColor(); // For some reason, color must come before bold
-						newText += format.isBold() ? EnumChatFormatting.BOLD : "";
-						newText += format.isItalic() ? EnumChatFormatting.ITALIC : "";
-					} else {
-						newText += item;
-					}
-					
 				}
-				text = newText;
-				
-				e.message = new ChatComponentText(newText);
-				
 			}
-			
+			if (changed)
+			e.message = new ChatComponentText(result);
 		}
+		
 	}
 	
 	public void send(ICommandSender sender, String referenceName, Object... args) {
 		ChatMessage cm = referenceToChatMessage.get(referenceName);
 		if (cm != null) {
-			cm.send(sender, args);
+			sender.addChatMessage(cm.getChatMessage(args));
 		} else {
 			GoreCore.LOGGER.warn("ChatSender- attempted to access unknown message " + referenceName);
 		}
 	}
 	
-	private String getChatKey(ChatComponentTranslation translate) {
-		try {
-			
-			Field f = ChatComponentTranslation.class.getDeclaredField("key");
-			f.setAccessible(true);
-			return (String) f.get(translate);
-			
-		} catch (ReflectiveOperationException e) {
-			GoreCore.LOGGER.error("Caught error while trying to retrieve ChatComponentTranslation key via reflection");
-			e.printStackTrace();
-			return "";
+	public void send(ICommandSender sender, List<String> references, List<Object[]> args) {
+		if (references.size() != args.size()) throw new IllegalArgumentException("References/args do not match");
+		if (references.size() == 0) throw new IllegalArgumentException("Cannot send 0 messages");
+		IChatComponent comp = null;
+		for (int i = 0; i < references.size(); i++) {
+			ChatMessage cm = referenceToChatMessage.get(references.get(i));
+			comp = comp == null ? cm.getChatMessage(args.get(i)) : comp.appendSibling(cm.getChatMessage(args.get(i)));
 		}
-		
+		sender.addChatMessage(comp);
 	}
 	
 	private class ChatMessage {
@@ -150,8 +180,8 @@ public class ChatSender {
 			this.translateArgs = translateArgs;
 		}
 		
-		public void send(ICommandSender sender, Object... formattingArgs) {
-			sender.addChatMessage(new ChatComponentTranslation(translateKey, formattingArgs));
+		public IChatComponent getChatMessage(Object... formattingArgs) {
+			return new ChatComponentTranslation(translateKey, formattingArgs);
 		}
 		
 	}
