@@ -1,4 +1,4 @@
-package crowsofwar.gorecore.tree;
+package crowsofwar.gorecore.chat;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -28,14 +28,14 @@ public class ChatSender {
 	
 	public ChatSender() {
 		MinecraftForge.EVENT_BUS.register(this);
-		this.referenceToChatMessage = new HashMap<String, ChatSender.ChatMessage>();
-		this.translateKeyToChatMessage = new HashMap<String, ChatSender.ChatMessage>();
+		this.referenceToChatMessage = new HashMap<String, ChatMessage>();
+		this.translateKeyToChatMessage = new HashMap<String, ChatMessage>();
 	}
 	
-	public void registerChatMessage(String reference, String translateKey, String... translateArgs) {
-		ChatMessage cm = new ChatMessage(reference, translateKey, translateArgs);
-		referenceToChatMessage.put(reference, cm);
+	public ChatMessage newChatMessage(String translateKey, String... translateArgs) {
+		ChatMessage cm = new ChatMessage(this, translateKey, translateArgs);
 		translateKeyToChatMessage.put(translateKey, cm);
+		return cm;
 	}
 	
 	public void cleanup() {
@@ -81,8 +81,9 @@ public class ChatSender {
 					if (cm != null) {
 						changed = true;
 						String text = translate.getUnformattedText();
-						for (int i = 0; i < cm.translateArgs.length; i++) {
-							text = text.replace("${" + cm.translateArgs[i] + "}", translate.getFormatArgs()[i].toString());
+						String[] translateArgs = cm.getTranslationArgs();
+						for (int i = 0; i < translateArgs.length; i++) {
+							text = text.replace("${" + translateArgs[i] + "}", translate.getFormatArgs()[i].toString());
 						}
 						
 						ChatFormat format = new ChatFormat();
@@ -148,42 +149,23 @@ public class ChatSender {
 		
 	}
 	
-	public void send(ICommandSender sender, String referenceName, Object... args) {
-		ChatMessage cm = referenceToChatMessage.get(referenceName);
-		if (cm != null) {
-			sender.addChatMessage(cm.getChatMessage(args));
-		} else {
-			GoreCore.LOGGER.warn("ChatSender- attempted to access unknown message " + referenceName);
-		}
+	void send(ICommandSender sender, ChatMessage message, Object... args) {
+		sender.addChatMessage(message.getChatMessage(args));
 	}
 	
-	public void send(ICommandSender sender, List<String> references, List<Object[]> args) {
-		if (references.size() != args.size()) throw new IllegalArgumentException("References/args do not match");
-		if (references.size() == 0) throw new IllegalArgumentException("Cannot send 0 messages");
-		IChatComponent comp = null;
-		for (int i = 0; i < references.size(); i++) {
-			ChatMessage cm = referenceToChatMessage.get(references.get(i));
-			comp = comp == null ? cm.getChatMessage(args.get(i)) : comp.appendSibling(cm.getChatMessage(args.get(i)));
+	void send(ICommandSender sender, MultiMessage multi, Object... formattingArgs) {
+		List<ChatMessage> messages = multi.getChatMessages();
+		if (messages.isEmpty()) throw new IllegalArgumentException("Cannot send empty MultiMessage");
+		IChatComponent send = null;
+		for (int i = 0; i < messages.size(); i++) {
+			ChatMessage message = messages.get(i);
+			if (send == null) {
+				send = message.getChatMessage(formattingArgs);
+			} else {
+				send.appendSibling(message.getChatMessage(formattingArgs));
+			}
 		}
-		sender.addChatMessage(comp);
-	}
-	
-	private class ChatMessage {
-		
-		private final String reference;
-		private final String translateKey;
-		private final String[] translateArgs;
-		
-		public ChatMessage(String reference, String translateKey, String[] translateArgs) {
-			this.reference = reference;
-			this.translateKey = translateKey;
-			this.translateArgs = translateArgs;
-		}
-		
-		public IChatComponent getChatMessage(Object... formattingArgs) {
-			return new ChatComponentTranslation(translateKey, formattingArgs);
-		}
-		
+		sender.addChatMessage(send);
 	}
 	
 	private class ChatFormat {

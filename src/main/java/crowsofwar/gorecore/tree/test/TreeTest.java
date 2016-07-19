@@ -1,6 +1,6 @@
 package crowsofwar.gorecore.tree.test;
 
-import crowsofwar.gorecore.tree.ChatSender;
+import crowsofwar.gorecore.chat.ChatSender;
 import crowsofwar.gorecore.tree.ICommandNode;
 import crowsofwar.gorecore.tree.NodeBranch;
 import crowsofwar.gorecore.tree.TreeCommand;

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import crowsofwar.gorecore.chat.ChatSender;
 import crowsofwar.gorecore.tree.TreeCommandException.Reason;
 import net.minecraft.command.ICommand;
 import net.minecraft.command.ICommandSender;

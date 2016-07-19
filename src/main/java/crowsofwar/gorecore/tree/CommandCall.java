@@ -2,6 +2,7 @@ package crowsofwar.gorecore.tree;
 
 import java.util.Arrays;
 
+import crowsofwar.gorecore.chat.ChatSender;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.server.CommandBlockLogic;
