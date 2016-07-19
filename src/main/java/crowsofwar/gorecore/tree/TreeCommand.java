@@ -54,7 +54,7 @@ public abstract class TreeCommand implements ICommand {
 				arguments = Arrays.copyOfRange(arguments, 0, arguments.length - 1);
 			}
 			
-			CommandCall call = new CommandCall(sender, arguments, chatSender);
+			CommandCall call = new CommandCall(sender, arguments);
 			
 			ICommandNode node = branchRoot;
 			while (node != null) {

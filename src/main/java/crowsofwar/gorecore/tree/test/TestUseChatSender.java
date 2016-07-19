@@ -25,7 +25,7 @@ public class TestUseChatSender extends NodeFunctional {
 	protected ICommandNode doFunction(CommandCall call, List<String> options) {
 		ArgumentList args = call.popArguments(argFruit);
 		String fruit = args.get(argFruit);
-		call.sendChatMessage("test", fruit);
+		TestChatMessages.MESSAGE_FRUIT.send(call.getFrom(), fruit);
 		return null;
 	}
 	

@@ -18,13 +18,11 @@ public class CommandCall {
 	private boolean isOp;
 	private String[] passedArgs;
 	private int argumentIndex;
-	private ChatSender sender;
 	
-	public CommandCall(ICommandSender from, String[] passedArgs, ChatSender sender) {
+	public CommandCall(ICommandSender from, String[] passedArgs) {
 		this.from = from;
 		this.passedArgs = passedArgs;
 		this.argumentIndex = 0;
-		this.sender = sender;
 		
 		if (from instanceof CommandBlockLogic) {
 			isOp = true;
@@ -60,10 +58,6 @@ public class CommandCall {
 	
 	public ICommandSender getFrom() {
 		return from;
-	}
-	
-	public void sendChatMessage(String referenceName, Object... args) {
-		sender.send(getFrom(), referenceName, args);
 	}
 	
 }
