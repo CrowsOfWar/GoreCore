@@ -107,7 +107,7 @@ public abstract class TreeCommand implements ICommand {
 		
 		ICommandNode[] allNodes = branchRoot.getSubNodes();
 		for (int i = 0; i < allNodes.length; i++) {
-			multi.add(messages.commandHelp.nodeItem, allNodes[i]);
+			multi.add(messages.commandHelp.nodeItem, allNodes[i].getNodeName());
 			if (i < allNodes.length - 1) {
 				ChatMessage separator = messages.commandHelp.separator;
 				if (i == allNodes.length - 2) separator = messages.commandHelp.separatorLast;
@@ -147,7 +147,7 @@ public abstract class TreeCommand implements ICommand {
 		
 		private ChatMessagesCommandHelp(ChatSender chat) {
 			
-			top = chat.newChatMessage("gc.tree.cmdHelp.top", "name");
+			top = chat.newChatMessage("gc.tree.cmdhelp.top", "name");
 			nodes = chat.newChatMessage("gc.tree.cmdhelp.nodes");
 			nodeItem = chat.newChatMessage( "gc.tree.cmdhelp.nodes.item", "node");
 			separator = chat.newChatMessage("gc.tree.cmdhelp.nodes.separator");
