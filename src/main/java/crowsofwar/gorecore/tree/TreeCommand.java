@@ -75,8 +75,10 @@ public abstract class TreeCommand implements ICommand {
 					node = null;
 				} else {
 					node = node.execute(call, options);
-					path += " " + node.getNodeName();
 				}
+				
+				if (node != null)
+					path += " " + node.getNodeName();
 				
 			}
 			

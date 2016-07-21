@@ -153,21 +153,6 @@ public class ChatSender {
 		sender.addChatMessage(message.getChatMessage(args));
 	}
 	
-	void send(ICommandSender sender, MultiMessage multi) {
-		List<ChatMessage> messages = multi.getChatMessages();
-		if (messages.isEmpty()) throw new IllegalArgumentException("Cannot send empty MultiMessage");
-		IChatComponent send = null;
-		for (int i = 0; i < messages.size(); i++) {
-			ChatMessage message = messages.get(i);
-			if (send == null) {
-				send = message.getChatMessage(multi.getFormattingArgs().get(i));
-			} else {
-				send.appendSibling(message.getChatMessage(multi.getFormattingArgs().get(i)));
-			}
-		}
-		sender.addChatMessage(send);
-	}
-	
 	private class ChatFormat {
 		
 		private boolean isBold;

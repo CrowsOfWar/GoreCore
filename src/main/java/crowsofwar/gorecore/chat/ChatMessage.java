@@ -29,7 +29,7 @@ public class ChatMessage {
 	}
 	
 	public MultiMessage chain() {
-		return new MultiMessage(chat).add(this);
+		return new MultiMessage().add(this);
 	}
 	
 }
