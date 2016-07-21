@@ -131,8 +131,9 @@ public abstract class TreeCommand implements ICommand {
 		ICommandNode[] subNodes = branch.getSubNodes();
 		for (int i = 0; i < subNodes.length; i++) {
 			chain.add(messages.branchHelpOptionsItem, subNodes[i].getNodeName());
-			chain.add(i == subNodes.length - 1 ? messages.branchHelpOptionsSeparatorLast :
-				messages.branchHelpOptionsSeparator);
+			if (i < subNodes.length - 1)
+				chain.add(i == subNodes.length - 2 ? messages.branchHelpOptionsSeparatorLast :
+					messages.branchHelpOptionsSeparator);
 			
 		}
 		chain.send(sender);
