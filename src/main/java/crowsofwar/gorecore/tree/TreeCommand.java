@@ -16,11 +16,10 @@ public abstract class TreeCommand implements ICommand {
 	
 	private NodeBranch branchRoot;
 	private final ChatSender chatSender;
-	private final ChatMessages messages;
 	
 	public TreeCommand() {
 		this.chatSender = new ChatSender();
-		this.messages = new ChatMessages(chatSender);
+		initChatMessages(chatSender);
 		branchRoot = new NodeBranch(chatSender.newChatMessage("gc.tree.branchHelp.root", "command"), getCommandName(),
 				addCommands());
 		registerChatMessages(chatSender);
@@ -105,17 +104,17 @@ public abstract class TreeCommand implements ICommand {
 	}
 	
 	private void sendCommandHelp(ICommandSender sender) {
-		messages.cmdHelpTop.send(sender, getCommandName());
-		messages.cmdHelpCommandOverview.send(sender);
+		cmdHelpTop.send(sender, getCommandName());
+		cmdHelpCommandOverview.send(sender);
 		
-		MultiMessage multi = messages.cmdHelpNodes.chain();
+		MultiMessage multi = cmdHelpNodes.chain();
 		
 		ICommandNode[] allNodes = branchRoot.getSubNodes();
 		for (int i = 0; i < allNodes.length; i++) {
-			multi.add(messages.cmdHelpNodeItem, allNodes[i].getNodeName());
+			multi.add(cmdHelpNodeItem, allNodes[i].getNodeName());
 			if (i < allNodes.length - 1) {
-				ChatMessage separator = messages.cmdHelpSeparator;
-				if (i == allNodes.length - 2) separator = messages.cmdHelpSeparatorLast;
+				ChatMessage separator = cmdHelpSeparator;
+				if (i == allNodes.length - 2) separator = cmdHelpSeparatorLast;
 				multi.add(separator);
 			}
 		}
@@ -125,22 +124,22 @@ public abstract class TreeCommand implements ICommand {
 	
 	private void sendBranchHelp(ICommandSender sender, NodeBranch branch, String path) {
 		
-		messages.branchHelpTop.send(sender, branch.getNodeName());
-		messages.branchHelpNotice.send(sender);
-		messages.branchHelpInfo.chain().add(branch.getInfoMessage()).send(sender);
+		branchHelpTop.send(sender, branch.getNodeName());
+		branchHelpNotice.send(sender);
+		branchHelpInfo.chain().add(branch.getInfoMessage()).send(sender);
 		
-		MultiMessage chain = messages.branchHelpOptions.chain();
+		MultiMessage chain = branchHelpOptions.chain();
 		ICommandNode[] subNodes = branch.getSubNodes();
 		for (int i = 0; i < subNodes.length; i++) {
-			chain.add(messages.branchHelpOptionsItem, subNodes[i].getNodeName());
+			chain.add(branchHelpOptionsItem, subNodes[i].getNodeName());
 			if (i < subNodes.length - 1)
-				chain.add(i == subNodes.length - 2 ? messages.branchHelpOptionsSeparatorLast :
-					messages.branchHelpOptionsSeparator);
+				chain.add(i == subNodes.length - 2 ? branchHelpOptionsSeparatorLast :
+					branchHelpOptionsSeparator);
 			
 		}
 		chain.send(sender);
 		
-		messages.branchHelpExample.send(sender, path, subNodes[0].getNodeName());
+		branchHelpExample.send(sender, path, subNodes[0].getNodeName());
 		
 	}
 	
@@ -152,45 +151,42 @@ public abstract class TreeCommand implements ICommand {
 
 	protected abstract void registerChatMessages(ChatSender sender);
 	
-	protected class ChatMessages {
+	protected ChatMessage cmdHelpTop;
+	protected ChatMessage cmdHelpNodes;
+	protected ChatMessage cmdHelpNodeItem;
+	protected ChatMessage cmdHelpSeparator;
+	protected ChatMessage cmdHelpSeparatorLast;
+	protected ChatMessage cmdHelpCommandOverview;
+	
+	protected ChatMessage branchHelpTop;
+	protected ChatMessage branchHelpNotice;
+	protected ChatMessage branchHelpInfo;
+	protected ChatMessage branchHelpOptions;
+	protected ChatMessage branchHelpOptionsItem;
+	protected ChatMessage branchHelpOptionsSeparator;
+	protected ChatMessage branchHelpOptionsSeparatorLast;
+	protected ChatMessage branchHelpExample;
+	protected ChatMessage branchHelpDefault;
+	
+	private void initChatMessages(ChatSender chat) {
 		
-		protected ChatMessage cmdHelpTop;
-		protected ChatMessage cmdHelpNodes;
-		protected ChatMessage cmdHelpNodeItem;
-		protected ChatMessage cmdHelpSeparator;
-		protected ChatMessage cmdHelpSeparatorLast;
-		protected ChatMessage cmdHelpCommandOverview;
+		cmdHelpTop = chat.newChatMessage("gc.tree.cmdhelp.top", "name");
+		cmdHelpNodes = chat.newChatMessage("gc.tree.cmdhelp.nodes");
+		cmdHelpNodeItem = chat.newChatMessage( "gc.tree.cmdhelp.nodes.item", "node");
+		cmdHelpSeparator = chat.newChatMessage("gc.tree.cmdhelp.nodes.separator");
+		cmdHelpSeparatorLast = chat.newChatMessage("gc.tree.cmdhelp.nodes.separatorLast");
+		cmdHelpCommandOverview = chat.newChatMessage("gc.tree.cmdhelp.showCmdInfo");
 		
-		protected ChatMessage branchHelpTop;
-		protected ChatMessage branchHelpNotice;
-		protected ChatMessage branchHelpInfo;
-		protected ChatMessage branchHelpOptions;
-		protected ChatMessage branchHelpOptionsItem;
-		protected ChatMessage branchHelpOptionsSeparator;
-		protected ChatMessage branchHelpOptionsSeparatorLast;
-		protected ChatMessage branchHelpExample;
-		
-		private ChatMessages(ChatSender chat) {
-			
-			cmdHelpTop = chat.newChatMessage("gc.tree.cmdhelp.top", "name");
-			cmdHelpNodes = chat.newChatMessage("gc.tree.cmdhelp.nodes");
-			cmdHelpNodeItem = chat.newChatMessage( "gc.tree.cmdhelp.nodes.item", "node");
-			cmdHelpSeparator = chat.newChatMessage("gc.tree.cmdhelp.nodes.separator");
-			cmdHelpSeparatorLast = chat.newChatMessage("gc.tree.cmdhelp.nodes.separatorLast");
-			cmdHelpCommandOverview = chat.newChatMessage("gc.tree.cmdhelp.showCmdInfo");
-			
-			branchHelpTop = chat.newChatMessage("gc.tree.branchHelp.top", "name");
-			branchHelpNotice = chat.newChatMessage("gc.tree.branchHelp.notice");
-			branchHelpInfo = chat.newChatMessage("gc.tree.branchHelp.info");
-			branchHelpOptions = chat.newChatMessage("gc.tree.branchHelp.options");
-			branchHelpOptionsItem = chat.newChatMessage("gc.tree.branchHelp.options.item", "node");
-			branchHelpOptionsSeparator = chat.newChatMessage("gc.tree.branchHelp.options.separator");
-			branchHelpOptionsSeparatorLast = chat.newChatMessage("gc.tree.branchHelp.options.separatorLast");
-			branchHelpExample = chat.newChatMessage("gc.tree.branchHelp.example", "path", "node-name");
-			
-		}
+		branchHelpTop = chat.newChatMessage("gc.tree.branchHelp.top", "name");
+		branchHelpNotice = chat.newChatMessage("gc.tree.branchHelp.notice");
+		branchHelpInfo = chat.newChatMessage("gc.tree.branchHelp.info");
+		branchHelpOptions = chat.newChatMessage("gc.tree.branchHelp.options");
+		branchHelpOptionsItem = chat.newChatMessage("gc.tree.branchHelp.options.item", "node");
+		branchHelpOptionsSeparator = chat.newChatMessage("gc.tree.branchHelp.options.separator");
+		branchHelpOptionsSeparatorLast = chat.newChatMessage("gc.tree.branchHelp.options.separatorLast");
+		branchHelpExample = chat.newChatMessage("gc.tree.branchHelp.example", "path", "node-name");
+		branchHelpDefault = chat.newChatMessage("gc.tree.branch.defaultInfo");
 		
 	}
-	
 	
 }
