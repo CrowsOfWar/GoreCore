@@ -75,9 +75,8 @@ public abstract class TreeCommand implements ICommand {
 					node = null;
 				} else {
 					node = node.execute(call, options);
+					path += " " + node.getNodeName();
 				}
-				
-				path += " " + node.getNodeName();
 				
 			}
 			
@@ -131,7 +130,7 @@ public abstract class TreeCommand implements ICommand {
 		MultiMessage chain = messages.branchHelpOptions.chain();
 		ICommandNode[] subNodes = branch.getSubNodes();
 		for (int i = 0; i < subNodes.length; i++) {
-			chain.add(messages.branchHelpOptionsItem, subNodes[i]);
+			chain.add(messages.branchHelpOptionsItem, subNodes[i].getNodeName());
 			chain.add(i == subNodes.length - 1 ? messages.branchHelpOptionsSeparatorLast :
 				messages.branchHelpOptionsSeparator);
 			
