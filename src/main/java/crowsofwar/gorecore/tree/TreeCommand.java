@@ -19,9 +19,10 @@ public abstract class TreeCommand implements ICommand {
 	private final ChatMessages messages;
 	
 	public TreeCommand() {
-		branchRoot = new NodeBranch(getCommandName(), addCommands());
 		this.chatSender = new ChatSender();
 		this.messages = new ChatMessages(chatSender);
+		branchRoot = new NodeBranch(chatSender.newChatMessage("gc.tree.branchHelp.root", "command"), getCommandName(),
+				addCommands());
 		registerChatMessages(chatSender);
 		
 	}
@@ -56,6 +57,8 @@ public abstract class TreeCommand implements ICommand {
 			
 			CommandCall call = new CommandCall(sender, arguments);
 			
+			String path = "/" + getCommandName();
+			
 			ICommandNode node = branchRoot;
 			while (node != null) {
 				
@@ -64,16 +67,17 @@ public abstract class TreeCommand implements ICommand {
 				if (call.getArgumentsLeft() == 0 && node instanceof NodeBranch && options.contains("help")) {
 					
 					if (node == branchRoot) {
-						sendCommandHelp(chatSender, sender);
+						sendCommandHelp(sender);
 					} else {
-						sender.addChatMessage(new ChatComponentTranslation("gc.tree.help", node.getHelp(),
-								getCommandName()));
+						sendBranchHelp(sender, (NodeBranch) node, path);
 					}
 					
 					node = null;
 				} else {
 					node = node.execute(call, options);
 				}
+				
+				path += " " + node.getNodeName();
 				
 			}
 			
@@ -99,22 +103,42 @@ public abstract class TreeCommand implements ICommand {
 		return false;
 	}
 	
-	private void sendCommandHelp(ChatSender chat, ICommandSender sender) {
-		messages.commandHelp.top.send(sender, getCommandName());
-		messages.commandHelp.commandOverview.send(sender);
+	private void sendCommandHelp(ICommandSender sender) {
+		messages.cmdHelpTop.send(sender, getCommandName());
+		messages.cmdHelpCommandOverview.send(sender);
 		
-		MultiMessage multi = messages.commandHelp.nodes.chain();
+		MultiMessage multi = messages.cmdHelpNodes.chain();
 		
 		ICommandNode[] allNodes = branchRoot.getSubNodes();
 		for (int i = 0; i < allNodes.length; i++) {
-			multi.add(messages.commandHelp.nodeItem, allNodes[i].getNodeName());
+			multi.add(messages.cmdHelpNodeItem, allNodes[i].getNodeName());
 			if (i < allNodes.length - 1) {
-				ChatMessage separator = messages.commandHelp.separator;
-				if (i == allNodes.length - 2) separator = messages.commandHelp.separatorLast;
+				ChatMessage separator = messages.cmdHelpSeparator;
+				if (i == allNodes.length - 2) separator = messages.cmdHelpSeparatorLast;
 				multi.add(separator);
 			}
 		}
 		multi.send(sender);
+		
+	}
+	
+	private void sendBranchHelp(ICommandSender sender, NodeBranch branch, String path) {
+		
+		messages.branchHelpTop.send(sender, branch.getNodeName());
+		messages.branchHelpNotice.send(sender);
+		messages.branchHelpInfo.chain().add(branch.getInfoMessage()).send(sender);
+		
+		MultiMessage chain = messages.branchHelpOptions.chain();
+		ICommandNode[] subNodes = branch.getSubNodes();
+		for (int i = 0; i < subNodes.length; i++) {
+			chain.add(messages.branchHelpOptionsItem, subNodes[i]);
+			chain.add(i == subNodes.length - 1 ? messages.branchHelpOptionsSeparatorLast :
+				messages.branchHelpOptionsSeparator);
+			
+		}
+		chain.send(sender);
+		
+		messages.branchHelpExample.send(sender, path, subNodes[0].getNodeName());
 		
 	}
 	
@@ -128,34 +152,43 @@ public abstract class TreeCommand implements ICommand {
 	
 	protected class ChatMessages {
 		
-		protected ChatMessagesCommandHelp commandHelp;
+		protected ChatMessage cmdHelpTop;
+		protected ChatMessage cmdHelpNodes;
+		protected ChatMessage cmdHelpNodeItem;
+		protected ChatMessage cmdHelpSeparator;
+		protected ChatMessage cmdHelpSeparatorLast;
+		protected ChatMessage cmdHelpCommandOverview;
+		
+		protected ChatMessage branchHelpTop;
+		protected ChatMessage branchHelpNotice;
+		protected ChatMessage branchHelpInfo;
+		protected ChatMessage branchHelpOptions;
+		protected ChatMessage branchHelpOptionsItem;
+		protected ChatMessage branchHelpOptionsSeparator;
+		protected ChatMessage branchHelpOptionsSeparatorLast;
+		protected ChatMessage branchHelpExample;
 		
 		private ChatMessages(ChatSender chat) {
-			this.commandHelp = new ChatMessagesCommandHelp(chat);
+			
+			cmdHelpTop = chat.newChatMessage("gc.tree.cmdhelp.top", "name");
+			cmdHelpNodes = chat.newChatMessage("gc.tree.cmdhelp.nodes");
+			cmdHelpNodeItem = chat.newChatMessage( "gc.tree.cmdhelp.nodes.item", "node");
+			cmdHelpSeparator = chat.newChatMessage("gc.tree.cmdhelp.nodes.separator");
+			cmdHelpSeparatorLast = chat.newChatMessage("gc.tree.cmdhelp.nodes.separatorLast");
+			cmdHelpCommandOverview = chat.newChatMessage("gc.tree.cmdhelp.showCmdInfo");
+			
+			branchHelpTop = chat.newChatMessage("gc.tree.branchHelp.top", "name");
+			branchHelpNotice = chat.newChatMessage("gc.tree.branchHelp.notice");
+			branchHelpInfo = chat.newChatMessage("gc.tree.branchHelp.info");
+			branchHelpOptions = chat.newChatMessage("gc.tree.branchHelp.options");
+			branchHelpOptionsItem = chat.newChatMessage("gc.tree.branchHelp.options.item", "node");
+			branchHelpOptionsSeparator = chat.newChatMessage("gc.tree.branchHelp.options.separator");
+			branchHelpOptionsSeparatorLast = chat.newChatMessage("gc.tree.branchHelp.options.separatorLast");
+			branchHelpExample = chat.newChatMessage("gc.tree.branchHelp.example", "path", "node-name");
+			
 		}
 		
 	}
 	
-	protected class ChatMessagesCommandHelp {
-		
-		protected ChatMessage top;
-		protected ChatMessage nodes;
-		protected ChatMessage nodeItem;
-		protected ChatMessage separator;
-		protected ChatMessage separatorLast;
-		protected ChatMessage commandOverview;
-		
-		private ChatMessagesCommandHelp(ChatSender chat) {
-			
-			top = chat.newChatMessage("gc.tree.cmdhelp.top", "name");
-			nodes = chat.newChatMessage("gc.tree.cmdhelp.nodes");
-			nodeItem = chat.newChatMessage( "gc.tree.cmdhelp.nodes.item", "node");
-			separator = chat.newChatMessage("gc.tree.cmdhelp.nodes.separator");
-			separatorLast = chat.newChatMessage("gc.tree.cmdhelp.nodes.separatorLast");
-			commandOverview = chat.newChatMessage("gc.tree.cmdhelp.showCmdInfo");
-			
-		}
-		
-	}
 	
 }

@@ -2,6 +2,8 @@ package crowsofwar.gorecore.tree;
 
 import java.util.List;
 
+import crowsofwar.gorecore.chat.ChatMessage;
+
 public interface ICommandNode {
 	
 	ICommandNode execute(CommandCall call, List<String> options);
@@ -13,5 +15,7 @@ public interface ICommandNode {
 	IArgument<?>[] getArgumentList();
 	
 	String getHelp();
+	
+	ChatMessage getInfoMessage();
 	
 }

@@ -3,6 +3,7 @@ package crowsofwar.gorecore.tree;
 import java.util.List;
 import java.util.Map;
 
+import crowsofwar.gorecore.chat.ChatMessage;
 import crowsofwar.gorecore.tree.TreeCommandException.Reason;
 
 public class NodeBranch implements ICommandNode {
@@ -11,8 +12,9 @@ public class NodeBranch implements ICommandNode {
 	private final IArgument<String> argName;
 	private final IArgument<?>[] args;
 	private final String name;
+	private final ChatMessage infoMessage;
 	
-	public NodeBranch(String name, ICommandNode... nodes) {
+	public NodeBranch(ChatMessage infoMessage, String name, ICommandNode... nodes) {
 		this.nodes = nodes;
 //		this.argName = new ArgumentDirect<String>("node-name", ITypeConverter.CONVERTER_STRING);
 		String[] possibilities = new String[nodes.length];
@@ -20,6 +22,7 @@ public class NodeBranch implements ICommandNode {
 		this.argName = new ArgumentOptions<String>(ITypeConverter.CONVERTER_STRING, "node-name", possibilities);
 		this.args = new IArgument<?>[] { argName };
 		this.name = name;
+		this.infoMessage = infoMessage;
 	}
 	
 	@Override
@@ -55,6 +58,11 @@ public class NodeBranch implements ICommandNode {
 	
 	public ICommandNode[] getSubNodes() {
 		return nodes;
+	}
+
+	@Override
+	public ChatMessage getInfoMessage() {
+		return infoMessage;
 	}
 	
 }
