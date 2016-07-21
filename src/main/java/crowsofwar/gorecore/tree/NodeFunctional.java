@@ -2,9 +2,16 @@ package crowsofwar.gorecore.tree;
 
 import java.util.List;
 
+import crowsofwar.gorecore.chat.ChatMessage;
+import crowsofwar.gorecore.chat.ChatSender;
 import net.minecraft.util.ChatComponentTranslation;
 
 public abstract class NodeFunctional implements ICommandNode {
+	
+	private static final ChatMessage DEFAULT_INFO;
+	static {
+		DEFAULT_INFO = new ChatSender().newChatMessage("gc.tree.node.defaultInfo");
+	}
 	
 	private final String name;
 	private final boolean op;
@@ -56,5 +63,10 @@ public abstract class NodeFunctional implements ICommandNode {
 	}
 	
 	protected abstract ICommandNode doFunction(CommandCall call, List<String> options);
+	
+	@Override
+	public ChatMessage getInfoMessage() {
+		return DEFAULT_INFO;
+	}
 	
 }

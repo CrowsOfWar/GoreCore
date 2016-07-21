@@ -2,6 +2,7 @@ package crowsofwar.gorecore.tree.test;
 
 import java.util.List;
 
+import crowsofwar.gorecore.chat.ChatMessage;
 import crowsofwar.gorecore.tree.ArgumentDirect;
 import crowsofwar.gorecore.tree.CommandCall;
 import crowsofwar.gorecore.tree.IArgument;
@@ -25,6 +26,11 @@ public class TestCakeLick extends NodeFunctional {
 		double gallons = call.popArguments(argGallons).get(argGallons);
 		call.getFrom().addChatMessage(new ChatComponentTranslation("test.lickCake", gallons));
 		return null;
+	}
+
+	@Override
+	public ChatMessage getInfoMessage() {
+		return TestMessages.MSG_CAKE_LICK_HELP;
 	}
 
 }

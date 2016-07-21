@@ -2,6 +2,7 @@ package crowsofwar.gorecore.tree.test;
 
 import java.util.List;
 
+import crowsofwar.gorecore.chat.ChatMessage;
 import crowsofwar.gorecore.tree.CommandCall;
 import crowsofwar.gorecore.tree.ICommandNode;
 import crowsofwar.gorecore.tree.NodeFunctional;
@@ -18,6 +19,11 @@ public class TestCakeFrost extends NodeFunctional {
 		String end = options.contains("fancy") ? ".fancy" : "";
 		call.getFrom().addChatMessage(new ChatComponentTranslation("test.frostCake" + end));
 		return null;
+	}
+
+	@Override
+	public ChatMessage getInfoMessage() {
+		return TestMessages.MSG_CAKE_FROST_HELP;
 	}
 
 }

@@ -2,6 +2,7 @@ package crowsofwar.gorecore.tree.test;
 
 import java.util.List;
 
+import crowsofwar.gorecore.chat.ChatMessage;
 import crowsofwar.gorecore.tree.CommandCall;
 import crowsofwar.gorecore.tree.ICommandNode;
 import crowsofwar.gorecore.tree.NodeFunctional;
@@ -19,6 +20,11 @@ public class TestPlayVideogames extends NodeFunctional {
 		String send = options.isEmpty() ? "test.videogames.none" : "test.videogames";
 		call.getFrom().addChatMessage(new ChatComponentTranslation(send, videogame));
 		return null;
+	}
+
+	@Override
+	public ChatMessage getInfoMessage() {
+		return TestMessages.MSG_PLAYVIDEOGAMES_HELP;
 	}
 	
 }

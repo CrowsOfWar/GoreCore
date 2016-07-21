@@ -2,6 +2,7 @@ package crowsofwar.gorecore.tree.test;
 
 import java.util.List;
 
+import crowsofwar.gorecore.chat.ChatMessage;
 import crowsofwar.gorecore.tree.ArgumentList;
 import crowsofwar.gorecore.tree.ArgumentOptions;
 import crowsofwar.gorecore.tree.CommandCall;
@@ -27,6 +28,11 @@ public class TestUseChatSender extends NodeFunctional {
 		String fruit = args.get(argFruit);
 		TestChatMessages.MESSAGE_FRUIT.send(call.getFrom(), fruit);
 		return null;
+	}
+
+	@Override
+	public ChatMessage getInfoMessage() {
+		return TestMessages.MSG_CHATSENDER_HELP;
 	}
 	
 }
