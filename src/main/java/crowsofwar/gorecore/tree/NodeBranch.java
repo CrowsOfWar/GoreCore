@@ -4,15 +4,25 @@ import java.util.List;
 import java.util.Map;
 
 import crowsofwar.gorecore.chat.ChatMessage;
+import crowsofwar.gorecore.chat.ChatSender;
 import crowsofwar.gorecore.tree.TreeCommandException.Reason;
 
 public class NodeBranch implements ICommandNode {
+	
+	private static final ChatMessage DEFAULT_INFO;
+	static {
+		DEFAULT_INFO = new ChatSender().newChatMessage("gc.tree.branch.defaultInfo");
+	}
 	
 	private final ICommandNode[] nodes;
 	private final IArgument<String> argName;
 	private final IArgument<?>[] args;
 	private final String name;
 	private final ChatMessage infoMessage;
+	
+	public NodeBranch(String name, ICommandNode... nodes) {
+		this(DEFAULT_INFO, name, nodes);
+	}
 	
 	public NodeBranch(ChatMessage infoMessage, String name, ICommandNode... nodes) {
 		this.nodes = nodes;
