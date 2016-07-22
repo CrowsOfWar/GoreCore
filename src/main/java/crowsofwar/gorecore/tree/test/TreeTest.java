@@ -26,10 +26,4 @@ public class TreeTest extends TreeCommand {
 		return new ICommandNode[] { branchCake, branchVideogames, new TestUseChatSender() };
 		
 	}
-
-	@Override
-	protected void registerChatMessages(ChatSender sender) {
-		
-	}
-	
 }

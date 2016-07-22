@@ -5,8 +5,7 @@ import crowsofwar.gorecore.chat.ChatSender;
 
 public class TestChatMessages {
 	
-	private static final ChatSender chat = new ChatSender();
-	public static final ChatMessage MESSAGE_FRUIT = chat.newChatMessage("test.chatSender", "fruit");
+	public static final ChatMessage MESSAGE_FRUIT = ChatSender.newChatMessage("test.chatSender", "fruit");
 	
 	
 }

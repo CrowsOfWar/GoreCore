@@ -10,18 +10,16 @@ import crowsofwar.gorecore.tree.TreeCommandException.Reason;
 import net.minecraft.command.ICommand;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.util.ChatComponentTranslation;
+import static crowsofwar.gorecore.chat.ChatSender.newChatMessage;
 
 public abstract class TreeCommand implements ICommand {
 	
 	private NodeBranch branchRoot;
-	private final ChatSender chatSender;
 	
 	public TreeCommand() {
-		this.chatSender = new ChatSender();
-		initChatMessages(chatSender);
-		branchRoot = new NodeBranch(chatSender.newChatMessage("gc.tree.branchHelp.root", "command"), getCommandName(),
+		initChatMessages();
+		branchRoot = new NodeBranch(newChatMessage("gc.tree.branchHelp.root", "command"), getCommandName(),
 				addCommands());
-		registerChatMessages(chatSender);
 		
 	}
 	
@@ -167,8 +165,6 @@ public abstract class TreeCommand implements ICommand {
 	 */
 	protected abstract ICommandNode[] addCommands();
 
-	protected abstract void registerChatMessages(ChatSender sender);
-	
 	protected ChatMessage cmdHelpTop;
 	protected ChatMessage cmdHelpNodes;
 	protected ChatMessage cmdHelpNodeItem;
@@ -193,32 +189,32 @@ public abstract class TreeCommand implements ICommand {
 	protected ChatMessage nodeHelpAccepted;
 	protected ChatMessage nodeHelpAcceptedItem;
 	
-	private void initChatMessages(ChatSender chat) {
+	private void initChatMessages() {
 		
-		cmdHelpTop = chat.newChatMessage("gc.tree.cmdhelp.top", "name");
-		cmdHelpNodes = chat.newChatMessage("gc.tree.cmdhelp.nodes");
-		cmdHelpNodeItem = chat.newChatMessage( "gc.tree.cmdhelp.nodes.item", "node");
-		cmdHelpSeparator = chat.newChatMessage("gc.tree.cmdhelp.nodes.separator");
-		cmdHelpSeparatorLast = chat.newChatMessage("gc.tree.cmdhelp.nodes.separatorLast");
-		cmdHelpCommandOverview = chat.newChatMessage("gc.tree.cmdhelp.showCmdInfo");
+		cmdHelpTop = newChatMessage("gc.tree.cmdhelp.top", "name");
+		cmdHelpNodes = newChatMessage("gc.tree.cmdhelp.nodes");
+		cmdHelpNodeItem = newChatMessage( "gc.tree.cmdhelp.nodes.item", "node");
+		cmdHelpSeparator = newChatMessage("gc.tree.cmdhelp.nodes.separator");
+		cmdHelpSeparatorLast = newChatMessage("gc.tree.cmdhelp.nodes.separatorLast");
+		cmdHelpCommandOverview = newChatMessage("gc.tree.cmdhelp.showCmdInfo");
 		
-		branchHelpTop = chat.newChatMessage("gc.tree.branchHelp.top", "name");
-		branchHelpNotice = chat.newChatMessage("gc.tree.branchHelp.notice");
-		branchHelpInfo = chat.newChatMessage("gc.tree.branchHelp.info");
-		branchHelpOptions = chat.newChatMessage("gc.tree.branchHelp.options");
-		branchHelpOptionsItem = chat.newChatMessage("gc.tree.branchHelp.options.item", "node");
-		branchHelpOptionsSeparator = chat.newChatMessage("gc.tree.branchHelp.options.separator");
-		branchHelpOptionsSeparatorLast = chat.newChatMessage("gc.tree.branchHelp.options.separatorLast");
-		branchHelpExample = chat.newChatMessage("gc.tree.branchHelp.example", "path", "node-name");
-		branchHelpDefault = chat.newChatMessage("gc.tree.branch.defaultInfo");
+		branchHelpTop = newChatMessage("gc.tree.branchHelp.top", "name");
+		branchHelpNotice = newChatMessage("gc.tree.branchHelp.notice");
+		branchHelpInfo = newChatMessage("gc.tree.branchHelp.info");
+		branchHelpOptions = newChatMessage("gc.tree.branchHelp.options");
+		branchHelpOptionsItem = newChatMessage("gc.tree.branchHelp.options.item", "node");
+		branchHelpOptionsSeparator = newChatMessage("gc.tree.branchHelp.options.separator");
+		branchHelpOptionsSeparatorLast = newChatMessage("gc.tree.branchHelp.options.separatorLast");
+		branchHelpExample = newChatMessage("gc.tree.branchHelp.example", "path", "node-name");
+		branchHelpDefault = newChatMessage("gc.tree.branch.defaultInfo");
 		
-		nodeHelpTop = chat.newChatMessage("gc.tree.nodeHelp.top", "name");
+		nodeHelpTop = newChatMessage("gc.tree.nodeHelp.top", "name");
 		System.out.println(nodeHelpTop);
-		nodeHelpDesc = chat.newChatMessage("gc.tree.nodeHelp.desc");
-		nodeHelpArgs = chat.newChatMessage("gc.tree.nodeHelp.args");
-		nodeHelpArgsItem = chat.newChatMessage("gc.tree.nodeHelp.args.item", "argument");
-		nodeHelpAccepted = chat.newChatMessage("gc.tree.nodeHelp.accepted");
-		nodeHelpAcceptedItem = chat.newChatMessage("gc.tree.nodeHelp.accepted.item", "input");
+		nodeHelpDesc = newChatMessage("gc.tree.nodeHelp.desc");
+		nodeHelpArgs = newChatMessage("gc.tree.nodeHelp.args");
+		nodeHelpArgsItem = newChatMessage("gc.tree.nodeHelp.args.item", "argument");
+		nodeHelpAccepted = newChatMessage("gc.tree.nodeHelp.accepted");
+		nodeHelpAcceptedItem = newChatMessage("gc.tree.nodeHelp.accepted.item", "input");
 		
 	}
 	

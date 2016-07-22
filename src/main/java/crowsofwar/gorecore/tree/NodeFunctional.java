@@ -10,7 +10,7 @@ public abstract class NodeFunctional implements ICommandNode {
 	
 	private static final ChatMessage DEFAULT_INFO;
 	static {
-		DEFAULT_INFO = new ChatSender().newChatMessage("gc.tree.node.defaultInfo");
+		DEFAULT_INFO = ChatSender.newChatMessage("gc.tree.node.defaultInfo");
 	}
 	
 	private final String name;
