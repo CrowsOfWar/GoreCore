@@ -149,13 +149,21 @@ public abstract class TreeCommand implements ICommand {
 		nodeHelpTop.send(sender, node.getNodeName());
 		nodeHelpDesc.chain().add(node.getInfoMessage()).send(sender);
 		
-		MultiMessage msgArguments = nodeHelpArgs.chain();
-		for (IArgument<?> arg : node.getArgumentList()) msgArguments.add(nodeHelpArgsItem, arg.getArgumentName());
-		msgArguments.send(sender);
-		
-		MultiMessage msgAccepted = nodeHelpAccepted.chain();
-		for (IArgument<?> arg : node.getArgumentList()) msgAccepted.add(nodeHelpAcceptedItem, arg.getHelpString());
-		msgAccepted.send(sender);
+		if (node.getArgumentList().length == 0) {
+			
+			nodeHelpArgsNone.send(sender);
+			
+		} else {
+			
+			MultiMessage msgArguments = nodeHelpArgs.chain();
+			for (IArgument<?> arg : node.getArgumentList()) msgArguments.add(nodeHelpArgsItem, arg.getArgumentName());
+			msgArguments.send(sender);
+			
+			MultiMessage msgAccepted = nodeHelpAccepted.chain();
+			for (IArgument<?> arg : node.getArgumentList()) msgAccepted.add(nodeHelpAcceptedItem, arg.getHelpString());
+			msgAccepted.send(sender);
+			
+		}
 		
 	}
 	
@@ -186,6 +194,7 @@ public abstract class TreeCommand implements ICommand {
 	protected ChatMessage nodeHelpDesc;
 	protected ChatMessage nodeHelpArgs;
 	protected ChatMessage nodeHelpArgsItem;
+	protected ChatMessage nodeHelpArgsNone;
 	protected ChatMessage nodeHelpAccepted;
 	protected ChatMessage nodeHelpAcceptedItem;
 	
@@ -209,10 +218,10 @@ public abstract class TreeCommand implements ICommand {
 		branchHelpDefault = newChatMessage("gc.tree.branch.defaultInfo");
 		
 		nodeHelpTop = newChatMessage("gc.tree.nodeHelp.top", "name");
-		System.out.println(nodeHelpTop);
 		nodeHelpDesc = newChatMessage("gc.tree.nodeHelp.desc");
 		nodeHelpArgs = newChatMessage("gc.tree.nodeHelp.args");
 		nodeHelpArgsItem = newChatMessage("gc.tree.nodeHelp.args.item", "argument");
+		nodeHelpArgsNone = newChatMessage("gc.tree.nodeHelp.args.none");
 		nodeHelpAccepted = newChatMessage("gc.tree.nodeHelp.accepted");
 		nodeHelpAcceptedItem = newChatMessage("gc.tree.nodeHelp.accepted.item", "input");
 		
