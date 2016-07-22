@@ -38,7 +38,7 @@ public class ChatSender {
 	private ChatSender() {}
 	
 	public static ChatMessage newChatMessage(String translateKey, String... translateArgs) {
-		ChatMessage cm = new ChatMessage(instance, translateKey, translateArgs);
+		ChatMessage cm = new ChatMessage(translateKey, translateArgs);
 		translateKeyToChatMessage.put(translateKey, cm);
 		return cm;
 	}

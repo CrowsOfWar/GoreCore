@@ -8,12 +8,10 @@ public class ChatMessage {
 	
 	private final String translateKey;
 	private final String[] translateArgs;
-	private final ChatSender chat;
 	
-	ChatMessage(ChatSender chat, String translateKey, String... translateArgs) {
+	ChatMessage(String translateKey, String... translateArgs) {
 		this.translateKey = translateKey;
 		this.translateArgs = translateArgs;
-		this.chat = chat;
 	}
 	
 	public IChatComponent getChatMessage(Object... formattingArgs) {
@@ -21,7 +19,7 @@ public class ChatMessage {
 	}
 	
 	public void send(ICommandSender sender, Object... formattingArgs) {
-		this.chat.send(sender, this, formattingArgs);
+		ChatSender.send(sender, this, formattingArgs);
 	}
 	
 	public String[] getTranslationArgs() {
