@@ -1,6 +1,5 @@
 package crowsofwar.gorecore.tree;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -63,12 +62,16 @@ public abstract class TreeCommand implements ICommand {
 				
 				if (node.needsOpPermission() && !call.isOpped()) throw new TreeCommandException(Reason.NO_PERMISSION);
 				
-				if (call.getArgumentsLeft() == 0 && node instanceof NodeBranch && options.contains("help")) {
+				if (call.getArgumentsLeft() == 0 && options.contains("help")) {
 					
-					if (node == branchRoot) {
-						sendCommandHelp(sender);
+					if (node instanceof NodeBranch) {
+						if (node == branchRoot) {
+							sendCommandHelp(sender);
+						} else {
+							sendBranchHelp(sender, (NodeBranch) node, path);
+						}
 					} else {
-						sendBranchHelp(sender, (NodeBranch) node, path);
+						sendNodeHelp(sender, node);
 					}
 					
 					node = null;
@@ -143,6 +146,21 @@ public abstract class TreeCommand implements ICommand {
 		
 	}
 	
+	private void sendNodeHelp(ICommandSender sender, ICommandNode node) {
+		
+		nodeHelpTop.send(sender, node.getNodeName());
+		nodeHelpDesc.chain().add(node.getInfoMessage()).send(sender);
+		
+		MultiMessage msgArguments = nodeHelpArgs.chain();
+		for (IArgument<?> arg : node.getArgumentList()) msgArguments.add(nodeHelpArgsItem, arg.getArgumentName());
+		msgArguments.send(sender);
+		
+		MultiMessage msgAccepted = nodeHelpAccepted.chain();
+		for (IArgument<?> arg : node.getArgumentList()) msgAccepted.add(nodeHelpAcceptedItem, arg.getHelpString());
+		msgAccepted.send(sender);
+		
+	}
+	
 	/**
 	 * Called to instantiate all subclass Command Nodes. Return
 	 * the ones that should be added to the root branch.
@@ -168,6 +186,13 @@ public abstract class TreeCommand implements ICommand {
 	protected ChatMessage branchHelpExample;
 	protected ChatMessage branchHelpDefault;
 	
+	protected ChatMessage nodeHelpTop;
+	protected ChatMessage nodeHelpDesc;
+	protected ChatMessage nodeHelpArgs;
+	protected ChatMessage nodeHelpArgsItem;
+	protected ChatMessage nodeHelpAccepted;
+	protected ChatMessage nodeHelpAcceptedItem;
+	
 	private void initChatMessages(ChatSender chat) {
 		
 		cmdHelpTop = chat.newChatMessage("gc.tree.cmdhelp.top", "name");
@@ -186,6 +211,14 @@ public abstract class TreeCommand implements ICommand {
 		branchHelpOptionsSeparatorLast = chat.newChatMessage("gc.tree.branchHelp.options.separatorLast");
 		branchHelpExample = chat.newChatMessage("gc.tree.branchHelp.example", "path", "node-name");
 		branchHelpDefault = chat.newChatMessage("gc.tree.branch.defaultInfo");
+		
+		nodeHelpTop = chat.newChatMessage("gc.tree.nodeHelp.top", "name");
+		System.out.println(nodeHelpTop);
+		nodeHelpDesc = chat.newChatMessage("gc.tree.nodeHelp.desc");
+		nodeHelpArgs = chat.newChatMessage("gc.tree.nodeHelp.args");
+		nodeHelpArgsItem = chat.newChatMessage("gc.tree.nodeHelp.args.item", "argument");
+		nodeHelpAccepted = chat.newChatMessage("gc.tree.nodeHelp.accepted");
+		nodeHelpAcceptedItem = chat.newChatMessage("gc.tree.nodeHelp.accepted.item", "input");
 		
 	}
 	
