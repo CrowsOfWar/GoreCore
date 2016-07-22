@@ -23,26 +23,27 @@ import net.minecraftforge.common.MinecraftForge;
 
 public class ChatSender {
 	
-	private final Map<String, ChatMessage> referenceToChatMessage;
-	private final Map<String, ChatMessage> translateKeyToChatMessage;
+	private static final ChatSender instance;
 	
-	public ChatSender() {
-		MinecraftForge.EVENT_BUS.register(this);
-		this.referenceToChatMessage = new HashMap<String, ChatMessage>();
-		this.translateKeyToChatMessage = new HashMap<String, ChatMessage>();
+	private static final Map<String, ChatMessage> referenceToChatMessage;
+	private static final Map<String, ChatMessage> translateKeyToChatMessage;
+	
+	static {
+		instance = new ChatSender();
+		MinecraftForge.EVENT_BUS.register(instance);
+		referenceToChatMessage = new HashMap<String, ChatMessage>();
+		translateKeyToChatMessage = new HashMap<String, ChatMessage>();
 	}
 	
-	public ChatMessage newChatMessage(String translateKey, String... translateArgs) {
-		ChatMessage cm = new ChatMessage(this, translateKey, translateArgs);
+	private ChatSender() {}
+	
+	public static ChatMessage newChatMessage(String translateKey, String... translateArgs) {
+		ChatMessage cm = new ChatMessage(instance, translateKey, translateArgs);
 		translateKeyToChatMessage.put(translateKey, cm);
 		return cm;
 	}
 	
-	public void cleanup() {
-		MinecraftForge.EVENT_BUS.unregister(this);
-	}
-	
-	private Object getField(ChatComponentTranslation obj, String field) {
+	private static Object getField(ChatComponentTranslation obj, String field) {
 		try {
 			
 			Field fieldObj = obj.getClass().getDeclaredField(field);
@@ -154,7 +155,7 @@ public class ChatSender {
 		
 	}
 	
-	void send(ICommandSender sender, ChatMessage message, Object... args) {
+	static void send(ICommandSender sender, ChatMessage message, Object... args) {
 		sender.addChatMessage(message.getChatMessage(args));
 	}
 	
