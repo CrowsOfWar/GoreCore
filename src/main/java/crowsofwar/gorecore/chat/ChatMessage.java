@@ -32,4 +32,8 @@ public class ChatMessage {
 		return new MultiMessage().add(this);
 	}
 	
+	public MessageConfiguration getConfig() {
+		return config;
+	}
+	
 }
