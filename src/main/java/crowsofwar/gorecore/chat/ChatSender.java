@@ -38,7 +38,11 @@ public class ChatSender {
 	private ChatSender() {}
 	
 	public static ChatMessage newChatMessage(String translateKey, String... translateArgs) {
-		ChatMessage cm = new ChatMessage(translateKey, translateArgs);
+		return newChatMessage(MessageConfiguration.DEFAULT, translateKey, translateArgs);
+	}
+	
+	public static ChatMessage newChatMessage(MessageConfiguration config, String translateKey, String... translateArgs) {
+		ChatMessage cm = new ChatMessage(config, translateKey, translateArgs);
 		translateKeyToChatMessage.put(translateKey, cm);
 		return cm;
 	}

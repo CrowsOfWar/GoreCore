@@ -8,10 +8,12 @@ public class ChatMessage {
 	
 	private final String translateKey;
 	private final String[] translateArgs;
+	private final MessageConfiguration config;
 	
-	ChatMessage(String translateKey, String... translateArgs) {
+	ChatMessage(MessageConfiguration config, String translateKey, String... translateArgs) {
 		this.translateKey = translateKey;
 		this.translateArgs = translateArgs;
+		this.config = config;
 	}
 	
 	public IChatComponent getChatMessage(Object... formattingArgs) {
