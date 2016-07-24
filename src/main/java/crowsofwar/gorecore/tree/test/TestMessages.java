@@ -1,6 +1,7 @@
 package crowsofwar.gorecore.tree.test;
 
 import crowsofwar.gorecore.chat.ChatMessage;
+import crowsofwar.gorecore.chat.ChatSender;
 import crowsofwar.gorecore.chat.MessageConfiguration;
 import net.minecraft.util.EnumChatFormatting;
 
@@ -15,5 +16,6 @@ public class TestMessages {
 	public static final ChatMessage MSG_PLAYVIDEOGAMES_HELP = newChatMessage(CFG, "test.videogames.help");
 	public static final ChatMessage MSG_CHATSENDER_HELP = newChatMessage(CFG, "test.chatSender.help");
 	public static final ChatMessage MSG_VIDEOGAME_BRANCH_HELP = newChatMessage(CFG, "test.videogamesBranch.help");
+	public static final ChatMessage MSG_FRUIT = ChatSender.newChatMessage(CFG, "test.chatSender", "fruit");
 	
 }
