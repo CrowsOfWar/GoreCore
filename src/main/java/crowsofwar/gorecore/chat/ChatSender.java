@@ -13,6 +13,7 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crowsofwar.gorecore.GoreCore;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ChatComponentTranslation;
@@ -78,87 +79,101 @@ public class ChatSender {
 			boolean changed = false;
 			
 			for (IChatComponent chat : comps) {
-				if (chat instanceof ChatComponentTranslation) {
-					ChatComponentTranslation translate = (ChatComponentTranslation) chat;
-					String key = (String) getField(translate, "key");
-					ChatMessage cm = translateKeyToChatMessage.get(key);
-					
-					System.out.println("recieved " + key);
-					System.out.println("chat message is " + cm);
-					
-					if (cm != null) {
+				String processed = processChatComponent(chat);
+				if (processed != null) {
+					changed = true;
+					result += processed;
+				}
+			}
+			if (changed) e.message = new ChatComponentText(result);
+		}
+		
+	}
+	
+	private String processChatComponent(IChatComponent chat) {
+		String result = null;
+		if (chat instanceof ChatComponentTranslation) {
+			ChatComponentTranslation translate = (ChatComponentTranslation) chat;
+			String key = (String) getField(translate, "key");
+			ChatMessage cm = translateKeyToChatMessage.get(key);
+			
+			System.out.println("recieved " + key);
+			System.out.println("chat message is " + cm);
+			
+			if (cm != null) {
+				
+				MessageConfiguration cfg = cm.getConfig();
+				
+				String text = translate.getUnformattedText();
+				String[] translateArgs = cm.getTranslationArgs();
+//				System.out.println("Translate args length: " + translateArgs.length);
+				for (int i = 0; i < translateArgs.length; i++) {
+					System.out.println("Translate arg " + translateArgs[i]);
+					text = text.replace("${" + translateArgs[i] + "}", translate.getFormatArgs()[i].toString());
+				}
+				
+				ChatFormat format = new ChatFormat();
+				
+				String newText = "";
+				String[] split = text.split("[\\[\\]]");
+				for (int i = 0; i < split.length; i++) {
+					boolean recievedFormatInstruction = false;
+					String item = split[i];
+					if (item.equals("")) continue;
+					if (item.equals("bold")) {
 						
-						MessageConfiguration cfg = cm.getConfig();
+						format.setBold(true);
+						recievedFormatInstruction = true;
 						
-						changed = true;
-						String text = translate.getUnformattedText();
-						String[] translateArgs = cm.getTranslationArgs();
-//						System.out.println("Translate args length: " + translateArgs.length);
-						for (int i = 0; i < translateArgs.length; i++) {
-							System.out.println("Translate arg " + translateArgs[i]);
-							text = text.replace("${" + translateArgs[i] + "}", translate.getFormatArgs()[i].toString());
-						}
+					} else if (item.equals("/bold")) {
 						
-						ChatFormat format = new ChatFormat();
+						format.setBold(false);
+						recievedFormatInstruction = true;
 						
-						String newText = "";
-						String[] split = text.split("[\\[\\]]");
-						for (int i = 0; i < split.length; i++) {
-							boolean recievedFormatInstruction = false;
-							String item = split[i];
-							if (item.equals("")) continue;
-							if (item.equals("bold")) {
-								
-								format.setBold(true);
-								recievedFormatInstruction = true;
-								
-							} else if (item.equals("/bold")) {
-								
-								format.setBold(false);
-								recievedFormatInstruction = true;
-								
-							} else if (item.equals("italic")) {
-								
-								format.setItalic(true);
-								recievedFormatInstruction = true;
-								
-							} else if (item.equals("/italic")) {
-								
-								format.setItalic(false);
-								recievedFormatInstruction = true;
-								
-							} else if (item.equals("/color")){
-								
-								recievedFormatInstruction = format.setColor(item);
-								
-							} else if (item.startsWith("color=")) {
-								
-								recievedFormatInstruction = format.setColor(cfg, item.substring("color=".length()));
-								
-							}
-							
-							// If any formats changed, must re add all chat formats
-							if (recievedFormatInstruction) {
-								newText += EnumChatFormatting.RESET;
-								newText += format.getColor(); // For some reason, color must come before bold
-								newText += format.isBold() ? EnumChatFormatting.BOLD : "";
-								newText += format.isItalic() ? EnumChatFormatting.ITALIC : "";
-							} else {
-								newText += item;
-							}
-							
-						}
-						text = newText;
+					} else if (item.equals("italic")) {
 						
-						result += (newText);
+						format.setItalic(true);
+						recievedFormatInstruction = true;
+						
+					} else if (item.equals("/italic")) {
+						
+						format.setItalic(false);
+						recievedFormatInstruction = true;
+						
+					} else if (item.equals("/color")){
+						
+						recievedFormatInstruction = format.setColor(item);
+						
+					} else if (item.startsWith("color=")) {
+						
+						recievedFormatInstruction = format.setColor(cfg, item.substring("color=".length()));
+						
+					} else if (item.startsWith("translate=")) {
+						
+						item = I18n.format(item.substring("translate=".length()));
 						
 					}
 					
+					// If any formats changed, must re add all chat formats
+					if (recievedFormatInstruction) {
+						newText += EnumChatFormatting.RESET;
+						newText += format.getColor(); // For some reason, color must come before bold
+						newText += format.isBold() ? EnumChatFormatting.BOLD : "";
+						newText += format.isItalic() ? EnumChatFormatting.ITALIC : "";
+					} else {
+						newText += item;
+					}
+					
 				}
+				text = newText;
+				
+				result = newText;
+				
 			}
-			if (changed)
-			e.message = new ChatComponentText(result);
+			
 		}
+		
+		return result;
 		
 	}
 	
