@@ -102,72 +102,7 @@ public class ChatSender {
 			
 			if (cm != null) {
 				
-				MessageConfiguration cfg = cm.getConfig();
-				
-				String text = translate.getUnformattedText();
-				String[] translateArgs = cm.getTranslationArgs();
-//				System.out.println("Translate args length: " + translateArgs.length);
-				for (int i = 0; i < translateArgs.length; i++) {
-					System.out.println("Translate arg " + translateArgs[i]);
-					text = text.replace("${" + translateArgs[i] + "}", translate.getFormatArgs()[i].toString());
-				}
-				
-				ChatFormat format = new ChatFormat();
-				
-				String newText = "";
-				String[] split = text.split("[\\[\\]]");
-				for (int i = 0; i < split.length; i++) {
-					boolean recievedFormatInstruction = false;
-					String item = split[i];
-					if (item.equals("")) continue;
-					if (item.equals("bold")) {
-						
-						format.setBold(true);
-						recievedFormatInstruction = true;
-						
-					} else if (item.equals("/bold")) {
-						
-						format.setBold(false);
-						recievedFormatInstruction = true;
-						
-					} else if (item.equals("italic")) {
-						
-						format.setItalic(true);
-						recievedFormatInstruction = true;
-						
-					} else if (item.equals("/italic")) {
-						
-						format.setItalic(false);
-						recievedFormatInstruction = true;
-						
-					} else if (item.equals("/color")){
-						
-						recievedFormatInstruction = format.setColor(item);
-						
-					} else if (item.startsWith("color=")) {
-						
-						recievedFormatInstruction = format.setColor(cfg, item.substring("color=".length()));
-						
-					} else if (item.startsWith("translate=")) {
-						
-						item = I18n.format(item.substring("translate=".length()));
-						
-					}
-					
-					// If any formats changed, must re add all chat formats
-					if (recievedFormatInstruction) {
-						newText += EnumChatFormatting.RESET;
-						newText += format.getColor(); // For some reason, color must come before bold
-						newText += format.isBold() ? EnumChatFormatting.BOLD : "";
-						newText += format.isItalic() ? EnumChatFormatting.ITALIC : "";
-					} else {
-						newText += item;
-					}
-					
-				}
-				text = newText;
-				
-				result = newText;
+				result = processText(translate.getUnformattedText(), cm, translate.getFormatArgs());
 				
 			}
 			
@@ -175,6 +110,76 @@ public class ChatSender {
 		
 		return result;
 		
+	}
+	
+	private String processText(String text, ChatMessage cm, Object... formatArgs) {
+		MessageConfiguration cfg = cm.getConfig();
+		System.out.println("processing " + text);
+		
+		String[] translateArgs = cm.getTranslationArgs();
+//		System.out.println("Translate args length: " + translateArgs.length);
+		for (int i = 0; i < translateArgs.length; i++) {
+			System.out.println("Translate arg " + translateArgs[i]);
+			text = text.replace("${" + translateArgs[i] + "}", formatArgs[i].toString());
+		}
+		
+		ChatFormat format = new ChatFormat();
+		
+		String newText = "";
+		String[] split = text.split("[\\[\\]]");
+		for (int i = 0; i < split.length; i++) {
+			boolean recievedFormatInstruction = false;
+			String item = split[i];
+			if (item.equals("")) continue;
+			if (item.equals("bold")) {
+				
+				format.setBold(true);
+				recievedFormatInstruction = true;
+				
+			} else if (item.equals("/bold")) {
+				
+				format.setBold(false);
+				recievedFormatInstruction = true;
+				
+			} else if (item.equals("italic")) {
+				
+				format.setItalic(true);
+				recievedFormatInstruction = true;
+				
+			} else if (item.equals("/italic")) {
+				
+				format.setItalic(false);
+				recievedFormatInstruction = true;
+				
+			} else if (item.equals("/color")){
+				
+				recievedFormatInstruction = format.setColor(item);
+				
+			} else if (item.startsWith("color=")) {
+				
+				recievedFormatInstruction = format.setColor(cfg, item.substring("color=".length()));
+				
+			} else if (item.startsWith("translate=")) {
+				
+				String key = item.substring("translate=".length());
+				item = processText(I18n.format(key), cm, formatArgs);
+				
+			}
+			
+			// If any formats changed, must re add all chat formats
+			if (recievedFormatInstruction) {
+				newText += EnumChatFormatting.RESET;
+				newText += format.getColor(); // For some reason, color must come before bold
+				newText += format.isBold() ? EnumChatFormatting.BOLD : "";
+				newText += format.isItalic() ? EnumChatFormatting.ITALIC : "";
+			} else {
+				newText += item;
+			}
+			
+		}
+		text = newText;
+		
+		return newText;
 	}
 	
 	static void send(ICommandSender sender, ChatMessage message, Object... args) {
