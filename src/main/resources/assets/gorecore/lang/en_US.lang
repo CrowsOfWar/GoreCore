@@ -100,23 +100,23 @@ gc.tree.nodeHelp.accepted.item= ${input}
 
 gc.tree.branchHelp.root=The root branch for ${command}.
 
-test.frostCake=You frost the cake.
-test.frostCake.fancy=You frost the cake with small swirls.
+test.frostCake=You frost the [color=special]cake[/color].
+test.frostCake.fancy=You frost the cake with [color=special]small swirls[/color].
 test.frostCake.help=Frost the cake.
 
-test.lickCake=You lick %1$s gallons of frosting off the cake. I don't think you can get diabetes as a kid...
+test.lickCake=You lick [color=special]%1$s gallons[/color] of frosting off the cake. I don't think you can get diabetes as a kid...
 test.lickCake.help=Lick frosting off the cake. That's naughty!!
 
 test.videogames.none=You are sad. You have no video games.
-test.videogames=You play %1$s.
+test.videogames=You play [color=special]%1$s[/color].
 test.videogames.help=Play some video games.
 
-test.buyVideogames=You buy %1$s video game(s).
+test.buyVideogames=You buy [color=special]%1$s[/color] video game(s).
 test.buyVideogames.help=Buy video games.
 
 test.videogamesBranch.help=Manage and play your video games.
 
-test.chatSender=[format-exp][bold]YOU[/bold] picked out a [color=aqua]${fruit}[/color] from the store. And you [italic]ATE IT[/italic]...
+test.chatSender=[format-exp][bold]YOU[/bold] picked out a [color=special]${fruit}[/color] from the store. And you [italic]ATE IT[/italic]...
 test.chatSender.help=A test to see if the new ChatSender works.
 
 test.commandInfo=A test to make sure that tree commands work.
