@@ -87,6 +87,9 @@ public class ChatSender {
 					System.out.println("chat message is " + cm);
 					
 					if (cm != null) {
+						
+						MessageConfiguration cfg = cm.getConfig();
+						
 						changed = true;
 						String text = translate.getUnformattedText();
 						String[] translateArgs = cm.getTranslationArgs();
@@ -130,7 +133,7 @@ public class ChatSender {
 								
 							} else if (item.startsWith("color=")) {
 								
-								recievedFormatInstruction = format.setColor(item.substring("color=".length()));
+								recievedFormatInstruction = format.setColor(cfg, item.substring("color=".length()));
 								
 							}
 							
@@ -176,9 +179,15 @@ public class ChatSender {
 		}
 		
 		public boolean setColor(String colorStr) {
+			return setColor(MessageConfiguration.DEFAULT, colorStr);
+		}
+		
+		public boolean setColor(MessageConfiguration config, String colorStr) {
 			EnumChatFormatting set = null;
 			if (colorStr.equals("/color")) {
 				set = EnumChatFormatting.WHITE;
+			} else if (config.hasColor(colorStr)) { 
+				set = config.getColor(colorStr);
 			} else {
 				EnumChatFormatting[] allFormats = EnumChatFormatting.values();
 				for (int i = 0; i < allFormats.length; i++) {
