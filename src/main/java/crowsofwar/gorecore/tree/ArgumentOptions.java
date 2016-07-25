@@ -52,7 +52,7 @@ public class ArgumentOptions<T> implements IArgument<T> {
 	public String getHelpString() {
 		String help = isOptional() ? "[" : "<";
 		for (int i = 0; i < options.size(); i++) {
-			help += (i == 0 ? "" : "|") + options.get(i).toString();
+			help += (i == 0 ? "" : "|") + convert.toString(options.get(i));
 		}
 		help += isOptional() ? "]" : ">";
 		return help;
