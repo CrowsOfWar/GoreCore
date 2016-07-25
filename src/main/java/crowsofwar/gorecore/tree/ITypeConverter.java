@@ -13,6 +13,11 @@ public interface ITypeConverter<T> {
 				throw new TreeCommandException(Reason.CANT_CONVERT, str, "Integer");
 			}
 		}
+
+		@Override
+		public String toString(Integer obj) {
+			return obj.toString();
+		}
 	};
 	
 	public static final ITypeConverter<Float> CONVERTER_FLOAT = new ITypeConverter<Float>() {
@@ -23,6 +28,11 @@ public interface ITypeConverter<T> {
 			} catch (Exception e) {
 				throw new TreeCommandException(Reason.CANT_CONVERT, str, "Float");
 			}
+		}
+		
+		@Override
+		public String toString(Float obj) {
+			return obj.toString();
 		}
 	};
 	
@@ -35,6 +45,11 @@ public interface ITypeConverter<T> {
 				throw new TreeCommandException(Reason.CANT_CONVERT, str, "Double");
 			}
 		}
+		
+		@Override
+		public String toString(Double obj) {
+			return obj.toString();
+		}
 	};
 	
 	public static final ITypeConverter<Long> CONVERTER_LONG = new ITypeConverter<Long>() {
@@ -45,6 +60,11 @@ public interface ITypeConverter<T> {
 			} catch (Exception e) {
 				throw new TreeCommandException(Reason.CANT_CONVERT, str, "Long");
 			}
+		}
+		
+		@Override
+		public String toString(Long obj) {
+			return obj.toString();
 		}
 	};
 	
@@ -57,12 +77,22 @@ public interface ITypeConverter<T> {
 				throw new TreeCommandException(Reason.CANT_CONVERT, str, "Short");
 			}
 		}
+		
+		@Override
+		public String toString(Short obj) {
+			return obj.toString();
+		}
 	};
 	
 	public static final ITypeConverter<Boolean> CONVERTER_BOOLEAN = new ITypeConverter<Boolean>() {
 		@Override
 		public Boolean convert(String str) {
 			return Boolean.parseBoolean(str);
+		}
+		
+		@Override
+		public String toString(Boolean obj) {
+			return obj.toString();
 		}
 	};
 	
@@ -75,12 +105,22 @@ public interface ITypeConverter<T> {
 				throw new TreeCommandException(Reason.CANT_CONVERT, str, "Byte");
 			}
 		}
+		
+		@Override
+		public String toString(Byte obj) {
+			return obj.toString();
+		}
 	};
 	
 	public static final ITypeConverter<Character> CONVERTER_CHAR = new ITypeConverter<Character>() {
 		@Override
 		public Character convert(String str) {
 			return str.charAt(0);
+		}
+		
+		@Override
+		public String toString(Character obj) {
+			return obj.toString();
 		}
 	};
 	
@@ -89,8 +129,15 @@ public interface ITypeConverter<T> {
 		public String convert(String str) {
 			return str;
 		}
+		
+		@Override
+		public String toString(String obj) {
+			return obj;
+		}
 	};
 	
 	T convert(String str);
+	
+	String toString(T obj);
 	
 }
