@@ -13,10 +13,15 @@ public interface ITypeConverter<T> {
 				throw new TreeCommandException(Reason.CANT_CONVERT, str, "Integer");
 			}
 		}
-
+		
 		@Override
 		public String toString(Integer obj) {
 			return obj.toString();
+		}
+		
+		@Override
+		public String getTypeName() {
+			return "Integer";
 		}
 	};
 	
@@ -34,6 +39,11 @@ public interface ITypeConverter<T> {
 		public String toString(Float obj) {
 			return obj.toString();
 		}
+		
+		@Override
+		public String getTypeName() {
+			return "Decimal number";
+		}
 	};
 	
 	public static final ITypeConverter<Double> CONVERTER_DOUBLE = new ITypeConverter<Double>() {
@@ -49,6 +59,11 @@ public interface ITypeConverter<T> {
 		@Override
 		public String toString(Double obj) {
 			return obj.toString();
+		}
+		
+		@Override
+		public String getTypeName() {
+			return "Decimal number";
 		}
 	};
 	
@@ -66,6 +81,11 @@ public interface ITypeConverter<T> {
 		public String toString(Long obj) {
 			return obj.toString();
 		}
+		
+		@Override
+		public String getTypeName() {
+			return "Big Integer";
+		}
 	};
 	
 	public static final ITypeConverter<Short> CONVERTER_SHORT = new ITypeConverter<Short>() {
@@ -82,6 +102,11 @@ public interface ITypeConverter<T> {
 		public String toString(Short obj) {
 			return obj.toString();
 		}
+		
+		@Override
+		public String getTypeName() {
+			return "Small-ish Integer";
+		}
 	};
 	
 	public static final ITypeConverter<Boolean> CONVERTER_BOOLEAN = new ITypeConverter<Boolean>() {
@@ -93,6 +118,11 @@ public interface ITypeConverter<T> {
 		@Override
 		public String toString(Boolean obj) {
 			return obj.toString();
+		}
+		
+		@Override
+		public String getTypeName() {
+			return "True or false";
 		}
 	};
 	
@@ -110,6 +140,11 @@ public interface ITypeConverter<T> {
 		public String toString(Byte obj) {
 			return obj.toString();
 		}
+		
+		@Override
+		public String getTypeName() {
+			return "Byte 0-255";
+		}
 	};
 	
 	public static final ITypeConverter<Character> CONVERTER_CHAR = new ITypeConverter<Character>() {
@@ -121,6 +156,11 @@ public interface ITypeConverter<T> {
 		@Override
 		public String toString(Character obj) {
 			return obj.toString();
+		}
+		
+		@Override
+		public String getTypeName() {
+			return "Character";
 		}
 	};
 	
@@ -134,10 +174,21 @@ public interface ITypeConverter<T> {
 		public String toString(String obj) {
 			return obj;
 		}
+		
+		@Override
+		public String getTypeName() {
+			return "Text";
+		}
 	};
 	
 	T convert(String str);
 	
 	String toString(T obj);
+	
+	/**
+	 * Get a human-readable type name.
+	 * @return
+	 */
+	String getTypeName();
 	
 }

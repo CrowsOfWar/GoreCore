@@ -40,7 +40,7 @@ public class ArgumentDirect<T> implements IArgument<T> {
 	public String getHelpString() {
 		String before = isOptional() ? "[" : "<";
 		String after = isOptional() ? "]" : ">";
-		return before + "*" + after;
+		return before + "any " + converter.getTypeName() + after;
 	}
 
 	@Override
