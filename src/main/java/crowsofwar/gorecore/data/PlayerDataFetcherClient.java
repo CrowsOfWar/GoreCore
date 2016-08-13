@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-import cpw.mods.fml.common.FMLLog;
 import crowsofwar.gorecore.GoreCore;
 import crowsofwar.gorecore.util.GoreCorePlayerUUIDs;
 import crowsofwar.gorecore.util.GoreCorePlayerUUIDs.ResultOutcome;
@@ -14,54 +13,42 @@ import net.minecraft.world.World;
 public class PlayerDataFetcherClient<T extends GoreCorePlayerData> implements PlayerDataFetcher<T> {
 	
 	/**
-	 * <p>Keeps track of client-side player data.</p>
-	 * 
-	 * <p>The outer map keeps track of mod IDs -> inner-maps.</p>
-	 * 
-	 * <p>Inner maps keep track of player IDs -> player data for that mod.</p>
+	 * <p>
+	 * Keeps track of client-side player data by mapping player UUID to player data.
 	 */
-	private Map<String, Map<UUID, T>> playerData = new HashMap<String, Map<UUID, T>>();
-	
+	private Map<UUID, T> playerData = new HashMap<UUID, T>();
 	private Class<T> dataClass;
+	private PlayerDataCreationHandler<T> onCreate;
 	
-	private GoreCorePlayerDataCreationHandler onCreate;
-	
-	private String modID;
-	
-	public PlayerDataFetcherClient(Class<T> dataClass, String modID) {
-		this(dataClass, modID, null);
-	}
-	
-	public PlayerDataFetcherClient(Class<T> dataClass, String modID, GoreCorePlayerDataCreationHandler onCreate) {
-		this.dataClass = dataClass;
-		this.modID = modID;
-		if (onCreate == null) onCreate = new GoreCorePlayerDataCreationHandler() {
-			@Override public void onClientPlayerDataCreated(GoreCorePlayerData data) {}
-		};
-		this.onCreate = onCreate;
+	/**
+	 * Create a client-side player data fetcher.
+	 * 
+	 * @param dataClass
+	 *            The class of your player data
+	 */
+	public PlayerDataFetcherClient(Class<T> dataClass) {
+		this(dataClass, (data) -> {
+		});// TODO fix newline when eclipse allows option to do that
 	}
 	
 	/**
-	 * <p>Get the inner-map for the given mod from {@link #playerData}.</p>
+	 * Create a client-side player data fetcher.
 	 * 
-	 * @param modID The ID of the mod to get the map for
-	 * @return The inner map for the given mod
+	 * @param dataClass
+	 *            The class of your player data
+	 * @param onCreate
+	 *            A handler which will be invoked when a new instance of your player data was
+	 *            created.
 	 */
-	private Map<UUID, T> getInnerMap(String modID) {
-		Map<UUID, T> ret = playerData.get(modID);
-		if (ret == null) {
-			ret = new HashMap<UUID, T>();
-			playerData.put(modID, ret);
-		}
-		return ret;
+	public PlayerDataFetcherClient(Class<T> dataClass, PlayerDataCreationHandler<T> onCreate) {
+		this.dataClass = dataClass;
+		this.onCreate = onCreate;
 	}
 	
 	private T createPlayerData(Class<T> dataClass, UUID playerID) {
 		try {
 			
-			return dataClass
-					.getConstructor(GoreCoreDataSaver.class, UUID.class)
-					.newInstance(new GoreCoreDataSaverDontSave(), playerID);
+			return dataClass.getConstructor(GoreCoreDataSaver.class, UUID.class).newInstance(new GoreCoreDataSaverDontSave(), playerID);
 			
 		} catch (Exception e) {
 			GoreCore.LOGGER.warn("Found an error when trying to make new client-side player data!");
@@ -74,7 +61,7 @@ public class PlayerDataFetcherClient<T extends GoreCorePlayerData> implements Pl
 	public T fetch(EntityPlayer player, String errorMessage) {
 		return fetch(player.worldObj, player.getCommandSenderName(), errorMessage);
 	}
-
+	
 	@Override
 	public T fetch(World world, String playerName, String errorMessage) {
 		T data;
@@ -83,13 +70,12 @@ public class PlayerDataFetcherClient<T extends GoreCorePlayerData> implements Pl
 		GoreCorePlayerUUIDs.ResultOutcome error = getUUID.getResult();
 		if (getUUID.isResultSuccessful()) {
 			
-			Map<UUID, T> inner = getInnerMap(modID);
 			UUID playerID = getUUID.getUUID();
 			
-			data = inner.get(playerID);
+			data = playerData.get(playerID);
 			if (data == null) {
 				data = createPlayerData(dataClass, playerID);
-				inner.put(playerID, data);
+				playerData.put(playerID, data);
 				if (onCreate != null) onCreate.onClientPlayerDataCreated(data);
 			}
 			
@@ -126,25 +112,23 @@ public class PlayerDataFetcherClient<T extends GoreCorePlayerData> implements Pl
 		}
 		
 	}
-
+	
 	@Override
 	public T fetchPerformance(EntityPlayer player) {
 		return fetchPerformance(player.worldObj, player.getCommandSenderName());
 	}
-
+	
 	@Override
 	public T fetchPerformance(World world, String playerName) {
 		T data;
 		
 		GoreCorePlayerUUIDs.GetUUIDResult getUUID = GoreCorePlayerUUIDs.getUUID(playerName);
 		if (getUUID.isResultSuccessful()) {
-			Map<UUID, T> inner = getInnerMap(modID);
 			UUID playerID = getUUID.getUUID();
-			
-			data = inner.get(playerID);
+			data = playerData.get(playerID);
 			if (data == null) {
 				data = createPlayerData(dataClass, playerID);
-				inner.put(playerID, data);
+				playerData.put(playerID, data);
 				if (onCreate != null) onCreate.onClientPlayerDataCreated(data);
 			}
 			
@@ -154,7 +138,5 @@ public class PlayerDataFetcherClient<T extends GoreCorePlayerData> implements Pl
 		
 		return data;
 	}
-	
-	
 	
 }
