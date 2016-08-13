@@ -36,7 +36,7 @@ public abstract class GoreCoreWorldDataPlayers<T extends GoreCorePlayerData> ext
 	@Override
 	public void readFromNBT(NBTTagCompound nbt) {
 		this.players = GoreCoreNBTUtil.readMapFromNBT(nbt, GoreCorePlayerData.MAP_USER, "PlayerData", new Object[] {},
-				new Object[] { playerDataClass(), this });
+				new Object[] { playerDataClass(), this, getWorld() });
 	}
 	
 	@Override

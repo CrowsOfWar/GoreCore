@@ -1,9 +1,13 @@
 package crowsofwar.gorecore.data;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.UUID;
 
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.common.gameevent.TickEvent;
+import cpw.mods.fml.common.gameevent.TickEvent.Phase;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crowsofwar.gorecore.GoreCore;
@@ -12,18 +16,23 @@ import crowsofwar.gorecore.util.GoreCorePlayerUUIDs.ResultOutcome;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.world.WorldEvent;
 
 @SideOnly(Side.CLIENT)
 public class PlayerDataFetcherClient<T extends GoreCorePlayerData> implements PlayerDataFetcher<T> {
 	
 	private final Minecraft mc;
 	/**
-	 * <p>
 	 * Keeps track of client-side player data by mapping player UUID to player data.
 	 */
 	private Map<UUID, T> playerData = new HashMap<UUID, T>();
 	private Class<T> dataClass;
 	private PlayerDataCreationHandler<T> onCreate;
+	/**
+	 * Amount of ticks until check if player data can unload.
+	 */
+	private int ticksUntilCheck;
 	
 	/**
 	 * Create a client-side player data fetcher.
@@ -49,6 +58,8 @@ public class PlayerDataFetcherClient<T extends GoreCorePlayerData> implements Pl
 		this.mc = Minecraft.getMinecraft();
 		this.dataClass = dataClass;
 		this.onCreate = onCreate;
+		this.ticksUntilCheck = 20;
+		MinecraftForge.EVENT_BUS.register(this);
 	}
 	
 	private T createPlayerData(Class<T> dataClass, UUID playerID) {
@@ -145,6 +156,32 @@ public class PlayerDataFetcherClient<T extends GoreCorePlayerData> implements Pl
 		}
 		
 		return data;
+	}
+	
+	/**
+	 * Player data cache is cleared when world is unloaded.
+	 */
+	@SubscribeEvent
+	public void onUnloadWorld(WorldEvent.Unload e) {
+		playerData.clear();
+	}
+	
+	/**
+	 * Every second, check player data if it needs to unload.
+	 */
+	@SubscribeEvent
+	public void onTick(TickEvent.WorldTickEvent e) {
+		if (e.side == Side.CLIENT && e.phase == Phase.START && --ticksUntilCheck == 0) {
+			ticksUntilCheck = 20;
+			Iterator<UUID> iterator = playerData.keySet().iterator();
+			while (iterator.hasNext()) {
+				UUID playerId = iterator.next();
+				T data = playerData.get(playerId);
+				if (data.shouldBeDecached()) {
+					iterator.remove();
+				}
+			}
+		}
 	}
 	
 }

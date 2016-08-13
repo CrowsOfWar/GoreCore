@@ -6,8 +6,10 @@ import cpw.mods.fml.common.FMLLog;
 import crowsofwar.gorecore.util.GoreCoreNBTInterfaces;
 import crowsofwar.gorecore.util.GoreCoreNBTInterfaces.MapUser;
 import crowsofwar.gorecore.util.GoreCoreNBTUtil;
+import crowsofwar.gorecore.util.GoreCorePlayerUUIDs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.world.World;
 
 public abstract class GoreCorePlayerData implements GoreCoreNBTInterfaces.ReadableWritable {
 	
@@ -20,7 +22,9 @@ public abstract class GoreCorePlayerData implements GoreCoreNBTInterfaces.Readab
 		@Override
 		public GoreCorePlayerData createV(NBTTagCompound nbt, UUID key, Object[] constructArgsV) {
 			try {
-				GoreCorePlayerData data = ((Class<? extends GoreCorePlayerData>) constructArgsV[0]).getConstructor(GoreCoreDataSaver.class, UUID.class).newInstance(constructArgsV[1], key);
+				GoreCorePlayerData data = ((Class<? extends GoreCorePlayerData>) constructArgsV[0])
+						.getConstructor(GoreCoreDataSaver.class, UUID.class, EntityPlayer.class)
+						.newInstance(constructArgsV[1], key, GoreCorePlayerUUIDs.findPlayerInWorldFromUUID((World) constructArgsV[2], key));
 				data.readFromNBT(nbt);
 				return data;
 			} catch (Exception e) {
@@ -107,8 +111,15 @@ public abstract class GoreCorePlayerData implements GoreCoreNBTInterfaces.Readab
 		return playerID;
 	}
 	
+	/**
+	 * Returns whether this player data should be de-cached on a client-side Player Data Cache.
+	 * <p>
+	 * This is only used by {@link PlayerDataFetcherClient}.
+	 * <p>
+	 * By default, returns true if the player entity is dead (unloaded).
+	 */
 	public boolean shouldBeDecached() {
-		return false;
+		return playerEntity.isDead;
 	}
 	
 	/**
