@@ -9,7 +9,6 @@ import crowsofwar.gorecore.util.GoreCoreNBTUtil;
 import crowsofwar.gorecore.util.GoreCorePlayerUUIDs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.world.World;
 
 /**
  * A world data class which comes equipped with the ability to save and load player data.
@@ -26,11 +25,7 @@ public abstract class GoreCoreWorldDataPlayers<T extends GoreCorePlayerData> ext
 	public GoreCoreWorldDataPlayers(String key) {
 		super(key);
 		this.players = new HashMap<UUID, GoreCorePlayerData>();
-	}
-	
-	public GoreCoreWorldDataPlayers(World worldFor, String key) {
-		super(worldFor, key);
-		this.players = new HashMap<UUID, GoreCorePlayerData>();
+		Thread.dumpStack();
 	}
 	
 	@Override
@@ -73,7 +68,9 @@ public abstract class GoreCoreWorldDataPlayers<T extends GoreCorePlayerData> ext
 	public T getPlayerDataWithoutCreate(UUID player) {
 		T data = (T) players.get(player);
 		if (data.getPlayerEntity() == null) {
+			System.out.println("Player data is null!~");
 			data.setPlayerEntity(GoreCorePlayerUUIDs.findPlayerInWorldFromUUID(getWorld(), player));
+			System.out.println("Now it is: " + data.getPlayerEntity());
 		}
 		return data;
 	}

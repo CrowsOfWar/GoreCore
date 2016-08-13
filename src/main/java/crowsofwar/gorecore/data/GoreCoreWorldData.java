@@ -31,11 +31,6 @@ public abstract class GoreCoreWorldData extends WorldSavedData implements GoreCo
 		System.out.println("constructed from key");
 	}
 	
-	public GoreCoreWorldData(World worldFor, String key) {
-		this(key);
-		this.world = worldFor;
-	}
-	
 	public World getWorld() {
 		return world;
 	}
@@ -78,7 +73,7 @@ public abstract class GoreCoreWorldData extends WorldSavedData implements GoreCo
 			T data = worldDataClass.cast(ms.loadData(worldDataClass, key));
 			
 			if (data == null) {
-				data = worldDataClass.getConstructor(World.class, String.class).newInstance(world, key);
+				data = worldDataClass.getConstructor(String.class).newInstance(world, key);
 				data.setDirty(true);
 				ms.setData(key, data);
 			}
