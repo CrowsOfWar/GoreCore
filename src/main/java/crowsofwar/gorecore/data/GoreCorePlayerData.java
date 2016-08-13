@@ -6,10 +6,8 @@ import cpw.mods.fml.common.FMLLog;
 import crowsofwar.gorecore.util.GoreCoreNBTInterfaces;
 import crowsofwar.gorecore.util.GoreCoreNBTInterfaces.MapUser;
 import crowsofwar.gorecore.util.GoreCoreNBTUtil;
-import crowsofwar.gorecore.util.GoreCorePlayerUUIDs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.world.World;
 
 public abstract class GoreCorePlayerData implements GoreCoreNBTInterfaces.ReadableWritable {
 	
@@ -23,8 +21,7 @@ public abstract class GoreCorePlayerData implements GoreCoreNBTInterfaces.Readab
 		public GoreCorePlayerData createV(NBTTagCompound nbt, UUID key, Object[] constructArgsV) {
 			try {
 				GoreCorePlayerData data = ((Class<? extends GoreCorePlayerData>) constructArgsV[0])
-						.getConstructor(GoreCoreDataSaver.class, UUID.class, EntityPlayer.class)
-						.newInstance(constructArgsV[1], key, GoreCorePlayerUUIDs.findPlayerInWorldFromUUID((World) constructArgsV[2], key));
+						.getConstructor(GoreCoreDataSaver.class, UUID.class, EntityPlayer.class).newInstance(constructArgsV[1], key, null);
 				data.readFromNBT(nbt);
 				return data;
 			} catch (Exception e) {
@@ -129,8 +126,12 @@ public abstract class GoreCorePlayerData implements GoreCoreNBTInterfaces.Readab
 	 * <p>
 	 * Is not null {@link #shouldBeDecached() by default} on client.
 	 */
-	public EntityPlayer getPlayer() {
+	public EntityPlayer getPlayerEntity() {
 		return playerEntity;
+	}
+	
+	public void setPlayerEntity(EntityPlayer player) {
+		this.playerEntity = player;
 	}
 	
 }

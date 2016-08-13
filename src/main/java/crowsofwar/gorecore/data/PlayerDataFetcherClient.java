@@ -164,6 +164,7 @@ public class PlayerDataFetcherClient<T extends GoreCorePlayerData> implements Pl
 	@SubscribeEvent
 	public void onUnloadWorld(WorldEvent.Unload e) {
 		playerData.clear();
+		System.out.println("All data decached");
 	}
 	
 	/**
@@ -178,6 +179,7 @@ public class PlayerDataFetcherClient<T extends GoreCorePlayerData> implements Pl
 				UUID playerId = iterator.next();
 				T data = playerData.get(playerId);
 				if (data.shouldBeDecached()) {
+					System.out.println("data needed to be decached");
 					iterator.remove();
 				}
 			}

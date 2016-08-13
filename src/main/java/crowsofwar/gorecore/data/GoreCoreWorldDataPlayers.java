@@ -36,7 +36,7 @@ public abstract class GoreCoreWorldDataPlayers<T extends GoreCorePlayerData> ext
 	@Override
 	public void readFromNBT(NBTTagCompound nbt) {
 		this.players = GoreCoreNBTUtil.readMapFromNBT(nbt, GoreCorePlayerData.MAP_USER, "PlayerData", new Object[] {},
-				new Object[] { playerDataClass(), this, getWorld() });
+				new Object[] { playerDataClass(), this });
 	}
 	
 	@Override
@@ -53,7 +53,7 @@ public abstract class GoreCoreWorldDataPlayers<T extends GoreCorePlayerData> ext
 	 */
 	public T getPlayerData(UUID player) {
 		if (players.containsKey(player)) {
-			return (T) players.get(player);
+			return getPlayerDataWithoutCreate(player);
 		} else {
 			T data = createNewPlayerData(player);
 			players.put(player, data);
@@ -70,8 +70,12 @@ public abstract class GoreCoreWorldDataPlayers<T extends GoreCorePlayerData> ext
 	 *            The UUID of the player to get data for
 	 * @return Player data for the player, or null if it does not exist
 	 */
-	public GoreCorePlayerData getPlayerDataWithoutCreate(UUID player) {
-		return players.get(player);
+	public T getPlayerDataWithoutCreate(UUID player) {
+		T data = (T) players.get(player);
+		if (data.getPlayerEntity() == null) {
+			data.setPlayerEntity(GoreCorePlayerUUIDs.findPlayerInWorldFromUUID(getWorld(), player));
+		}
+		return data;
 	}
 	
 	public abstract Class<? extends GoreCorePlayerData> playerDataClass();

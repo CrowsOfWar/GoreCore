@@ -1,9 +1,9 @@
 package crowsofwar.gorecore.data;
 
+import cpw.mods.fml.common.FMLLog;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldSavedData;
 import net.minecraft.world.storage.MapStorage;
-import cpw.mods.fml.common.FMLLog;
 
 /**
  * A base class for WorldSavedData.
@@ -12,6 +12,12 @@ import cpw.mods.fml.common.FMLLog;
  */
 public abstract class GoreCoreWorldData extends WorldSavedData implements GoreCoreDataSaver {
 	
+	/**
+	 * The world that this data belongs to.
+	 * <p>
+	 * If the world data was constructed because it was first loaded by vanilla, will still be null
+	 * until {@link #getDataForWorld(Class, String, World, boolean)} is called.
+	 */
 	private World world;
 	
 	/**
@@ -22,6 +28,7 @@ public abstract class GoreCoreWorldData extends WorldSavedData implements GoreCo
 	public GoreCoreWorldData(String key) {
 		super(key);
 		this.storedData = new GoreCoreDataSaverNBT();
+		System.out.println("constructed from key");
 	}
 	
 	public GoreCoreWorldData(World worldFor, String key) {
@@ -45,21 +52,27 @@ public abstract class GoreCoreWorldData extends WorldSavedData implements GoreCo
 		markDirty();
 	}
 	
-	
 	/**
 	 * Use to make an easy implementation of getDataForWorld:
 	 * 
-	 * <pre>public static MyWorldData getDataForWorld(World world) {
-	 * return getDataForWorld(MyWorldData.class, "MyWorldData", world, true);
-	 *}</pre>
+	 * <pre>
+	 * public static MyWorldData getDataForWorld(World world) {
+	 * 	return getDataForWorld(MyWorldData.class, "MyWorldData", world, true);
+	 * }
+	 * </pre>
 	 * 
-	 * @param worldDataClass The class object of your world data
-	 * @param key The key to store the world data under
-	 * @param world The world to get world data for
-	 * @param separatePerDimension Whether world data is saved for each dimension or for all dimensions
+	 * @param worldDataClass
+	 *            The class object of your world data
+	 * @param key
+	 *            The key to store the world data under
+	 * @param world
+	 *            The world to get world data for
+	 * @param separatePerDimension
+	 *            Whether world data is saved for each dimension or for all dimensions
 	 * @return World data, retrieved using the specified options
 	 */
-	protected static <T extends GoreCoreWorldData> T getDataForWorld(Class<T> worldDataClass, String key, World world, boolean separatePerDimension) {
+	protected static <T extends GoreCoreWorldData> T getDataForWorld(Class<T> worldDataClass, String key, World world,
+			boolean separatePerDimension) {
 		try {
 			MapStorage ms = separatePerDimension ? world.perWorldStorage : world.mapStorage;
 			T data = worldDataClass.cast(ms.loadData(worldDataClass, key));
@@ -68,6 +81,10 @@ public abstract class GoreCoreWorldData extends WorldSavedData implements GoreCo
 				data = worldDataClass.getConstructor(World.class, String.class).newInstance(world, key);
 				data.setDirty(true);
 				ms.setData(key, data);
+			}
+			
+			if (data.getWorld() == null) {
+				data.setWorld(world);
 			}
 			
 			return data;
@@ -97,32 +114,32 @@ public abstract class GoreCoreWorldData extends WorldSavedData implements GoreCo
 	public void setString(String key, String value) {
 		storedData.setString(key, value);
 	}
-
+	
 	@Override
 	public float getFloat(String key) {
 		return storedData.getFloat(key);
 	}
-
+	
 	@Override
 	public void setFloat(String key, float value) {
 		storedData.setFloat(key, value);
 	}
-
+	
 	@Override
 	public double getDouble(String key) {
 		return storedData.getDouble(key);
 	}
-
+	
 	@Override
 	public void setDouble(String key, double value) {
 		storedData.setDouble(key, value);
 	}
-
+	
 	@Override
 	public long getLong(String key) {
 		return storedData.getLong(key);
 	}
-
+	
 	@Override
 	public void setLong(String key, long value) {
 		storedData.setLong(key, value);
