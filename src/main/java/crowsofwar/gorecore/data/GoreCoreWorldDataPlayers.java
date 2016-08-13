@@ -4,16 +4,18 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.world.World;
 import cpw.mods.fml.common.FMLLog;
 import crowsofwar.gorecore.util.GoreCoreNBTUtil;
+import crowsofwar.gorecore.util.GoreCorePlayerUUIDs;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.world.World;
 
 /**
- * A world data class which comes equipped with the ability to save
- * and load player data.
+ * A world data class which comes equipped with the ability to save and load player data.
  * 
- * @param T The type of your player data
+ * @param T
+ *            The type of your player data
  * 
  * @author CrowsOfWar
  */
@@ -33,7 +35,8 @@ public abstract class GoreCoreWorldDataPlayers<T extends GoreCorePlayerData> ext
 	
 	@Override
 	public void readFromNBT(NBTTagCompound nbt) {
-		this.players = GoreCoreNBTUtil.readMapFromNBT(nbt, GoreCorePlayerData.MAP_USER, "PlayerData", new Object[] {}, new Object[] { playerDataClass(), this });
+		this.players = GoreCoreNBTUtil.readMapFromNBT(nbt, GoreCorePlayerData.MAP_USER, "PlayerData", new Object[] {},
+				new Object[] { playerDataClass(), this });
 	}
 	
 	@Override
@@ -44,7 +47,8 @@ public abstract class GoreCoreWorldDataPlayers<T extends GoreCorePlayerData> ext
 	/**
 	 * Gets the player data for that player, creating it if necessary.
 	 * 
-	 * @param player The UUID of the player to get data for
+	 * @param player
+	 *            The UUID of the player to get data for
 	 * @return Player data for that player
 	 */
 	public T getPlayerData(UUID player) {
@@ -62,7 +66,8 @@ public abstract class GoreCoreWorldDataPlayers<T extends GoreCorePlayerData> ext
 	 * Gets the player data for the player. If the player data has not been created, then this will
 	 * return null.
 	 * 
-	 * @param player The UUID of the player to get data for
+	 * @param player
+	 *            The UUID of the player to get data for
 	 * @return Player data for the player, or null if it does not exist
 	 */
 	public GoreCorePlayerData getPlayerDataWithoutCreate(UUID player) {
@@ -74,9 +79,9 @@ public abstract class GoreCoreWorldDataPlayers<T extends GoreCorePlayerData> ext
 	private T createNewPlayerData(UUID player) {
 		try {
 			
-			GoreCorePlayerData data = playerDataClass()
-					.getConstructor(GoreCoreDataSaver.class, UUID.class)
-					.newInstance(this, player);
+			EntityPlayer playerEntity = GoreCorePlayerUUIDs.findPlayerInWorldFromUUID(getWorld(), player);
+			GoreCorePlayerData data = playerDataClass().getConstructor(GoreCoreDataSaver.class, UUID.class, EntityPlayer.class)
+					.newInstance(this, player, playerEntity);
 			return (T) data;
 			
 		} catch (Exception e) {

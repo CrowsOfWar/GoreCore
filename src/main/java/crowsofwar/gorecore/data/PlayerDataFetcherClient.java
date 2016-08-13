@@ -4,14 +4,19 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import crowsofwar.gorecore.GoreCore;
 import crowsofwar.gorecore.util.GoreCorePlayerUUIDs;
 import crowsofwar.gorecore.util.GoreCorePlayerUUIDs.ResultOutcome;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
 
+@SideOnly(Side.CLIENT)
 public class PlayerDataFetcherClient<T extends GoreCorePlayerData> implements PlayerDataFetcher<T> {
 	
+	private final Minecraft mc;
 	/**
 	 * <p>
 	 * Keeps track of client-side player data by mapping player UUID to player data.
@@ -41,6 +46,7 @@ public class PlayerDataFetcherClient<T extends GoreCorePlayerData> implements Pl
 	 *            created.
 	 */
 	public PlayerDataFetcherClient(Class<T> dataClass, PlayerDataCreationHandler<T> onCreate) {
+		this.mc = Minecraft.getMinecraft();
 		this.dataClass = dataClass;
 		this.onCreate = onCreate;
 	}
@@ -48,7 +54,9 @@ public class PlayerDataFetcherClient<T extends GoreCorePlayerData> implements Pl
 	private T createPlayerData(Class<T> dataClass, UUID playerID) {
 		try {
 			
-			return dataClass.getConstructor(GoreCoreDataSaver.class, UUID.class).newInstance(new GoreCoreDataSaverDontSave(), playerID);
+			EntityPlayer player = GoreCorePlayerUUIDs.findPlayerInWorldFromUUID(mc.theWorld, playerID);
+			return dataClass.getConstructor(GoreCoreDataSaver.class, UUID.class, EntityPlayer.class)
+					.newInstance(new GoreCoreDataSaverDontSave(), playerID, player);
 			
 		} catch (Exception e) {
 			GoreCore.LOGGER.warn("Found an error when trying to make new client-side player data!");
