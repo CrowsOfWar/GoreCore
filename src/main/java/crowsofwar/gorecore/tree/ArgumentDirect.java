@@ -35,14 +35,14 @@ public class ArgumentDirect<T> implements IArgument<T> {
 	public String getArgumentName() {
 		return name;
 	}
-
+	
 	@Override
 	public String getHelpString() {
 		String before = isOptional() ? "[" : "<";
 		String after = isOptional() ? "]" : ">";
 		return before + "any " + converter.getTypeName() + after;
 	}
-
+	
 	@Override
 	public String getSpecificationString() {
 		String before = isOptional() ? "[" : "<";

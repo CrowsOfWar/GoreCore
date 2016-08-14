@@ -28,8 +28,8 @@ public class GoreCoreClientProxy extends GoreCoreCommonProxy {
 	public boolean isPlayerWalking(EntityPlayer player) {
 		if (player == Minecraft.getMinecraft().thePlayer) {
 			GameSettings gc = Minecraft.getMinecraft().gameSettings;
-			return gc.keyBindForward.getIsKeyPressed() || gc.keyBindBack.getIsKeyPressed() ||
-					gc.keyBindLeft.getIsKeyPressed() || gc.keyBindRight.getIsKeyPressed();
+			return gc.keyBindForward.getIsKeyPressed() || gc.keyBindBack.getIsKeyPressed() || gc.keyBindLeft.getIsKeyPressed()
+					|| gc.keyBindRight.getIsKeyPressed();
 		}
 		
 		return false;

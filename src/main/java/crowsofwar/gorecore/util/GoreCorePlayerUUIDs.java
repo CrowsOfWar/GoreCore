@@ -19,21 +19,22 @@ import cpw.mods.fml.common.FMLLog;
 import crowsofwar.gorecore.GoreCore;
 
 /**
- * <p>Contains utility methods for getting player's account UUIDs.
- * Account UUIDs are the UUIDs on Mojang, and entity UUIDs are
- * the UUIDs gotten from Entity#getUniqueID().</p>
+ * <p>
+ * Contains utility methods for getting player's account UUIDs. Account UUIDs are the UUIDs on
+ * Mojang, and entity UUIDs are the UUIDs gotten from Entity#getUniqueID().
+ * </p>
  * 
- * <p>UUID results are stored in a cache file, and are loaded from
- * the cache as well.</p>
+ * <p>
+ * UUID results are stored in a cache file, and are loaded from the cache as well.
+ * </p>
  * 
  * @author CrowsOfWar
  */
 public final class GoreCorePlayerUUIDs {
 	
 	/**
-	 * A cache of UUIDs for quick use. It is saved via a UUID cache file.
-	 * The UUID cache map size will never exceed the maximum UUID cache
-	 * size.
+	 * A cache of UUIDs for quick use. It is saved via a UUID cache file. The UUID cache map size
+	 * will never exceed the maximum UUID cache size.
 	 */
 	private static final Map<String, UUID> playerNameToUUID;
 	
@@ -42,10 +43,9 @@ public final class GoreCorePlayerUUIDs {
 	}
 	
 	/**
-	 * Clears the UUID cache, then reads the UUID cache from the cache
-	 * file located in different places for client/server. This is so
-	 * that the big cache list does not have to be re-created every time
-	 * Minecraft restarts.
+	 * Clears the UUID cache, then reads the UUID cache from the cache file located in different
+	 * places for client/server. This is so that the big cache list does not have to be re-created
+	 * every time Minecraft restarts.
 	 * 
 	 * @see #saveUUIDCache()
 	 */
@@ -71,7 +71,8 @@ public final class GoreCorePlayerUUIDs {
 				String[] split = line.split("=");
 				if (split.length != 2) continue;
 				
-				// An IllegalArgumentException is thrown if split[1] is not a valid UUID string. It self-validates!
+				// An IllegalArgumentException is thrown if split[1] is not a valid UUID string. It
+				// self-validates!
 				try {
 					playerNameToUUID.put(split[0], UUID.fromString(split[1]));
 				} catch (IllegalArgumentException e) {
@@ -80,8 +81,8 @@ public final class GoreCorePlayerUUIDs {
 				
 			}
 			
-			FMLLog.info("GoreCore> Success! Read %1$d player UUID(s). Time taken in seconds: %2$f.",
-					playerNameToUUID.entrySet().size(), (System.currentTimeMillis() - start) / 1000.0);
+			FMLLog.info("GoreCore> Success! Read %1$d player UUID(s). Time taken in seconds: %2$f.", playerNameToUUID.entrySet().size(),
+					(System.currentTimeMillis() - start) / 1000.0);
 			
 		} catch (Exception e) {
 			FMLLog.severe("Error reading GoreCore player UUID cache from text file:");
@@ -91,8 +92,8 @@ public final class GoreCorePlayerUUIDs {
 	}
 	
 	/**
-	 * Saves the cache of UUIDs to a text file for reading later so that the
-	 * UUID cache does not have to be re-built every time Minecraft restarts.
+	 * Saves the cache of UUIDs to a text file for reading later so that the UUID cache does not
+	 * have to be re-built every time Minecraft restarts.
 	 * 
 	 * @see #addUUIDsToCacheFromCacheFile()
 	 */
@@ -123,8 +124,7 @@ public final class GoreCorePlayerUUIDs {
 			
 			bw.close();
 			
-			FMLLog.info("GoreCore: Finished saving UUIDs. Time taken in seconds: %f.",
-					(System.currentTimeMillis() - start) / 1000.0);
+			FMLLog.info("GoreCore: Finished saving UUIDs. Time taken in seconds: %f.", (System.currentTimeMillis() - start) / 1000.0);
 			
 		} catch (Exception e) {
 			FMLLog.severe("Error saving GoreCore player UUID cache to text file:");
@@ -134,15 +134,19 @@ public final class GoreCorePlayerUUIDs {
 	}
 	
 	/**
-	 * <p>Finds the player in the world whose account has the given UUID.</p>
+	 * <p>
+	 * Finds the player in the world whose account has the given UUID.
+	 * </p>
 	 * 
-	 * <p>This is different from <code>world.func_152378_a(playerID)</code> in that the
-	 * world's method uses the player's entity ID, while this method uses the player's
-	 * account ID.
+	 * <p>
+	 * This is different from <code>world.func_152378_a(playerID)</code> in that the world's method
+	 * uses the player's entity ID, while this method uses the player's account ID.
 	 * 
-	 * @param playerID The UUID of the player to find
-	 * @param world The world to look for the player in
-	 * @return 
+	 * @param playerID
+	 *            The UUID of the player to find
+	 * @param world
+	 *            The world to look for the player in
+	 * @return
 	 */
 	public static EntityPlayer findPlayerInWorldFromUUID(World world, UUID playerID) {
 		for (int i = 0; i < world.playerEntities.size(); i++) {
@@ -155,14 +159,18 @@ public final class GoreCorePlayerUUIDs {
 	}
 	
 	/**
-	 * <p>Gets the UUID of the player with the given username. If it exists in the cache,
-	 * the UUID will be obtained via the cache; otherwise, a HTTP request will be made
-	 * to obtain the UUID.</p>
+	 * <p>
+	 * Gets the UUID of the player with the given username. If it exists in the cache, the UUID will
+	 * be obtained via the cache; otherwise, a HTTP request will be made to obtain the UUID.
+	 * </p>
 	 * 
-	 * <p>The UUID found can be extracted from the UUID-result via {@link GetUUIDResult#getUUID()}
-	 * as long as an error has not occurred.</p>
+	 * <p>
+	 * The UUID found can be extracted from the UUID-result via {@link GetUUIDResult#getUUID()} as
+	 * long as an error has not occurred.
+	 * </p>
 	 * 
-	 * @param username The username to get the UUID for
+	 * @param username
+	 *            The username to get the UUID for
 	 * @return The UUID result of the getting
 	 */
 	public static GoreCorePlayerUUIDs.GetUUIDResult getUUID(String username) {
@@ -183,10 +191,12 @@ public final class GoreCorePlayerUUIDs {
 				
 				String line;
 				StringBuffer response = new StringBuffer();
-				while ((line = br.readLine()) != null) response.append(line);
+				while ((line = br.readLine()) != null)
+					response.append(line);
 				br.close();
 				
-				// For normal webpages, it would be like "<html><head>...</head><body><p>HAI</p></body></html>" or something like that
+				// For normal webpages, it would be like
+				// "<html><head>...</head><body><p>HAI</p></body></html>" or something like that
 				// for this it's a JSON
 				String result = response.toString();
 				
@@ -195,7 +205,8 @@ public final class GoreCorePlayerUUIDs {
 				}
 				
 				if (responseCode != 200) {
-					FMLLog.warning("GoreCore> Attempted to get a UUID for player " + username + ", but the response code was unexpected (" + responseCode + ")");
+					FMLLog.warning("GoreCore> Attempted to get a UUID for player " + username + ", but the response code was unexpected ("
+							+ responseCode + ")");
 					return new GetUUIDResult(null, ResultOutcome.BAD_HTTP_CODE);
 				}
 				
@@ -207,11 +218,8 @@ public final class GoreCorePlayerUUIDs {
 				resultOfExtraction = resultOfExtraction.replace(":", "");
 				
 				String uuidCleaned = resultOfExtraction.replaceAll("[^a-zA-Z0-9]", "");
-				uuidCleaned = (uuidCleaned.substring(0, 8) + "-"
-						+ uuidCleaned.substring( 8, 12) + "-"
-						+ uuidCleaned.substring(12, 16) + "-"
-						+ uuidCleaned.substring(16, 20) + "-"
-						+ uuidCleaned.substring(20, 32));
+				uuidCleaned = (uuidCleaned.substring(0, 8) + "-" + uuidCleaned.substring(8, 12) + "-" + uuidCleaned.substring(12, 16) + "-"
+						+ uuidCleaned.substring(16, 20) + "-" + uuidCleaned.substring(20, 32));
 				
 				UUID uuidResult = UUID.fromString(uuidCleaned);
 				
@@ -227,14 +235,19 @@ public final class GoreCorePlayerUUIDs {
 	}
 	
 	/**
-	 * <p>Gets the account UUID of the player with the given username. If it exists in
-	 * the cache, the UUID will be obtained via the cache; otherwise, a HTTP request
-	 * will be made to obtain the UUID.</p>
+	 * <p>
+	 * Gets the account UUID of the player with the given username. If it exists in the cache, the
+	 * UUID will be obtained via the cache; otherwise, a HTTP request will be made to obtain the
+	 * UUID.
+	 * </p>
 	 * 
-	 * <p>The UUID found will be returned. If an error occurs, this will return null.
-	 * A minimal amount of objects will be created.</p>
+	 * <p>
+	 * The UUID found will be returned. If an error occurs, this will return null. A minimal amount
+	 * of objects will be created.
+	 * </p>
 	 * 
-	 * @param username The username to get the UUID for
+	 * @param username
+	 *            The username to get the UUID for
 	 * @return The account UUID for the username, or null if an error occurred
 	 */
 	public static UUID getUUIDPerformance(String username) {
@@ -255,17 +268,20 @@ public final class GoreCorePlayerUUIDs {
 				
 				String line;
 				StringBuffer response = new StringBuffer();
-				while ((line = br.readLine()) != null) response.append(line);
+				while ((line = br.readLine()) != null)
+					response.append(line);
 				br.close();
 				
-				// For normal webpages, it would be like "<html><head>...</head><body><p>HAI</p></body></html>" or something like that
+				// For normal webpages, it would be like
+				// "<html><head>...</head><body><p>HAI</p></body></html>" or something like that
 				// for this it's a JSON
 				String result = response.toString();
 				
 				if (responseCode == 204) return null;
 				
 				if (responseCode != 200) {
-					FMLLog.warning("GoreCore> Attempted to get a UUID for player " + username + ", but the response code was unexpected (" + responseCode + ")");
+					FMLLog.warning("GoreCore> Attempted to get a UUID for player " + username + ", but the response code was unexpected ("
+							+ responseCode + ")");
 					return null;
 				}
 				
@@ -277,11 +293,8 @@ public final class GoreCorePlayerUUIDs {
 				resultOfExtraction = resultOfExtraction.replace(":", "");
 				
 				String uuidCleaned = resultOfExtraction.replaceAll("[^a-zA-Z0-9]", "");
-				uuidCleaned = (uuidCleaned.substring(0, 8) + "-"
-						+ uuidCleaned.substring( 8, 12) + "-"
-						+ uuidCleaned.substring(12, 16) + "-"
-						+ uuidCleaned.substring(16, 20) + "-"
-						+ uuidCleaned.substring(20, 32));
+				uuidCleaned = (uuidCleaned.substring(0, 8) + "-" + uuidCleaned.substring(8, 12) + "-" + uuidCleaned.substring(12, 16) + "-"
+						+ uuidCleaned.substring(16, 20) + "-" + uuidCleaned.substring(20, 32));
 				
 				UUID uuidResult = UUID.fromString(uuidCleaned);
 				
@@ -297,24 +310,24 @@ public final class GoreCorePlayerUUIDs {
 	}
 	
 	/**
-	 * Caches the results for the given username. However,
-	 * the cache will not be added on to if the cache is
-	 * too large (if the size of the cache exceeds the maximum UUID
-	 * cache size).
+	 * Caches the results for the given username. However, the cache will not be added on to if the
+	 * cache is too large (if the size of the cache exceeds the maximum UUID cache size).
 	 * 
-	 * @param username The username to store in the cache (key)
-	 * @param uuid The UUID to store in the cache (value)
+	 * @param username
+	 *            The username to store in the cache (key)
+	 * @param uuid
+	 *            The UUID to store in the cache (value)
 	 */
 	private static void cacheResults(String username, UUID uuid) {
-		 if (playerNameToUUID.size() < GoreCore.config.MAX_UUID_CACHE_SIZE) {
-        	 playerNameToUUID.put(username, uuid);
-        }
+		if (playerNameToUUID.size() < GoreCore.config.MAX_UUID_CACHE_SIZE) {
+			playerNameToUUID.put(username, uuid);
+		}
 	}
 	
 	/**
 	 * GetUUIDResult shows the result of getting UUIDs from player names through
-	 * {@link GoreCorePlayerUUIDs#getUUID(String)}. It has a UUID for the
-	 * result and a {@link ResultOutcome} that describes what happened.
+	 * {@link GoreCorePlayerUUIDs#getUUID(String)}. It has a UUID for the result and a
+	 * {@link ResultOutcome} that describes what happened.
 	 * 
 	 * @author CrowsOfWar
 	 */
@@ -328,8 +341,7 @@ public final class GoreCorePlayerUUIDs {
 		}
 		
 		/**
-		 * Gets the UUID of this UUID result. If the result isn't successful, it is
-		 * null.
+		 * Gets the UUID of this UUID result. If the result isn't successful, it is null.
 		 */
 		public UUID getUUID() {
 			return uuid;
@@ -343,9 +355,8 @@ public final class GoreCorePlayerUUIDs {
 		}
 		
 		/**
-		 * Returns whether the result of fetching the UUID is successful or not;
-		 * that is, whether the UUID could be found correctly and did not have
-		 * any errors.
+		 * Returns whether the result of fetching the UUID is successful or not; that is, whether
+		 * the UUID could be found correctly and did not have any errors.
 		 */
 		public boolean isResultSuccessful() {
 			return outcome == ResultOutcome.SUCCESS && uuid != null;
@@ -361,8 +372,7 @@ public final class GoreCorePlayerUUIDs {
 					text = "The player was not registered on Minecraft.net - are you using a cracked launcher?";
 				if (outcome == ResultOutcome.EXCEPTION_OCCURED)
 					text = "An unexpected error (specifically, an exception) occured while getting the player's UUID";
-				if (outcome == ResultOutcome.BAD_HTTP_CODE)
-					text = "Got an unexpected HTTP code";
+				if (outcome == ResultOutcome.BAD_HTTP_CODE) text = "Got an unexpected HTTP code";
 				FMLLog.warning("GoreCore> Attempted to get a player's UUID but failed: " + text);
 			}
 		}
@@ -375,9 +385,8 @@ public final class GoreCorePlayerUUIDs {
 	}
 	
 	/**
-	 * ResultOutcome enumerates different possibilities for results
-	 * of getting UUIDs from usernames. Using this enum will allow
-	 * for handling on errors/success based on what specific things
+	 * ResultOutcome enumerates different possibilities for results of getting UUIDs from usernames.
+	 * Using this enum will allow for handling on errors/success based on what specific things
 	 * happened.
 	 * 
 	 * @author CrowsOfWar
@@ -389,8 +398,7 @@ public final class GoreCorePlayerUUIDs {
 		SUCCESS,
 		
 		/**
-		 * The player is not registered in minecraft.net, so the username has no
-		 * UUID.
+		 * The player is not registered in minecraft.net, so the username has no UUID.
 		 */
 		USERNAME_DOES_NOT_EXIST,
 		

@@ -13,7 +13,7 @@ import crowsofwar.gorecore.tree.NodeFunctional;
 import net.minecraft.util.ChatComponentTranslation;
 
 public class TestBuyVideogames extends NodeFunctional {
-
+	
 	private final IArgument<Integer> argAmount;
 	
 	public TestBuyVideogames() {
@@ -28,7 +28,7 @@ public class TestBuyVideogames extends NodeFunctional {
 		call.getFrom().addChatMessage(new ChatComponentTranslation("test.buyVideogames", amount));
 		return null;
 	}
-
+	
 	@Override
 	public ChatMessage getInfoMessage() {
 		return TestMessages.MSG_VIDEOGAME_HELP;

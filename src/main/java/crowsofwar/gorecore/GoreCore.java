@@ -3,7 +3,6 @@ package crowsofwar.gorecore;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.SidedProxy;
@@ -19,14 +18,14 @@ import crowsofwar.gorecore.util.GoreCoreIsPlayerWalking;
 import crowsofwar.gorecore.util.GoreCorePlayerUUIDs;
 import crowsofwar.gorecore.util.GoreCoreVersionCheckerServerChat;
 
-@Mod(modid=GoreCore.MOD_ID, name=GoreCore.MOD_NAME, version=GoreCore.MOD_VERSION)
+@Mod(modid = GoreCore.MOD_ID, name = GoreCore.MOD_NAME, version = GoreCore.MOD_VERSION)
 public class GoreCore {
 	
 	public static final String MOD_ID = "GoreCore";
 	public static final String MOD_NAME = "GoreCore";
-	public static final String MOD_VERSION = "1.7.10-0.8.2";
+	public static final String MOD_VERSION = "1.7.10-0.9.0";
 	
-	@SidedProxy(clientSide="crowsofwar.gorecore.proxy.GoreCoreClientProxy", serverSide="crowsofwar.gorecore.proxy.GoreCoreCommonProxy")
+	@SidedProxy(clientSide = "crowsofwar.gorecore.proxy.GoreCoreClientProxy", serverSide = "crowsofwar.gorecore.proxy.GoreCoreCommonProxy")
 	public static GoreCoreCommonProxy proxy;
 	
 	public static GoreCoreModConfig config;

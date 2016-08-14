@@ -58,9 +58,8 @@ public class GoreCoreIsPlayerWalking {
 	}
 	
 	/**
-	 * Get whether the specified player is walking. On the client,
-	 * this will always return false for player entities who are
-	 * not the person who is playing Minecraft.
+	 * Get whether the specified player is walking. On the client, this will always return false for
+	 * player entities who are not the person who is playing Minecraft.
 	 */
 	public boolean isWalking(EntityPlayer player) {
 		Boolean b = isWalking.get(GoreCorePlayerUUIDs.getUUIDPerformance(player.getCommandSenderName()));
@@ -72,16 +71,18 @@ public class GoreCoreIsPlayerWalking {
 	}
 	
 	public static GoreCoreIsPlayerWalking getWalkDetectorForCurrentSide() {
-		return FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT ? GoreCore.walkDetectorClient
-				: GoreCore.walkDetectorServer;
+		return FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT ? GoreCore.walkDetectorClient : GoreCore.walkDetectorServer;
 	}
 	
 	/**
-	 * <p>Get whether the specified player is walking. On the client,
-	 * this will always return false for player entities who are
-	 * not the person who is playing Minecraft.</p>
+	 * <p>
+	 * Get whether the specified player is walking. On the client, this will always return false for
+	 * player entities who are not the person who is playing Minecraft.
+	 * </p>
 	 * 
-	 * <p>This uses the current side's walk detector.</p>
+	 * <p>
+	 * This uses the current side's walk detector.
+	 * </p>
 	 * 
 	 * @see #isWalking(player)
 	 */

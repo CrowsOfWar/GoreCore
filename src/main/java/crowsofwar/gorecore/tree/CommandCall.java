@@ -38,8 +38,6 @@ public class CommandCall {
 			}
 		}
 		
-		
-		
 	}
 	
 	public ArgumentList popArguments(IArgument<?>... arguments) {

@@ -19,7 +19,9 @@ import cpw.mods.fml.common.gameevent.PlayerEvent;
 import crowsofwar.gorecore.util.GoreCorePlayerUUIDs.GetUUIDResult;
 
 /**
- * <p>Keeps track of people who helped the mod by using an online text file.</p>
+ * <p>
+ * Keeps track of people who helped the mod by using an online text file.
+ * </p>
  * 
  * @author CrowsOfWar
  */
@@ -42,8 +44,11 @@ public class GoreCoreHelperDetector {
 	
 	/**
 	 * Load usernames and put their roles in a map.
-	 * @param modName The name of your mod
-	 * @param url The URL of your username list
+	 * 
+	 * @param modName
+	 *            The name of your mod
+	 * @param url
+	 *            The URL of your username list
 	 */
 	public GoreCoreHelperDetector(String modName, String url) {
 		mod = modName;
@@ -68,7 +73,8 @@ public class GoreCoreHelperDetector {
 					String[] split = line.split("=", 2);
 					GetUUIDResult res = GoreCorePlayerUUIDs.getUUID(split[0]);
 					if (res.isResultSuccessful()) {
-						// Only put in if it was successful to avoid weird problems with playersUsername containing
+						// Only put in if it was successful to avoid weird problems with
+						// playersUsername containing
 						// the player data but playersUUID not!
 						playersUsername.put(split[0], split[1]);
 						playersUUID.put(res.getUUID(), split[1]);
@@ -106,9 +112,14 @@ public class GoreCoreHelperDetector {
 	}
 	
 	/**
-	 * <p><strong>Don't call this unless you are cpw's code!</strong></p>
+	 * <p>
+	 * <strong>Don't call this unless you are cpw's code!</strong>
+	 * </p>
 	 * 
-	 * <p>An event method to greet players on join. This is only registered if {@link #greetHelpers()} is called.</p>
+	 * <p>
+	 * An event method to greet players on join. This is only registered if {@link #greetHelpers()}
+	 * is called.
+	 * </p>
 	 */
 	@SubscribeEvent
 	public void playerJoin(PlayerEvent.PlayerLoggedInEvent event) {
@@ -118,8 +129,7 @@ public class GoreCoreHelperDetector {
 			for (EntityPlayer p : players) {
 				String key = "gc.greet." + role;
 				String translated = StatCollector.translateToLocal(role);
-				if (translated != key)
-					p.addChatMessage(new ChatComponentTranslation(key, event.player.getCommandSenderName(), mod));
+				if (translated != key) p.addChatMessage(new ChatComponentTranslation(key, event.player.getCommandSenderName(), mod));
 			}
 		}
 	}

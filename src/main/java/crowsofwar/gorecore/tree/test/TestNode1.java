@@ -12,7 +12,7 @@ import crowsofwar.gorecore.tree.NodeFunctional;
 import net.minecraft.util.ChatComponentText;
 
 public class TestNode1 extends NodeFunctional {
-
+	
 	private final IArgument<String> argA;
 	private final IArgument<Integer> argB;
 	
@@ -32,5 +32,5 @@ public class TestNode1 extends NodeFunctional {
 		
 		return null;
 	}
-
+	
 }

@@ -20,7 +20,8 @@ public class ArgumentList {
 			} else { // Try to use the default value if the argument is optional
 				if (argument.isOptional()) { // Argument has a default value, which can be used
 					out = argument.getDefaultValue();
-				} else { // Argument isn't optional, but user input hasn't been specified. Throw an error.
+				} else { // Argument isn't optional, but user input hasn't been specified. Throw an
+							// error.
 					throw new TreeCommandException(Reason.ARGUMENT_MISSING, arguments[i].getArgumentName());
 				}
 			}

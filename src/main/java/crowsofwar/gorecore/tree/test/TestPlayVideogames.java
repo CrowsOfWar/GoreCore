@@ -9,7 +9,7 @@ import crowsofwar.gorecore.tree.NodeFunctional;
 import net.minecraft.util.ChatComponentTranslation;
 
 public class TestPlayVideogames extends NodeFunctional {
-
+	
 	public TestPlayVideogames() {
 		super("play", false);
 	}
@@ -21,7 +21,7 @@ public class TestPlayVideogames extends NodeFunctional {
 		call.getFrom().addChatMessage(new ChatComponentTranslation(send, videogame));
 		return null;
 	}
-
+	
 	@Override
 	public ChatMessage getInfoMessage() {
 		return TestMessages.MSG_PLAYVIDEOGAMES_HELP;

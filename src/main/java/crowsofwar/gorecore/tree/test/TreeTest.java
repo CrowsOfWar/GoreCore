@@ -20,8 +20,7 @@ public class TreeTest extends TreeCommand {
 		
 		ICommandNode videogamesPlay = new TestPlayVideogames();
 		ICommandNode videogamesBuy = new TestBuyVideogames();
-		ICommandNode branchVideogames = new NodeBranch(TestMessages.MSG_VIDEOGAME_BRANCH_HELP, "videogames",
-				videogamesPlay, videogamesBuy);
+		ICommandNode branchVideogames = new NodeBranch(TestMessages.MSG_VIDEOGAME_BRANCH_HELP, "videogames", videogamesPlay, videogamesBuy);
 		
 		return new ICommandNode[] { branchCake, branchVideogames, new TestUseChatSender() };
 		

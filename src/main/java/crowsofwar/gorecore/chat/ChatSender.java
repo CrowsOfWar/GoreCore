@@ -117,7 +117,7 @@ public class ChatSender {
 		System.out.println("processing " + text);
 		
 		String[] translateArgs = cm.getTranslationArgs();
-//		System.out.println("Translate args length: " + translateArgs.length);
+		// System.out.println("Translate args length: " + translateArgs.length);
 		for (int i = 0; i < translateArgs.length; i++) {
 			System.out.println("Translate arg " + translateArgs[i]);
 			text = text.replace("${" + translateArgs[i] + "}", formatArgs[i].toString());
@@ -151,7 +151,7 @@ public class ChatSender {
 				format.setItalic(false);
 				recievedFormatInstruction = true;
 				
-			} else if (item.equals("/color")){
+			} else if (item.equals("/color")) {
 				
 				recievedFormatInstruction = format.setColor(item);
 				
@@ -206,7 +206,7 @@ public class ChatSender {
 			EnumChatFormatting set = null;
 			if (colorStr.equals("/color")) {
 				set = EnumChatFormatting.WHITE;
-			} else if (config.hasColor(colorStr)) { 
+			} else if (config.hasColor(colorStr)) {
 				set = config.getColor(colorStr);
 			} else {
 				EnumChatFormatting[] allFormats = EnumChatFormatting.values();

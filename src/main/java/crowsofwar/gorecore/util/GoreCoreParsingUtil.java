@@ -11,7 +11,8 @@ public class GoreCoreParsingUtil {
 	/**
 	 * Parse the string into an integer.
 	 * 
-	 * @param str The string to parse
+	 * @param str
+	 *            The string to parse
 	 * @return The result of parsing the string to an integer
 	 * @see Integer#parseInt(String)
 	 */
@@ -26,7 +27,8 @@ public class GoreCoreParsingUtil {
 	/**
 	 * Parse the string into a float.
 	 * 
-	 * @param str The string to parse
+	 * @param str
+	 *            The string to parse
 	 * @return The result of parsing the string to a float
 	 * @see Float#parseFloat(String)
 	 */
@@ -41,7 +43,8 @@ public class GoreCoreParsingUtil {
 	/**
 	 * Parse the string into a double.
 	 * 
-	 * @param str The string to parse
+	 * @param str
+	 *            The string to parse
 	 * @return The result of parsing the string to a double
 	 * @see Double#parseDouble(String)
 	 */
@@ -56,7 +59,8 @@ public class GoreCoreParsingUtil {
 	/**
 	 * Parse the string into a long.
 	 * 
-	 * @param str The string to parse
+	 * @param str
+	 *            The string to parse
 	 * @return The result of parsing the string to a long
 	 * @see Long#parseLong(String)
 	 */
@@ -71,7 +75,8 @@ public class GoreCoreParsingUtil {
 	/**
 	 * Parse the string into a boolean.
 	 * 
-	 * @param str The string to parse
+	 * @param str
+	 *            The string to parse
 	 * @return The result of parsing the string to a boolean
 	 * @see Boolean#parseBoolean(String)
 	 */

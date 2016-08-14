@@ -33,7 +33,8 @@ public final class GoreCoreNBTUtil {
 		}
 	}
 	
-	public static <T> List<T> readListFromNBT(NBTTagCompound nbt, String key, GoreCoreNBTInterfaces.CreateFromNBT<T> creator, Object... extraData) {
+	public static <T> List<T> readListFromNBT(NBTTagCompound nbt, String key, GoreCoreNBTInterfaces.CreateFromNBT<T> creator,
+			Object... extraData) {
 		List<T> result = new ArrayList<T>();
 		
 		NBTTagList nbtList = nbt.getTagList(key, 10);
@@ -47,13 +48,20 @@ public final class GoreCoreNBTUtil {
 	/**
 	 * Writes the list to the NBTTagCompound.
 	 * 
-	 * @param nbt The NBTTagCompound
-	 * @param key The list's identifier
-	 * @param writer Used to write items in the list to NBT. methodsExtraData is an empty array.
-	 * @param list The list to write
-	 * @param extraData Extra data to be passed in to writer#write, is applied for each call to writer#write
+	 * @param nbt
+	 *            The NBTTagCompound
+	 * @param key
+	 *            The list's identifier
+	 * @param writer
+	 *            Used to write items in the list to NBT. methodsExtraData is an empty array.
+	 * @param list
+	 *            The list to write
+	 * @param extraData
+	 *            Extra data to be passed in to writer#write, is applied for each call to
+	 *            writer#write
 	 */
-	public static <T> void writeListToNBT(NBTTagCompound nbt, String key, GoreCoreNBTInterfaces.WriteToNBT<T> writer, List<T> list, Object... extraData) {
+	public static <T> void writeListToNBT(NBTTagCompound nbt, String key, GoreCoreNBTInterfaces.WriteToNBT<T> writer, List<T> list,
+			Object... extraData) {
 		NBTTagList nbtList = new NBTTagList();
 		
 		for (int i = 0; i < list.size(); i++) {
@@ -68,16 +76,28 @@ public final class GoreCoreNBTUtil {
 	/**
 	 * Reads the map from NBT.
 	 * 
-	 * @param nbt The NBTTagCompound to read the map from
-	 * @param key The key
-	 * @param createKey The creator for objects which will act as keys. methodsExtraData will be an empty array.
-	 * @param createVal The creator for objects which will act as values. methodsExtraData will be an array containing only the key.
-	 * @param extraDataKey Extra data passed in for createKey, is specific for each implementation of CreateFromNBT
-	 * @param extraDataVal Extra data passed in for createVal, is specific for each implementation of CreateFromNBT
-	 * @return A HashMap filled with all of the data stored via {@link #writeMapToNBT(NBTTagCompound, String, crowsofwar.gorecore.util.GoreCoreNBTInterfaces.WriteToNBT, crowsofwar.gorecore.util.GoreCoreNBTInterfaces.WriteToNBT, Object[], Object[], Map)}.
-	 * The load factor is 0.75.
+	 * @param nbt
+	 *            The NBTTagCompound to read the map from
+	 * @param key
+	 *            The key
+	 * @param createKey
+	 *            The creator for objects which will act as keys. methodsExtraData will be an empty
+	 *            array.
+	 * @param createVal
+	 *            The creator for objects which will act as values. methodsExtraData will be an
+	 *            array containing only the key.
+	 * @param extraDataKey
+	 *            Extra data passed in for createKey, is specific for each implementation of
+	 *            CreateFromNBT
+	 * @param extraDataVal
+	 *            Extra data passed in for createVal, is specific for each implementation of
+	 *            CreateFromNBT
+	 * @return A HashMap filled with all of the data stored via
+	 *         {@link #writeMapToNBT(NBTTagCompound, String, crowsofwar.gorecore.util.GoreCoreNBTInterfaces.WriteToNBT, crowsofwar.gorecore.util.GoreCoreNBTInterfaces.WriteToNBT, Object[], Object[], Map)}
+	 *         . The load factor is 0.75.
 	 */
-	public static <K, V> Map<K, V> readMapFromNBT(NBTTagCompound nbt, MapUser<K, V> mapUser, String key, Object[] constructArgsK, Object[] constructArgsV) {
+	public static <K, V> Map<K, V> readMapFromNBT(NBTTagCompound nbt, MapUser<K, V> mapUser, String key, Object[] constructArgsK,
+			Object[] constructArgsV) {
 		Map<K, V> result = new HashMap<K, V>();
 		
 		NBTTagList nbtList = nbt.getTagList(key, 10);
@@ -98,8 +118,10 @@ public final class GoreCoreNBTUtil {
 	 * 
 	 * @param nbt
 	 * @param key
-	 * @param writeKey The writer for the keys. methodsExtraData will be an empty array.
-	 * @param writeVal The writer for the values. methodsExtraData will be an empty array.
+	 * @param writeKey
+	 *            The writer for the keys. methodsExtraData will be an empty array.
+	 * @param writeVal
+	 *            The writer for the values. methodsExtraData will be an empty array.
 	 * @param extraDataKey
 	 * @param extraDataVal
 	 * @param map
@@ -124,10 +146,10 @@ public final class GoreCoreNBTUtil {
 	}
 	
 	/**
-	 * Gets the NBTTagCompound for that ItemStack, creating it if
-	 * necessary.
+	 * Gets the NBTTagCompound for that ItemStack, creating it if necessary.
 	 * 
-	 * @param stack The ItemStack to get the compound for
+	 * @param stack
+	 *            The ItemStack to get the compound for
 	 * @return The stack's data compound
 	 */
 	public static NBTTagCompound getStackCompound(ItemStack stack) {

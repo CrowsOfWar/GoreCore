@@ -25,7 +25,6 @@ public abstract class GoreCoreWorldDataPlayers<T extends GoreCorePlayerData> ext
 	public GoreCoreWorldDataPlayers(String key) {
 		super(key);
 		this.players = new HashMap<UUID, GoreCorePlayerData>();
-		Thread.dumpStack();
 	}
 	
 	@Override

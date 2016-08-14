@@ -15,8 +15,9 @@ public class GoreCoreCommandExecutionReport {
 	private final List<GoreCoreCommandProblem> problems;
 	
 	/**
-	 * A list of objects to be formatted when sending error messages. <code>formattingData.get(<em>n</em>)</code>
-	 * corresponds to <code>problems.get(<em>n</em>)</code>.
+	 * A list of objects to be formatted when sending error messages.
+	 * <code>formattingData.get(<em>n</em>)</code> corresponds to <code>problems.get(<em>n</em>
+	 * )</code>.
 	 */
 	private final List<Object> formattingData;
 	
@@ -27,8 +28,8 @@ public class GoreCoreCommandExecutionReport {
 		this.problems = new ArrayList<GoreCoreCommandProblem>();
 		this.formattingData = new ArrayList<Object>();
 		if (problems.size() != formattingData.size()) {
-			FMLLog.warning("GoreCore> Warning: somebody created GoreCoreCommandExecuteReport " +
-					"with unmatching problems/formattingData. This is a bug, report it to CrowsOfWar!");
+			FMLLog.warning("GoreCore> Warning: somebody created GoreCoreCommandExecuteReport "
+					+ "with unmatching problems/formattingData. This is a bug, report it to CrowsOfWar!");
 		}
 	}
 	
@@ -60,10 +61,12 @@ public class GoreCoreCommandExecutionReport {
 	/**
 	 * Add a problem to this report.
 	 * 
-	 * @param problem The problem that happened
-	 * @param format Extra data to help describe the problem. This is dependent on which problem happened.
-	 * For example, if the problem was that a player didn't exist, format should be the player's name. Set
-	 * to null if this isn't necessary.
+	 * @param problem
+	 *            The problem that happened
+	 * @param format
+	 *            Extra data to help describe the problem. This is dependent on which problem
+	 *            happened. For example, if the problem was that a player didn't exist, format
+	 *            should be the player's name. Set to null if this isn't necessary.
 	 */
 	public void addProblem(GoreCoreCommandProblem problem, Object format) {
 		problems.add(problem);

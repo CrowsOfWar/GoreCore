@@ -187,6 +187,7 @@ public interface ITypeConverter<T> {
 	
 	/**
 	 * Get a human-readable type name.
+	 * 
 	 * @return
 	 */
 	String getTypeName();

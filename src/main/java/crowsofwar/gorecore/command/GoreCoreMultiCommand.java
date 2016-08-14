@@ -16,8 +16,8 @@ import crowsofwar.gorecore.util.GoreCoreParsingUtil;
 import crowsofwar.gorecore.util.GoreCorePlayerUUIDs;
 
 /**
- * GoreCoreMultiCommand sets the base for a multi-type command, so
- * commands made with GoreCoreMultiCommand have many subtypes.
+ * GoreCoreMultiCommand sets the base for a multi-type command, so commands made with
+ * GoreCoreMultiCommand have many subtypes.
  * 
  * @author CrowsOfWar
  */
@@ -42,9 +42,7 @@ public abstract class GoreCoreMultiCommand implements ICommand {
 		compileSubcommandString();
 		
 		if (addHelpSubcommand()) {
-			addSubcommand(new Subcommand("[subcommand]",
-					"Displays help for the given subcommand or for the command itself.",
-					"help", "?") {
+			addSubcommand(new Subcommand("[subcommand]", "Displays help for the given subcommand or for the command itself.", "help", "?") {
 				@Override
 				public GoreCoreCommandExecutionReport execute(ICommandSender sender, String[] arguments) {
 					if (arguments.length == 2) {
@@ -89,7 +87,8 @@ public abstract class GoreCoreMultiCommand implements ICommand {
 		sendChat(sender, getHelpKey(), "help", null);
 		
 		sendChat(sender, getSubcommandListTop(), "help", null);
-		for (Subcommand subcommand : subcommands) sendChat(sender, getSubcommandListItem(), "help", subcommand.getSubcommandName());
+		for (Subcommand subcommand : subcommands)
+			sendChat(sender, getSubcommandListItem(), "help", subcommand.getSubcommandName());
 	}
 	
 	protected void displaySubcommandHelp(ICommandSender sender, Subcommand subcommand) {
@@ -99,12 +98,9 @@ public abstract class GoreCoreMultiCommand implements ICommand {
 	}
 	
 	protected void displayErrorSCNotFound(ICommandSender sender, String subcommandName) {
-		sender.addChatMessage(new ChatComponentTranslation(getSubcommandNotFound(),
-				sender.getCommandSenderName(),
-				getCommandName(),
-				subcommands.size(), "nusc", "nusc", "nusc", "nusc", "nusc",
-				subcommandName, "ntsc", "ntsc", "ntsc", "ntsc", subcommandString
-		));
+		sender.addChatMessage(
+				new ChatComponentTranslation(getSubcommandNotFound(), sender.getCommandSenderName(), getCommandName(), subcommands.size(),
+						"nusc", "nusc", "nusc", "nusc", "nusc", subcommandName, "ntsc", "ntsc", "ntsc", "ntsc", subcommandString));
 	}
 	
 	protected void displayErrorNotOp(ICommandSender sender, Subcommand using) {
@@ -153,62 +149,57 @@ public abstract class GoreCoreMultiCommand implements ICommand {
 	
 	protected void displayUUIDError(ICommandSender sender, Subcommand using, String player, GoreCorePlayerUUIDs.ResultOutcome error) {
 		switch (error) {
-			case SUCCESS: {
-				break;
-			}
-			
-			case USERNAME_DOES_NOT_EXIST: {
-				displayErrorPlayerDoesntExist(sender, using, player);
-				break;
-			}
-			
-			case BAD_HTTP_CODE:
-			case EXCEPTION_OCCURED: {
-				displayErrorGetUUIDError(sender, using, player);
-				break;
-			}
+		case SUCCESS: {
+			break;
+		}
+		
+		case USERNAME_DOES_NOT_EXIST: {
+			displayErrorPlayerDoesntExist(sender, using, player);
+			break;
+		}
+		
+		case BAD_HTTP_CODE:
+		case EXCEPTION_OCCURED: {
+			displayErrorGetUUIDError(sender, using, player);
+			break;
+		}
 		}
 	}
 	
 	/**
-	 * <p>Gets arguments to use for sending chat messages.</p>
+	 * <p>
+	 * Gets arguments to use for sending chat messages.
+	 * </p>
 	 * 
-	 * <p>e.g. For <code>/gc ? version</code>, the arguments would be gotten like this:
-	 * <code>getChatArguments(sender, getSubcommandByName("help"), getSubcommandByName("version")</code></p>
+	 * <p>
+	 * e.g. For <code>/gc ? version</code>, the arguments would be gotten like this:
+	 * <code>getChatArguments(sender, getSubcommandByName("help"), getSubcommandByName("version")</code>
+	 * </p>
 	 * 
-	 * @param sender Whoever the chat message is for
-	 * @param usingSC The subcommand that is being used to send the chat, null if this is not from
-	 * any subcommands
-	 * @param talkingOf The subcommand that is being talked about, null if this chat is not
-	 * talking of any subcommands
-	 * @param extraArguments Extra arguments to be added onto the end of the returned array
+	 * @param sender
+	 *            Whoever the chat message is for
+	 * @param usingSC
+	 *            The subcommand that is being used to send the chat, null if this is not from any
+	 *            subcommands
+	 * @param talkingOf
+	 *            The subcommand that is being talked about, null if this chat is not talking of any
+	 *            subcommands
+	 * @param extraArguments
+	 *            Extra arguments to be added onto the end of the returned array
 	 */
 	protected Object[] getChatArguments(ICommandSender sender, Subcommand usingSC, Subcommand talkingOf, Object[] extraArguments) {
-		return ArrayUtils.addAll(new Object[] {
-			sender.getCommandSenderName(),
-			getCommandName(),
-			subcommands.size(),
-			usingSC == null ? "nusc" : usingSC.getSubcommandName(),
-			usingSC == null ? "nusc" : usingSC.getSubcommandDescription(),
-			usingSC == null ? "nusc" : usingSC.getSubcommandUsageRaw(),
-			usingSC == null ? "nusc" : usingSC.getAllNamesString(),
-			usingSC == null ? "nusc" : usingSC.getAliasesString(),
-			talkingOf == null ? "ntsc" : talkingOf.getSubcommandName(),
-			talkingOf == null ? "ntsc" : talkingOf.getSubcommandDescription(),
-			talkingOf == null ? "ntsc" : talkingOf.getSubcommandUsageRaw(),
-			talkingOf == null ? "ntsc" : talkingOf.getAllNamesString(),
-			talkingOf == null ? "ntsc" : talkingOf.getAliasesString(),
-			subcommandString
-		}, extraArguments);
+		return ArrayUtils.addAll(new Object[] { sender.getCommandSenderName(), getCommandName(), subcommands.size(),
+				usingSC == null ? "nusc" : usingSC.getSubcommandName(), usingSC == null ? "nusc" : usingSC.getSubcommandDescription(),
+				usingSC == null ? "nusc" : usingSC.getSubcommandUsageRaw(), usingSC == null ? "nusc" : usingSC.getAllNamesString(),
+				usingSC == null ? "nusc" : usingSC.getAliasesString(), talkingOf == null ? "ntsc" : talkingOf.getSubcommandName(),
+				talkingOf == null ? "ntsc" : talkingOf.getSubcommandDescription(),
+				talkingOf == null ? "ntsc" : talkingOf.getSubcommandUsageRaw(), talkingOf == null ? "ntsc" : talkingOf.getAllNamesString(),
+				talkingOf == null ? "ntsc" : talkingOf.getAliasesString(), subcommandString }, extraArguments);
 	}
 	
 	protected void sendChat(ICommandSender sender, String key, String using, String talkingOf, Object... extraArguments) {
-		sender.addChatMessage(new ChatComponentTranslation(key, getChatArguments(
-			sender,
-			using == null ? null : getSubcommandByName(using),
-			talkingOf == null ? null : getSubcommandByName(talkingOf),
-			extraArguments
-		)));
+		sender.addChatMessage(new ChatComponentTranslation(key, getChatArguments(sender, using == null ? null : getSubcommandByName(using),
+				talkingOf == null ? null : getSubcommandByName(talkingOf), extraArguments)));
 	}
 	
 	// Subclass hooks/methods
@@ -313,7 +304,6 @@ public abstract class GoreCoreMultiCommand implements ICommand {
 	
 	// Parsing methods
 	
-	
 	// Public methods
 	public Subcommand getSubcommandByName(String name) {
 		for (Subcommand sc : subcommands) {
@@ -374,52 +364,51 @@ public abstract class GoreCoreMultiCommand implements ICommand {
 					Object format = formatArgs.get(i);
 					
 					switch (problem) {
-						case MUST_BE_OP: {
-							displayErrorNotOp(sender, subcommand);
-							break;
-						}
-						case MUST_BE_PLAYER: {
-							displayErrorNotPlayer(sender, subcommand);
-							break;
-						}
-						case PLAYER_NOT_ONLINE: {
-							displayErrorPlayerNotOnline(sender, subcommand, (String) format);
-							break;
-						}
-						case INVALID_INT: {
-							displayErrorInvalidInt(sender, subcommand, (String) format);
-							break;
-						}
-						case INVALID_FLOAT: {
-							displayErrorInvalidFloat(sender, subcommand, (String) format);
-							break;
-						}
-						case INVALID_DOUBLE: {
-							displayErrorInvalidDouble(sender, subcommand, (String) format);
-							break;
-						}
-						case INVALID_LONG: {
-							displayErrorInvalidLong(sender, subcommand, (String) format);
-							break;
-						}
-						case INVALID_BOOLEAN: {
-							displayErrorInvalidBoolean(sender, subcommand, (String) format);
-							break;
-						}
-						case INCORRECT_USAGE: {
-							displayErrorIncorrectUsage(sender, subcommand);
-							break;
-						}
-						case PLAYER_DOESNT_EXIST: {
-							displayErrorPlayerDoesntExist(sender, subcommand, (String) format);
-							break;
-						}
-						case GET_UUID_ERROR: {
-							displayErrorGetUUIDError(sender, subcommand, (String) format);
-							break;
-						}
+					case MUST_BE_OP: {
+						displayErrorNotOp(sender, subcommand);
+						break;
 					}
-					
+					case MUST_BE_PLAYER: {
+						displayErrorNotPlayer(sender, subcommand);
+						break;
+					}
+					case PLAYER_NOT_ONLINE: {
+						displayErrorPlayerNotOnline(sender, subcommand, (String) format);
+						break;
+					}
+					case INVALID_INT: {
+						displayErrorInvalidInt(sender, subcommand, (String) format);
+						break;
+					}
+					case INVALID_FLOAT: {
+						displayErrorInvalidFloat(sender, subcommand, (String) format);
+						break;
+					}
+					case INVALID_DOUBLE: {
+						displayErrorInvalidDouble(sender, subcommand, (String) format);
+						break;
+					}
+					case INVALID_LONG: {
+						displayErrorInvalidLong(sender, subcommand, (String) format);
+						break;
+					}
+					case INVALID_BOOLEAN: {
+						displayErrorInvalidBoolean(sender, subcommand, (String) format);
+						break;
+					}
+					case INCORRECT_USAGE: {
+						displayErrorIncorrectUsage(sender, subcommand);
+						break;
+					}
+					case PLAYER_DOESNT_EXIST: {
+						displayErrorPlayerDoesntExist(sender, subcommand, (String) format);
+						break;
+					}
+					case GET_UUID_ERROR: {
+						displayErrorGetUUIDError(sender, subcommand, (String) format);
+						break;
+					}
+					}
 					
 				}
 				
@@ -428,7 +417,6 @@ public abstract class GoreCoreMultiCommand implements ICommand {
 			}
 			
 		}
-		
 		
 	}
 	
@@ -483,8 +471,8 @@ public abstract class GoreCoreMultiCommand implements ICommand {
 		}
 		
 		/**
-		 * Checks if the given ICS can use the command. Returns a report based
-		 * on whether the ICS is allowed to do this.
+		 * Checks if the given ICS can use the command. Returns a report based on whether the ICS is
+		 * allowed to do this.
 		 */
 		public GoreCoreCommandExecutionReport checkCanUseCommand(ICommandSender sender) {
 			GoreCoreCommandExecutionReport report = new GoreCoreCommandExecutionReport();
@@ -493,8 +481,8 @@ public abstract class GoreCoreMultiCommand implements ICommand {
 				report.addProblem(GoreCoreCommandProblem.MUST_BE_PLAYER, sender.getCommandSenderName());
 			}
 			
-			if (isOpOnly() && sender instanceof EntityPlayer &&
-				!sender.canCommandSenderUseCommand(2, GoreCoreMultiCommand.this.getCommandName())) {
+			if (isOpOnly() && sender instanceof EntityPlayer
+					&& !sender.canCommandSenderUseCommand(2, GoreCoreMultiCommand.this.getCommandName())) {
 				
 				report.addProblem(GoreCoreCommandProblem.MUST_BE_OP, sender.getCommandSenderName());
 				
@@ -509,11 +497,11 @@ public abstract class GoreCoreMultiCommand implements ICommand {
 		}
 		
 		/**
-		 * Returns whether the string is either a name or an alias of
-		 * the subcommand.
+		 * Returns whether the string is either a name or an alias of the subcommand.
 		 */
 		public boolean isNameOrAlias(String str) {
-			for (String s : allNames) if (s.toLowerCase().equals(str.toLowerCase())) return true;
+			for (String s : allNames)
+				if (s.toLowerCase().equals(str.toLowerCase())) return true;
 			return false;
 		}
 		
@@ -542,17 +530,25 @@ public abstract class GoreCoreMultiCommand implements ICommand {
 		}
 		
 		/**
-		 * <p>Parse the string into an integer. If the string is not an integer,
-		 * then the "Invalid Integer" problem is added to the execution report.</p>
+		 * <p>
+		 * Parse the string into an integer. If the string is not an integer, then the
+		 * "Invalid Integer" problem is added to the execution report.
+		 * </p>
 		 * 
-		 * <p>This is intended as a wrapper for directly using
-		 * {@link GoreCoreParsingUtil#parseInt(String)}, so that problems can more
-		 * easily be added to the report.</p>
+		 * <p>
+		 * This is intended as a wrapper for directly using
+		 * {@link GoreCoreParsingUtil#parseInt(String)}, so that problems can more easily be added
+		 * to the report.
+		 * </p>
 		 * 
-		 * <p>Returns null {@link GoreCoreParsingResult.ResultInteger#wasSuccessful() on failure}.</p>
+		 * <p>
+		 * Returns null {@link GoreCoreParsingResult.ResultInteger#wasSuccessful() on failure}.
+		 * </p>
 		 * 
-		 * @param report The execution report, to add problems to if they occur
-		 * @param str The string to parse
+		 * @param report
+		 *            The execution report, to add problems to if they occur
+		 * @param str
+		 *            The string to parse
 		 * @return The parsed integer, or null if an error occured
 		 * @see GoreCoreParsingUtil#parseInt(String)
 		 */
@@ -567,17 +563,25 @@ public abstract class GoreCoreMultiCommand implements ICommand {
 		}
 		
 		/**
-		 * <p>Parse the string into an float. If the string is not an float,
-		 * then the "Invalid Float" problem is added to the execution report.</p>
+		 * <p>
+		 * Parse the string into an float. If the string is not an float, then the "Invalid Float"
+		 * problem is added to the execution report.
+		 * </p>
 		 * 
-		 * <p>This is intended as a wrapper for directly using
-		 * {@link GoreCoreParsingUtil#parseFloat(String)}, so that problems can more
-		 * easily be added to the report.</p>
+		 * <p>
+		 * This is intended as a wrapper for directly using
+		 * {@link GoreCoreParsingUtil#parseFloat(String)}, so that problems can more easily be added
+		 * to the report.
+		 * </p>
 		 * 
-		 * <p>Returns null {@link GoreCoreParsingResult.ResultFloat#wasSuccessful() on failure}.</p>
+		 * <p>
+		 * Returns null {@link GoreCoreParsingResult.ResultFloat#wasSuccessful() on failure}.
+		 * </p>
 		 * 
-		 * @param report The execution report, to add problems to if they occur
-		 * @param str The string to parse
+		 * @param report
+		 *            The execution report, to add problems to if they occur
+		 * @param str
+		 *            The string to parse
 		 * @return The parsed float, or null if an error occured
 		 * @see GoreCoreParsingUtil#parseFloat(String)
 		 */
@@ -592,17 +596,25 @@ public abstract class GoreCoreMultiCommand implements ICommand {
 		}
 		
 		/**
-		 * <p>Parse the string into an double. If the string is not an double,
-		 * then the "Invalid Double" problem is added to the execution report.</p>
+		 * <p>
+		 * Parse the string into an double. If the string is not an double, then the
+		 * "Invalid Double" problem is added to the execution report.
+		 * </p>
 		 * 
-		 * <p>This is intended as a wrapper for directly using
-		 * {@link GoreCoreParsingUtil#parseDouble(String)}, so that problems can more
-		 * easily be added to the report.</p>
+		 * <p>
+		 * This is intended as a wrapper for directly using
+		 * {@link GoreCoreParsingUtil#parseDouble(String)}, so that problems can more easily be
+		 * added to the report.
+		 * </p>
 		 * 
-		 * <p>Returns null {@link GoreCoreParsingResult.ResultDouble#wasSuccessful() on failure}.</p>
+		 * <p>
+		 * Returns null {@link GoreCoreParsingResult.ResultDouble#wasSuccessful() on failure}.
+		 * </p>
 		 * 
-		 * @param report The execution report, to add problems to if they occur
-		 * @param str The string to parse
+		 * @param report
+		 *            The execution report, to add problems to if they occur
+		 * @param str
+		 *            The string to parse
 		 * @return The parsed double, or null if an error occured
 		 * @see GoreCoreParsingUtil#parseDouble(String)
 		 */
@@ -617,17 +629,25 @@ public abstract class GoreCoreMultiCommand implements ICommand {
 		}
 		
 		/**
-		 * <p>Parse the string into an long. If the string is not an long,
-		 * then the "Invalid Long" problem is added to the execution report.</p>
+		 * <p>
+		 * Parse the string into an long. If the string is not an long, then the "Invalid Long"
+		 * problem is added to the execution report.
+		 * </p>
 		 * 
-		 * <p>This is intended as a wrapper for directly using
-		 * {@link GoreCoreParsingUtil#parseLong(String)}, so that problems can more
-		 * easily be added to the report.</p>
+		 * <p>
+		 * This is intended as a wrapper for directly using
+		 * {@link GoreCoreParsingUtil#parseLong(String)}, so that problems can more easily be added
+		 * to the report.
+		 * </p>
 		 * 
-		 * <p>Returns null {@link GoreCoreParsingResult.ResultLong#wasSuccessful() on failure}.</p>
+		 * <p>
+		 * Returns null {@link GoreCoreParsingResult.ResultLong#wasSuccessful() on failure}.
+		 * </p>
 		 * 
-		 * @param report The execution report, to add problems to if they occur
-		 * @param str The string to parse
+		 * @param report
+		 *            The execution report, to add problems to if they occur
+		 * @param str
+		 *            The string to parse
 		 * @return The parsed long, or null if an error occured
 		 * @see GoreCoreParsingUtil#parseLong(String)
 		 */
@@ -642,17 +662,25 @@ public abstract class GoreCoreMultiCommand implements ICommand {
 		}
 		
 		/**
-		 * <p>Parse the string into an boolean. If the string is not an boolean,
-		 * then the "Invalid Boolean" problem is added to the execution report.</p>
+		 * <p>
+		 * Parse the string into an boolean. If the string is not an boolean, then the
+		 * "Invalid Boolean" problem is added to the execution report.
+		 * </p>
 		 * 
-		 * <p>This is intended as a wrapper for directly using
-		 * {@link GoreCoreParsingUtil#parseBoolean(String)}, so that problems can more
-		 * easily be added to the report.</p>
+		 * <p>
+		 * This is intended as a wrapper for directly using
+		 * {@link GoreCoreParsingUtil#parseBoolean(String)}, so that problems can more easily be
+		 * added to the report.
+		 * </p>
 		 * 
-		 * <p>Returns null {@link GoreCoreParsingResult.ResultBoolean#wasSuccessful() on failure}.</p>
+		 * <p>
+		 * Returns null {@link GoreCoreParsingResult.ResultBoolean#wasSuccessful() on failure}.
+		 * </p>
 		 * 
-		 * @param report The execution report, to add problems to if they occur
-		 * @param str The string to parse
+		 * @param report
+		 *            The execution report, to add problems to if they occur
+		 * @param str
+		 *            The string to parse
 		 * @return The parsed boolean, or null if an error occured
 		 * @see GoreCoreParsingUtil#parseBoolean(String)
 		 */

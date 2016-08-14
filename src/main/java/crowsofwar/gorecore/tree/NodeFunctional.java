@@ -31,17 +31,17 @@ public abstract class NodeFunctional implements ICommandNode {
 	public final boolean needsOpPermission() {
 		return op;
 	}
-
+	
 	@Override
 	public final String getNodeName() {
 		return name;
 	}
-
+	
 	@Override
 	public final IArgument<?>[] getArgumentList() {
 		return args;
 	}
-
+	
 	@Override
 	public String getHelp() {
 		String out = getNodeName();
@@ -51,7 +51,7 @@ public abstract class NodeFunctional implements ICommandNode {
 		}
 		return out;
 	}
-
+	
 	@Override
 	public final ICommandNode execute(CommandCall call, List<String> options) {
 		if (options.contains("help")) {

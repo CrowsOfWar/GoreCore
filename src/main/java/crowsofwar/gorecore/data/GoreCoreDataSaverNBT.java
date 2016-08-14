@@ -69,7 +69,7 @@ public class GoreCoreDataSaverNBT implements GoreCoreDataSaver {
 	public long getLong(String key) {
 		return nbt.getLong(key);
 	}
-
+	
 	@Override
 	public void setLong(String key, long value) {
 		nbt.setLong(key, value);

@@ -8,10 +8,13 @@ import java.net.URL;
 import cpw.mods.fml.common.FMLLog;
 
 /**
- * <p>Checks for the latest version based off of an online text file.</p>
+ * <p>
+ * Checks for the latest version based off of an online text file.
+ * </p>
  * 
- * <p>Notifying the players about the version is up to the class extending the
- * version checker.</p>
+ * <p>
+ * Notifying the players about the version is up to the class extending the version checker.
+ * </p>
  * 
  * @author CrowsOfWar
  */

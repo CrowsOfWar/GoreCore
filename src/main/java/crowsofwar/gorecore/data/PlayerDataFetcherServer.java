@@ -20,7 +20,7 @@ public class PlayerDataFetcherServer<T extends GoreCorePlayerData> implements Pl
 	public T fetch(EntityPlayer player, String errorMessage) {
 		return fetch(player.worldObj, player.getCommandSenderName(), errorMessage);
 	}
-
+	
 	@Override
 	public T fetch(World world, String playerName, String errorMessage) {
 		T pd;
@@ -66,12 +66,12 @@ public class PlayerDataFetcherServer<T extends GoreCorePlayerData> implements Pl
 		}
 		
 	}
-
+	
 	@Override
 	public T fetchPerformance(EntityPlayer player) {
 		return fetchPerformance(player.worldObj, player.getCommandSenderName());
 	}
-
+	
 	@Override
 	public T fetchPerformance(World world, String playerName) {
 		UUID res = GoreCorePlayerUUIDs.getUUIDPerformance(playerName);

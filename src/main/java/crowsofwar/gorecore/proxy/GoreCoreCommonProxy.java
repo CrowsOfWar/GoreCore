@@ -33,8 +33,8 @@ public class GoreCoreCommonProxy {
 	}
 	
 	/**
-	 * Returns whether that person is currently walking. This only works
-	 * for the person who is playing Minecraft.
+	 * Returns whether that person is currently walking. This only works for the person who is
+	 * playing Minecraft.
 	 */
 	public boolean isPlayerWalking(EntityPlayer player) {
 		return false;
@@ -43,15 +43,15 @@ public class GoreCoreCommonProxy {
 	public GoreCoreIsPlayerWalking initPlayerWalkingClient() {
 		return null;
 	}
-
+	
 	public void sideSpecifics() {
 		
 	}
-
+	
 	public String translate(String key, Object... args) {
 		return String.format(StatCollector.translateToLocal(key), args);
 	}
-
+	
 	public EntityPlayer getClientSidePlayer() {
 		return null;
 	}

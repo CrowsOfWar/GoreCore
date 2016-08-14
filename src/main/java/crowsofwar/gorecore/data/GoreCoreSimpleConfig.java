@@ -19,9 +19,13 @@ import crowsofwar.gorecore.util.GoreCoreParsingResult;
 import crowsofwar.gorecore.util.GoreCoreParsingUtil;
 
 /**
- * <p>A compact key=value style config file, without comments.</p>
+ * <p>
+ * A compact key=value style config file, without comments.
+ * </p>
  * 
- * <p>They go in <code>.minecraft\config\MODID\FILENAME.cfg</code>.</p>
+ * <p>
+ * They go in <code>.minecraft\config\MODID\FILENAME.cfg</code>.
+ * </p>
  * 
  * @author CrowsOfWar
  */
@@ -43,8 +47,8 @@ public class GoreCoreSimpleConfig {
 			storedAt = new File(dir, fileName + ".cfg");
 			if (!storedAt.exists()) storedAt.createNewFile();
 		} catch (Exception e) {
-			FMLLog.warning("GoreCore> Error creating simple config file at \""
-				+ GoreCore.proxy.getMinecraftDir().getAbsolutePath() + "/" + modID + "/" + fileName + ".cfg\"!");
+			FMLLog.warning("GoreCore> Error creating simple config file at \"" + GoreCore.proxy.getMinecraftDir().getAbsolutePath() + "/"
+					+ modID + "/" + fileName + ".cfg\"!");
 			e.printStackTrace();
 			// TODO Do something - leaving storedAt null could result in NPEs
 		}
@@ -52,8 +56,7 @@ public class GoreCoreSimpleConfig {
 	}
 	
 	/**
-	 * Fills the contents map with data so that you can use
-	 * the "get..." methods.
+	 * Fills the contents map with data so that you can use the "get..." methods.
 	 */
 	public void load() {
 		try {
@@ -73,11 +76,9 @@ public class GoreCoreSimpleConfig {
 						contents.put(k, v);
 					} else if (firstLine) {
 						// Load version
-						if (!modVersion.equals(ln))
-							FMLLog.warning("GoreCore> Note: The simple config file " + storedAt.getName() +
-									" was created for a different mod version than this one. It is" +
-									" recommended that you delete it in case the mod author changed" +
-									" any values.");
+						if (!modVersion.equals(ln)) FMLLog.warning("GoreCore> Note: The simple config file " + storedAt.getName()
+								+ " was created for a different mod version than this one. It is"
+								+ " recommended that you delete it in case the mod author changed" + " any values.");
 					}
 					
 				}
@@ -205,9 +206,8 @@ public class GoreCoreSimpleConfig {
 	}
 	
 	/**
-	 * Gets a configured item stored in the config. How does this happen?
-	 * It's by default stored by its unlocalized name, but can also be stored
-	 * as the en-US translation.
+	 * Gets a configured item stored in the config. How does this happen? It's by default stored by
+	 * its unlocalized name, but can also be stored as the en-US translation.
 	 */
 	public Item getItem(String key, Item defaultValue) {
 		String itemStr = getString(key, "[n]" + Item.itemRegistry.getNameForObject(defaultValue));
@@ -227,9 +227,8 @@ public class GoreCoreSimpleConfig {
 	}
 	
 	/**
-	 * Gets a configured item stored in the config. How does this happen?
-	 * It's by default stored by its unlocalized name, but can also be stored
-	 * as the en-US translation.
+	 * Gets a configured item stored in the config. How does this happen? It's by default stored by
+	 * its unlocalized name, but can also be stored as the en-US translation.
 	 */
 	public Item getItemWithoutCreate(String key, Item defaultValue) {
 		String itemStr = getStringWithoutCreate(key, "[n]" + Item.itemRegistry.getNameForObject(defaultValue));
@@ -249,9 +248,9 @@ public class GoreCoreSimpleConfig {
 	}
 	
 	/**
-	 * Get the string key for that item - it's either the name of that item
-	 * (like minecraft:apple), or the ID of that item. If there isn't any
-	 * data stored under that key, this returns the name of the item.
+	 * Get the string key for that item - it's either the name of that item (like minecraft:apple),
+	 * or the ID of that item. If there isn't any data stored under that key, this returns the name
+	 * of the item.
 	 */
 	public String getItemKey(Item key) {
 		final String name = Item.itemRegistry.getNameForObject(key);
@@ -263,9 +262,8 @@ public class GoreCoreSimpleConfig {
 	}
 	
 	/**
-	 * Gets a configured block stored in the config. How does this happen?
-	 * It's by default stored by its unlocalized name, but can also be stored
-	 * as the en-US translation.
+	 * Gets a configured block stored in the config. How does this happen? It's by default stored by
+	 * its unlocalized name, but can also be stored as the en-US translation.
 	 */
 	public Block getBlock(String key, Block defaultValue) {
 		String blockStr = getString(key, "[n]" + Block.blockRegistry.getNameForObject(defaultValue));
@@ -284,9 +282,8 @@ public class GoreCoreSimpleConfig {
 	}
 	
 	/**
-	 * Gets a configured block stored in the config. How does this happen?
-	 * It's by default stored by its unlocalized name, but can also be stored
-	 * as the en-US translation.
+	 * Gets a configured block stored in the config. How does this happen? It's by default stored by
+	 * its unlocalized name, but can also be stored as the en-US translation.
 	 */
 	public Block getBlockWithoutCreate(String key, Block defaultValue) {
 		String blockStr = getStringWithoutCreate(key, "[n]" + Block.blockRegistry.getNameForObject(defaultValue));
@@ -305,9 +302,9 @@ public class GoreCoreSimpleConfig {
 	}
 	
 	/**
-	 * Get the string key for that block - it's either the name of that block
-	 * (like minecraft:dirt), or the ID of that item. If there isn't any
-	 * data stored under that key, this returns the name of the block.
+	 * Get the string key for that block - it's either the name of that block (like minecraft:dirt),
+	 * or the ID of that item. If there isn't any data stored under that key, this returns the name
+	 * of the block.
 	 */
 	public String getBlockKey(Block key) {
 		final String name = Block.blockRegistry.getNameForObject(key);

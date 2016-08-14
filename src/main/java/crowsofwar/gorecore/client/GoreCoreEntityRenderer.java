@@ -48,8 +48,7 @@ public class GoreCoreEntityRenderer extends EntityRenderer {
 	}
 	
 	/**
-	 * Hook a viewpoint adjuster to be called each tick. This should
-	 * be done in the postInit method.
+	 * Hook a viewpoint adjuster to be called each tick. This should be done in the postInit method.
 	 */
 	public static void hook(GoreCorePlayerViewpointAdjuster adjuster) {
 		if (INSTANCE == null) throw new NullPointerException("You must register a hook after preInit!");

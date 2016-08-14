@@ -27,5 +27,5 @@ public class TestNode2 extends NodeFunctional {
 		call.getFrom().addChatMessage(new ChatComponentText("The temperature is " + args.get(argTemp)));
 		return null;
 	}
-
+	
 }

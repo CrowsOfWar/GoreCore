@@ -18,8 +18,7 @@ public abstract class TreeCommand implements ICommand {
 	
 	public TreeCommand() {
 		initChatMessages();
-		branchRoot = new NodeBranch(newChatMessage("gc.tree.branchHelp.root", "command"), getCommandName(),
-				addCommands());
+		branchRoot = new NodeBranch(newChatMessage("gc.tree.branchHelp.root", "command"), getCommandName(), addCommands());
 		
 	}
 	
@@ -77,8 +76,7 @@ public abstract class TreeCommand implements ICommand {
 					node = node.execute(call, options);
 				}
 				
-				if (node != null)
-					path += " " + node.getNodeName();
+				if (node != null) path += " " + node.getNodeName();
 				
 			}
 			
@@ -133,9 +131,7 @@ public abstract class TreeCommand implements ICommand {
 		ICommandNode[] subNodes = branch.getSubNodes();
 		for (int i = 0; i < subNodes.length; i++) {
 			chain.add(branchHelpOptionsItem, subNodes[i].getNodeName());
-			if (i < subNodes.length - 1)
-				chain.add(i == subNodes.length - 2 ? branchHelpOptionsSeparatorLast :
-					branchHelpOptionsSeparator);
+			if (i < subNodes.length - 1) chain.add(i == subNodes.length - 2 ? branchHelpOptionsSeparatorLast : branchHelpOptionsSeparator);
 			
 		}
 		chain.send(sender);
@@ -156,11 +152,13 @@ public abstract class TreeCommand implements ICommand {
 		} else {
 			
 			MultiMessage msgArguments = nodeHelpArgs.chain();
-			for (IArgument<?> arg : node.getArgumentList()) msgArguments.add(nodeHelpArgsItem, arg.getArgumentName());
+			for (IArgument<?> arg : node.getArgumentList())
+				msgArguments.add(nodeHelpArgsItem, arg.getArgumentName());
 			msgArguments.send(sender);
 			
 			MultiMessage msgAccepted = nodeHelpAccepted.chain();
-			for (IArgument<?> arg : node.getArgumentList()) msgAccepted.add(nodeHelpAcceptedItem, arg.getHelpString());
+			for (IArgument<?> arg : node.getArgumentList())
+				msgAccepted.add(nodeHelpAcceptedItem, arg.getHelpString());
 			msgAccepted.send(sender);
 			
 		}
@@ -168,11 +166,11 @@ public abstract class TreeCommand implements ICommand {
 	}
 	
 	/**
-	 * Called to instantiate all subclass Command Nodes. Return
-	 * the ones that should be added to the root branch.
+	 * Called to instantiate all subclass Command Nodes. Return the ones that should be added to the
+	 * root branch.
 	 */
 	protected abstract ICommandNode[] addCommands();
-
+	
 	protected ChatMessage cmdHelpTop;
 	protected ChatMessage cmdHelpNodes;
 	protected ChatMessage cmdHelpNodeItem;
@@ -202,7 +200,7 @@ public abstract class TreeCommand implements ICommand {
 		
 		cmdHelpTop = newChatMessage("gc.tree.cmdhelp.top", "name");
 		cmdHelpNodes = newChatMessage("gc.tree.cmdhelp.nodes");
-		cmdHelpNodeItem = newChatMessage( "gc.tree.cmdhelp.nodes.item", "node");
+		cmdHelpNodeItem = newChatMessage("gc.tree.cmdhelp.nodes.item", "node");
 		cmdHelpSeparator = newChatMessage("gc.tree.cmdhelp.nodes.separator");
 		cmdHelpSeparatorLast = newChatMessage("gc.tree.cmdhelp.nodes.separatorLast");
 		cmdHelpCommandOverview = newChatMessage("gc.tree.cmdhelp.showCmdInfo");

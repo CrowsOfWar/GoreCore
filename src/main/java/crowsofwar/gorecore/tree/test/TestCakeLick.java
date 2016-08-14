@@ -12,7 +12,7 @@ import crowsofwar.gorecore.tree.NodeFunctional;
 import net.minecraft.util.ChatComponentTranslation;
 
 public class TestCakeLick extends NodeFunctional {
-
+	
 	private IArgument<Double> argGallons;
 	
 	public TestCakeLick() {
@@ -20,17 +20,17 @@ public class TestCakeLick extends NodeFunctional {
 		argGallons = new ArgumentDirect<Double>("gallons", ITypeConverter.CONVERTER_DOUBLE);
 		addArguments(argGallons);
 	}
-
+	
 	@Override
 	protected ICommandNode doFunction(CommandCall call, List<String> options) {
 		double gallons = call.popArguments(argGallons).get(argGallons);
 		call.getFrom().addChatMessage(new ChatComponentTranslation("test.lickCake", gallons));
 		return null;
 	}
-
+	
 	@Override
 	public ChatMessage getInfoMessage() {
 		return TestMessages.MSG_CAKE_LICK_HELP;
 	}
-
+	
 }
