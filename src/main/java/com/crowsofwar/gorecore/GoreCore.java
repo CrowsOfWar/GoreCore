@@ -26,7 +26,7 @@ public class GoreCore {
 	public static final String MOD_NAME = "GoreCore";
 	public static final String MOD_VERSION = "1.7.10-0.9.0";
 	
-	@SidedProxy(clientSide = "crowsofwar.gorecore.proxy.GoreCoreClientProxy", serverSide = "crowsofwar.gorecore.proxy.GoreCoreCommonProxy")
+	@SidedProxy(clientSide = "com.crowsofwar.gorecore.proxy.GoreCoreClientProxy", serverSide = "com.crowsofwar.gorecore.proxy.GoreCoreCommonProxy")
 	public static GoreCoreCommonProxy proxy;
 	
 	public static GoreCoreModConfig config;
