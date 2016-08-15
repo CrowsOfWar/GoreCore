@@ -1,15 +1,11 @@
 package com.crowsofwar.gorecore.chat;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.crowsofwar.gorecore.GoreCore;
-import com.mojang.realmsclient.gui.ChatFormatting;
-
+import cpw.mods.fml.common.ObfuscationReflectionHelper;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -48,18 +44,12 @@ public class ChatSender {
 		return cm;
 	}
 	
-	private static Object getField(ChatComponentTranslation obj, String field) {
-		try {
-			
-			Field fieldObj = obj.getClass().getDeclaredField(field);
-			fieldObj.setAccessible(true);
-			return fieldObj.get(obj);
-			
-		} catch (ReflectiveOperationException e) {
-			GoreCore.LOGGER.error("Couldn't get ChatComponentTranslation field '" + field + "' via reflection");
-			e.printStackTrace();
-			return null;
-		}
+	private Object[] getFormatArgs(ChatComponentTranslation message) {
+		return ObfuscationReflectionHelper.getPrivateValue(ChatComponentTranslation.class, message, 1);
+	}
+	
+	private String getKey(ChatComponentTranslation message) {
+		return ObfuscationReflectionHelper.getPrivateValue(ChatComponentTranslation.class, message, 0);
 	}
 	
 	@SideOnly(Side.CLIENT)
@@ -72,8 +62,8 @@ public class ChatSender {
 			
 			List<IChatComponent> comps = new ArrayList();
 			
-			Object[] cloneFormatArgs = (Object[]) getField(message, "formatArgs");
-			comps.add(new ChatComponentTranslation((String) getField(message, "key"), cloneFormatArgs));
+			Object[] cloneFormatArgs = getFormatArgs(message);
+			comps.add(new ChatComponentTranslation(getKey(message), cloneFormatArgs));
 			
 			comps.addAll(e.message.getSiblings());
 			boolean changed = false;
@@ -94,7 +84,7 @@ public class ChatSender {
 		String result = null;
 		if (chat instanceof ChatComponentTranslation) {
 			ChatComponentTranslation translate = (ChatComponentTranslation) chat;
-			String key = (String) getField(translate, "key");
+			String key = (String) getKey(translate);
 			ChatMessage cm = translateKeyToChatMessage.get(key);
 			
 			System.out.println("recieved " + key);

@@ -18,6 +18,7 @@ import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.event.FMLServerStoppingEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.entity.Entity;
 
 @Mod(modid = GoreCore.MOD_ID, name = GoreCore.MOD_NAME, version = GoreCore.MOD_VERSION)
 public class GoreCore {
@@ -43,6 +44,8 @@ public class GoreCore {
 	 * The "is player walking" detector for dedicated or integrated servers.
 	 */
 	public static GoreCoreIsPlayerWalking walkDetectorServer;
+	
+	public static final boolean IS_DEOBFUSCATED = Entity.class.getSimpleName().equals("Entity");
 	
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
