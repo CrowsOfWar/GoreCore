@@ -20,7 +20,7 @@ public abstract class TreeCommand implements ICommand {
 	private NodeBranch branchRoot;
 	
 	public TreeCommand() {
-		this(new MessageConfiguration().addColor("value", EnumChatFormatting.GREEN));
+		this(new MessageConfiguration().addColor("value", EnumChatFormatting.GREEN).addColor("title", EnumChatFormatting.LIGHT_PURPLE));
 	}
 	
 	public TreeCommand(MessageConfiguration cfg) {

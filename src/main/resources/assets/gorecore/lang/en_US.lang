@@ -73,7 +73,7 @@ gc.tree.error.cantConvert=Cannot convert "%1$s" to a %2$s.
 gc.tree.error.needsOp=You need to be an operator to use that subcommand.
 gc.tree.error.notOption=The value %1$s for argument %2$s is not an option.
 
-gc.tree.cmdhelp.top=     ---- [bold]Help for [color=value]${name}[/color][/bold] ----
+gc.tree.cmdhelp.top=     [color=title]---- [bold]Help for [/color][color=value]${name}[/color][/bold][color=title] ----[/color]
 gc.tree.cmdhelp.desc=[bold]Description:[/bold] ${descr}
 gc.tree.cmdhelp.nodes.item=[color=value]${node}[/color]
 gc.tree.cmdhelp.nodes.separator=, 
@@ -81,7 +81,7 @@ gc.tree.cmdhelp.nodes.separatorLast=, and
 gc.tree.cmdhelp.nodes=[bold]Valid sub-nodes: [/bold]
 gc.tree.cmdhelp.showCmdInfo=[bold]Command overview: [/bold]
 
-gc.tree.branchHelp.top=    ---- [bold]Help for [color=value]${name}[/color][/bold] ----
+gc.tree.branchHelp.top=    [color=title]---- [bold]Help for [/color][color=value]${name}[/color][/bold][color=title] ----[/color]
 gc.tree.branchHelp.notice=[bold]Note:[/bold] This is a [bold]branch node[/bold]. It does not perform anything on its own, you specify a sub-command below to execute.\n
 gc.tree.branchHelp.info=[bold]Description: [/bold]
 gc.tree.branchHelp.options=[bold]Options: [/bold]
@@ -90,7 +90,7 @@ gc.tree.branchHelp.options.separator=,
 gc.tree.branchHelp.options.separatorLast=, or 
 gc.tree.branchHelp.example=[bold]Example:[/bold] ${path} [color=value]${node-name}[/color] --help
 
-gc.tree.nodeHelp.top=    ---- [bold]Help for [color=value]${name}[/color][/bold] ----
+gc.tree.nodeHelp.top=    [color=title]---- [bold]Help for [/color][color=value]${name}[/color][/bold][color=title] ----[/color]
 gc.tree.nodeHelp.desc=[bold]Description: [/bold]
 gc.tree.nodeHelp.args=[bold]Arguments:[/bold]
 gc.tree.nodeHelp.args.item= ${argument}
