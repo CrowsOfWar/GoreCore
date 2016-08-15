@@ -78,9 +78,7 @@ public abstract class GoreCoreWorldData extends WorldSavedData implements GoreCo
 				ms.setData(key, data);
 			}
 			
-			if (data.getWorld() == null) {
-				data.setWorld(world);
-			}
+			data.setWorld(world);
 			
 			return data;
 		} catch (Exception e) {
