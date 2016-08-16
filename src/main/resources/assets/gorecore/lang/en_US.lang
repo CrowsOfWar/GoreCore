@@ -120,3 +120,5 @@ test.chatSender=[bold]YOU[/bold] picked out a [color=special]${fruit}[/color] fr
 test.chatSender.help=A test to see if the new ChatSender works.
 
 test.commandInfo=A test to make sure that tree commands work.
+
+test.const=The constant is: ${const}. Yay!

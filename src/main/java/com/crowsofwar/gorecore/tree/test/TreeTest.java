@@ -1,6 +1,5 @@
 package com.crowsofwar.gorecore.tree.test;
 
-import com.crowsofwar.gorecore.chat.ChatSender;
 import com.crowsofwar.gorecore.tree.ICommandNode;
 import com.crowsofwar.gorecore.tree.NodeBranch;
 import com.crowsofwar.gorecore.tree.TreeCommand;
@@ -22,7 +21,8 @@ public class TreeTest extends TreeCommand {
 		ICommandNode videogamesBuy = new TestBuyVideogames();
 		ICommandNode branchVideogames = new NodeBranch(TestMessages.MSG_VIDEOGAME_BRANCH_HELP, "videogames", videogamesPlay, videogamesBuy);
 		
-		return new ICommandNode[] { branchCake, branchVideogames, new TestUseChatSender() };
+		return new ICommandNode[] { branchCake, branchVideogames, new TestUseChatSender(),
+				new TestSendMessage("const", TestMessages.MSG_CONST) };
 		
 	}
 }

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import cpw.mods.fml.common.ObfuscationReflectionHelper;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
@@ -111,6 +112,11 @@ public class ChatSender {
 		for (int i = 0; i < translateArgs.length; i++) {
 			System.out.println("Translate arg " + translateArgs[i]);
 			text = text.replace("${" + translateArgs[i] + "}", formatArgs[i].toString());
+		}
+		
+		Set<Map.Entry<String, String>> consts = cfg.getAllConstants();
+		for (Map.Entry<String, String> entry : consts) {
+			text = text.replace("${" + entry.getKey() + "}", entry.getValue());
 		}
 		
 		ChatFormat format = new ChatFormat();
